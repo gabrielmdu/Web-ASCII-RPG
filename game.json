@@ -1,0 +1,96 @@
+{
+    "adventure": {
+        "name": "My New Adventure",
+        "dice": 2,
+        "char_width": 120,
+        "font-size": 14,
+        "default_color": "white",
+        "default_background": "black",
+        "languages": [
+            "english"
+        ]
+    },
+    "player": {
+        "default_name": "Adventurer",
+        "hp": 100,
+        "strength": 5,
+        "dexterity": 5,
+        "items": [
+            "hp_potion_small",
+            "hp_potion_medium"
+        ]
+    },
+    "items": [
+        {
+            "id": "hp_potion_small",
+            "name": "Small HP Potion",
+            "desc": "This potion heals 15 HP points.",
+            "type": "healing",
+            "points": 15
+        },
+        {
+            "id": "hp_potion_medium",
+            "name": "Medium HP Potion",
+            "desc": "This potion heals 40 HP points.",
+            "type": "healing",
+            "points": 40
+        }
+    ],
+    "story": {
+        "starting_screen": "first_room",
+        "screens": [
+            {
+                "id": "first_room",
+                "type": "view",
+                "in_anim": "fade_in",
+                "out_anim": "fade_out",
+                "graphic": "",
+                "bmg": null,
+                "bmg_loop": false,
+                "title": "First Room",
+                "text": "Hello, this is the first room.",
+                "options": [
+                    {
+                        "text": "You will go to another room.",
+                        "destiny": "second_room"
+                    },
+                    {
+                        "text": "You will die.",
+                        "destiny": "death_room"
+                    }
+                ]
+            },
+            {
+                "id": "second_room",
+                "type": "view",
+                "in_anim": "fade_in",
+                "out_anim": "fade_out",
+                "graphic": "",
+                "bmg": null,
+                "bmg_loop": false,
+                "title": "Second Room",
+                "text": "Hello, this is the second room.",
+                "options": [
+                    {
+                        "text": "Go back to the first room.",
+                        "destiny": "first_room"
+                    },
+                    {
+                        "text": "You will die.",
+                        "destiny": "death_room"
+                    }
+                ]
+            },
+            {
+                "id": "death_room",
+                "type": "end_view",
+                "in_anim": "fade_in",
+                "out_anim": "fade_out",
+                "graphic": "",
+                "bmg": null,
+                "bmg_loop": false,
+                "text": "You have died."
+            }
+        ]
+    }
+}

@@ -8,9 +8,18 @@
     font-smooth: never;
 }*/
 
+@font-face {
+    font-family: 'aerx_tabletsregular';
+    src: url('../font/aerxtabs_memesbruh03-webfont.woff2') format('woff2'),
+         url('../font/aerxtabs_memesbruh03-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 html {
-    font-family: monospace;
-    font-size: 14px;
+    font-family: 'aerx_tabletsregular', monospace;
+    font-size: 30px;
     color: white;
     background: black;
 }
@@ -20,7 +29,7 @@ html {
 }
 
 #main-panel pre {
-    font-family: monospace;
+    font-family: 'aerx_tabletsregular', monospace;
     text-align: left;
     margin: auto 0;
 }

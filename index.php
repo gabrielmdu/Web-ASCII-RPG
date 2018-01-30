@@ -26,6 +26,16 @@ function createSceneHeader(string $title, int $imgWidth) : string
     return $imgH1 . $imgH2 . $imgH3;
 }
 
+function createSceneImage(array $imgFile, string $initial, string $final) : string
+{
+    $img = "";
+
+    foreach ($imgFile as $line)
+        $img .= $initial . $line . $final . "\n";
+
+    return $img;
+}
+
 function createSceneText(string $text, int $imgWidth) : string
 {
     $str = createSceneLine($imgWidth, "-", "|*", "*|");
@@ -45,21 +55,14 @@ function createSceneText(string $text, int $imgWidth) : string
 
 function drawScene(string $title) : string
 {
-    $scene = "";
-
     $imgFile = file("img/monster_1.txt", FILE_IGNORE_NEW_LINES);
     $imgWidth = strlen($imgFile[0]) + 2;
 
-    $imgHeader = createSceneHeader($title, $imgWidth);
-
-    $scene = $imgHeader;
-
-    foreach ($imgFile as $line)
-        $scene .= "|| " . $line . " ||\n"; 
-        
-    $scene .= createSceneText("Você encontra uma criatura que lhe arrepia até os ossos. "
-                            . "Seu olhar é hipnotizante, mas sua mandíbula com dentes afiados " 
-                            . "é o que mais lhe preocupa. O que fazer?", $imgWidth);
+    $scene = createSceneHeader($title, $imgWidth) 
+           . createSceneImage($imgFile, "|| ", " ||")
+           . createSceneText("Você encontra uma criatura que lhe arrepia até os ossos. "
+                           . "Seu olhar é hipnotizante, mas sua mandíbula com dentes afiados " 
+                           . "é o que mais lhe preocupa. O que fazer?", $imgWidth);
 
     return $scene;
 }

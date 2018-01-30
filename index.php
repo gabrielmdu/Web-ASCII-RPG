@@ -1,10 +1,10 @@
 <?php
-function createImgLine(int $length, string $char, string $initial, string $final) : string
+function createSceneLine(int $length, string $char, string $initial, string $final) : string
 {
     return $initial . str_repeat($char, $length) . $final . "\n";
 }
 
-function writeInMiddle(string $line, string $text) : string
+function createMiddleTextLine(string $line, string $text) : string
 {
     $textWidth = strlen($text);
     $halfLineWidth = strlen($line) / 2;
@@ -14,17 +14,34 @@ function writeInMiddle(string $line, string $text) : string
     return substr_replace($line, $text, $startPosition, $textWidth);
 }
 
-function createScreenHeader(string $title, int $imgWidth) : string
+function createSceneHeader(string $title, int $imgWidth) : string
 {
-    $imgH1 = createImgLine($imgWidth, "-", "**", "**");
+    $imgH1 = createSceneLine($imgWidth, "-", "**", "**");
     
-    $imgH2 = createImgLine($imgWidth, " ", "**", "**");
-    $imgH2 = writeInMiddle($imgH2, ">> " . $title . " <<");
+    $imgH2 = createSceneLine($imgWidth, " ", "**", "**");
+    $imgH2 = createMiddleTextLine($imgH2, ">> " . $title . " <<");
     
-    $imgH3 = createImgLine($imgWidth, "-", "*-", "-*");
+    $imgH3 = createSceneLine($imgWidth, "-", "|*", "*|");
 
     return $imgH1 . $imgH2 . $imgH3;
-} 
+}
+
+function createSceneText(string $text, int $imgWidth) : string
+{
+    $str = createSceneLine($imgWidth, "-", "|*", "*|");
+
+    $lines = explode("\0", wordwrap($text, $imgWidth, "\0"));
+
+    foreach ($lines as $line)
+        $str .= "|| " 
+              . $line 
+              . str_repeat(" ", ($imgWidth - strlen(utf8_decode($line))) - 1) 
+              . "||\n";
+
+    $str .= createSceneLine($imgWidth, "-", "**", "**");
+
+    return $str;
+}
 
 function drawScene(string $title) : string
 {
@@ -33,14 +50,16 @@ function drawScene(string $title) : string
     $imgFile = file("img/monster_1.txt", FILE_IGNORE_NEW_LINES);
     $imgWidth = strlen($imgFile[0]) + 2;
 
-    $imgHeader = createScreenHeader($title, $imgWidth);
+    $imgHeader = createSceneHeader($title, $imgWidth);
 
     $scene = $imgHeader;
 
-    foreach ($imgFile as $line) 
-    {
-        $scene .= "|| " . $line . " ||\n";
-    }
+    foreach ($imgFile as $line)
+        $scene .= "|| " . $line . " ||\n"; 
+        
+    $scene .= createSceneText("Você encontra uma criatura que lhe arrepia até os ossos. "
+                            . "Seu olhar é hipnotizante, mas sua mandíbula com dentes afiados " 
+                            . "é o que mais lhe preocupa. O que fazer?", $imgWidth);
 
     return $scene;
 }

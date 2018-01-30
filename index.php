@@ -1,4 +1,12 @@
 <?php
+function wrapDOMTagInLine(string $line, string $element, string $params, int $position) : string
+{
+    $str = substr_replace($line, "<" . $element . $params . ">", $position, 0);
+    $str = substr_replace($str, "</" . $element . ">", (-$position - 1), 0);
+    
+    return $str;
+}
+
 function createSceneLine(int $length, string $char, string $initial, string $final) : string
 {
     return $initial . str_repeat($char, $length) . $final . "\n";
@@ -20,7 +28,8 @@ function createSceneHeader(string $title, int $imgWidth) : string
     
     $imgH2 = createSceneLine($imgWidth, " ", "**", "**");
     $imgH2 = createMiddleTextLine($imgH2, ">> " . $title . " <<");
-    
+    $imgH2 = wrapDOMTagInLine($imgH2, "span", " class='scene-title'", 2);
+
     $imgH3 = createSceneLine($imgWidth, "-", "|*", "*|");
 
     return $imgH1 . $imgH2 . $imgH3;
@@ -31,7 +40,12 @@ function createSceneImage(array $imgFile, string $initial, string $final) : stri
     $img = "";
 
     foreach ($imgFile as $line)
-        $img .= $initial . $line . $final . "\n";
+    {
+        $imgLine = $initial . $line . $final . "\n";
+        $imgLine = wrapDOMTagInLine($imgLine, "span", " class='scene-img'", 2);
+
+        $img .= $imgLine;
+    }
 
     return $img;
 }
@@ -43,10 +57,16 @@ function createSceneText(string $text, int $imgWidth) : string
     $lines = explode("\0", wordwrap($text, $imgWidth, "\0"));
 
     foreach ($lines as $line)
-        $str .= "|| " 
-              . $line 
-              . str_repeat(" ", ($imgWidth - strlen(utf8_decode($line))) - 1) 
-              . "||\n";
+    {
+        $textLine = "|| " 
+                  . $line 
+                  . str_repeat(" ", ($imgWidth - strlen(utf8_decode($line))) - 1) 
+                  . "||\n";
+
+        $textLine = wrapDOMTagInLine($textLine, "span", " class='scene-text'", 2);
+
+        $str .= $textLine;
+    }
 
     $str .= createSceneLine($imgWidth, "~", "~~", "~~");
 
@@ -63,10 +83,16 @@ function createSceneOptions(array $options, int $imgWidth) : string
         $lines = explode("\0", wordwrap($optWithIndex, $imgWidth, "\0"));
 
         foreach ($lines as $line)
-            $str .= "|| " 
-                  . $line 
-                  . str_repeat(" ", ($imgWidth - strlen(utf8_decode($line))) - 1)
-                  . "||\n";
+        {
+            $optLine = "|| " 
+                     . $line 
+                     . str_repeat(" ", ($imgWidth - strlen(utf8_decode($line))) - 1)
+                     . "||\n";
+        
+            $optLine = wrapDOMTagInLine($optLine, "span", " class='scene-option'", 2);
+
+            $str .= $optLine;
+        }
     }
 
     $str .= createSceneLine($imgWidth, "-", "**", "**"); 
@@ -110,50 +136,11 @@ function drawScene(string $title) : string
 </head>
 
 <body>
-   <!-- █ █ █ █ -->
-   This is a test
-   <br>
   
-   <div id="main-panel">
-       <pre>
-<!-- **--------------------------------------------------------------**
-**                  <span style="color: orange;">>>>   The Big Fly   <<<</span>                     **
-|*--------------------------------------------------------------*|
-||                       .-.      .-.                           ||
-||                 _..--'`;;`-..-';;'`--.._                     ||
-||               .';,    _   `;;'   _    ,;`.                   ||
-||              ;;'  `;;' `;.`;;'.;' `;;'  `;;                  ||
-||             .;;._.;'`;.   `;;'   .;'`;._.;;.                 ||
-||           ;'      '`;;`   `;;'   ';;'`      `;               ||
-||          ;:     .:.  `;;. `--' .;;'  .:.     :;              ||
-||           ;.   .:|:.     `;;;;'     .:|:.   .;               ||
-||            `;  `:|:'    .;;'`;;.    `:|:'  ;'                ||
-||             `;. `:'  .;;'.::::.`;;.  `:' .;'                 ||
-||               `;._.;;' .:`::::':. `;;._.;'                   ||
-||          .::::. `::   (:._.::._.:)   ::' .::::.              ||
-||     .:::::'  `::.`:_.--.`:::::. .--._:'.::'  `:::::.         ||
-||   .::'     `::    `::-.:::"""":::.-::'   `::      `::.       ||
-|| .::'      .::'      | /.^^^..^^^.\ |      `::        `:.     ||
-|| :::      .:'::.     \( `;;;..;;;' )/     .::::       :::     ||
-|| ::  :  .:':.  `::.   \            /   .::'  .:     .  ::     ||
-|| :  ::  .   :     `::.              .::'     :  :   ::  :     ||
-|| .:  :    `.::.       `:.          .:'       .::.'    :  :.   ||
-|| ::  :  :   : :::.       `:.      .:'       .::: :   :  :  :: ||
-|| ::  :        :' `:.       :.    .:       .:' `:        :  :: ||
-|| :::     :   ::    `:.      :.  .:      .:'    ::   :     ::: ||
-|| ' :       :::'      :.      `::'      .:      `:::       : ` ||
-|*--------------------------------------------------------------*|
-|| Você encontra uma criatura que lhe arrepia até os ossos. Seu ||
-|| olhar é hipnotizante, mas sua mandíbula com dentes afiados   ||
-|| é o que mais lhe preocupa. O que fazer?                      ||
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-|| 1) Correr.                                                   ||
-|| 2) Enfrentar a criatura.                                     ||
-|| 3) Tentar conversar.                                         ||
-||--------------------------------------------------------------|| -->
-<?php echo drawScene("The Big Fly"); ?>
-       </pre>
-   </div>
+    <div id="main-panel">
+        <pre><?php echo drawScene("The Big Fly"); ?></pre>
+    </div>
+
 </body>
 
 </html>

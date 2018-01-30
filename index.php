@@ -48,7 +48,28 @@ function createSceneText(string $text, int $imgWidth) : string
               . str_repeat(" ", ($imgWidth - strlen(utf8_decode($line))) - 1) 
               . "||\n";
 
-    $str .= createSceneLine($imgWidth, "-", "**", "**");
+    $str .= createSceneLine($imgWidth, "~", "~~", "~~");
+
+    return $str;
+}
+
+function createSceneOptions(array $options, int $imgWidth) : string
+{
+    $str = "";
+
+    foreach ($options as $i => $opt) {
+        $optWithIndex = ($i + 1) . ") " . $opt;
+
+        $lines = explode("\0", wordwrap($optWithIndex, $imgWidth, "\0"));
+
+        foreach ($lines as $line)
+            $str .= "|| " 
+                  . $line 
+                  . str_repeat(" ", ($imgWidth - strlen(utf8_decode($line))) - 1)
+                  . "||\n";
+    }
+
+    $str .= createSceneLine($imgWidth, "-", "**", "**"); 
 
     return $str;
 }
@@ -62,7 +83,12 @@ function drawScene(string $title) : string
            . createSceneImage($imgFile, "|| ", " ||")
            . createSceneText("Você encontra uma criatura que lhe arrepia até os ossos. "
                            . "Seu olhar é hipnotizante, mas sua mandíbula com dentes afiados " 
-                           . "é o que mais lhe preocupa. O que fazer?", $imgWidth);
+                           . "é o que mais lhe preocupa. O que fazer?", $imgWidth)
+           . createSceneOptions(["Correr.",
+                                 "Enfrentar a criatura, apesar de sua aparente vantagem física, mental e monetária.",
+                                 "Desistir da vida, afinal não existem chances contra tal ser medonho nesse planeta. Partiu morrer.",
+                                 "Tentar conversar."], 
+                                 $imgWidth);
 
     return $scene;
 }

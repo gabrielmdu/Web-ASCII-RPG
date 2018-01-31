@@ -56,7 +56,7 @@ function createSceneText(string $text, int $imgWidth) : string
 {
     $str = createSceneLine($imgWidth, "-", "|*", "*|");
 
-    $lines = explode("\0", wordwrap($text, $imgWidth, "\0"));
+    $lines = explode("\0", wordwrap($text, $imgWidth - 1, "\0"));
 
     foreach ($lines as $line)
     {

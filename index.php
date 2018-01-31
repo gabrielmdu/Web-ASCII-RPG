@@ -102,20 +102,18 @@ function createSceneOptions(array $options, int $imgWidth) : string
     return $str;
 }
 
-function drawScene(string $title) : string
+function drawScene() : string
 {
-    $imgFile = file("img/monster_1.txt", FILE_IGNORE_NEW_LINES);
+    $imgFile = file("img/1.txt", FILE_IGNORE_NEW_LINES);
     $imgWidth = max(array_map("strlen", $imgFile)) + 2;
 
-    $scene = createSceneHeader($title, $imgWidth) 
+    $scene = createSceneHeader("The Desert", $imgWidth) 
            . createSceneImage($imgFile, $imgWidth, "|| ", " ||")
-           . createSceneText("Você encontra uma criatura que lhe arrepia até os ossos. "
-                           . "Seu olhar é hipnotizante, mas sua mandíbula com dentes afiados " 
-                           . "é o que mais lhe preocupa. O que fazer?", $imgWidth)
-           . createSceneOptions(["Correr.",
-                                 "Enfrentar a criatura, apesar de sua aparente vantagem física, mental e monetária.",
-                                 "Desistir da vida, afinal não existem chances contra tal ser medonho nesse planeta. Partiu morrer.",
-                                 "Tentar conversar."], 
+           . createSceneText("You wake up in the middle of an unknown land. It's hot and dry, and you feel tired. "
+                           . "Still dizzy, suddenly your eyes point to a creature. It's a snake, and it doesn't seem friendly as its tongue and tail keep moving in an hypnotic way. " 
+                           . "Your next move can seal your destiny.", $imgWidth)
+           . createSceneOptions(["Go forward, slowly.",
+                                 "Go to your right."], 
                                  $imgWidth);
 
     return $scene;
@@ -140,7 +138,7 @@ function drawScene(string $title) : string
 <body>
   
     <div id="main-panel">
-        <pre><?php echo drawScene("The Big Fly"); ?></pre>
+        <pre><?php echo drawScene(); ?></pre>
     </div>
 
 </body>

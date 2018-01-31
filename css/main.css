@@ -33,3 +33,20 @@ html {
     text-align: left;
     margin: auto 0;
 }
+
+.scene-title {
+    color: #ffd27f;
+}
+
+.scene-img {
+    background: #ffd280;
+    color: black;
+}
+
+.scene-text {
+    background: #015230; 
+}
+
+.scene-option {
+    background: inherit;
+}

@@ -8,13 +8,15 @@
         "default_background": "black",
         "languages": [
             "english"
-        ]
+        ],
+        "img_dir": "img"
     },
     "player": {
         "default_name": "Adventurer",
         "hp": 100,
         "strength": 5,
         "dexterity": 5,
+        "gold": 50,
         "items": [
             "hp_potion_small",
             "hp_potion_medium"
@@ -24,27 +26,34 @@
         {
             "id": "hp_potion_small",
             "name": "Small HP Potion",
-            "desc": "This potion heals 15 HP points.",
+            "desc": "Heals 15 HP.",
             "type": "healing",
             "points": 15
         },
         {
             "id": "hp_potion_medium",
             "name": "Medium HP Potion",
-            "desc": "This potion heals 40 HP points.",
+            "desc": "Heals 40 HP.",
             "type": "healing",
             "points": 40
+        },
+        {
+            "id": "poison_small",
+            "name": "Small Poison",
+            "desc": "Poisons 5 HP.",
+            "type": "poisoning",
+            "points": 5
         }
     ],
     "story": {
-        "starting_screen": "first_room",
-        "screens": [
+        "starting_scene": "first_room",
+        "scenes": [
             {
                 "id": "first_room",
                 "type": "view",
                 "in_anim": "fade_in",
                 "out_anim": "fade_out",
-                "graphic": "",
+                "image": "1.txt",
                 "bmg": null,
                 "bmg_loop": false,
                 "title": "First Room",
@@ -65,7 +74,7 @@
                 "type": "view",
                 "in_anim": "fade_in",
                 "out_anim": "fade_out",
-                "graphic": "",
+                "image": "",
                 "bmg": null,
                 "bmg_loop": false,
                 "title": "Second Room",
@@ -86,7 +95,7 @@
                 "type": "end_view",
                 "in_anim": "fade_in",
                 "out_anim": "fade_out",
-                "graphic": "",
+                "image": "",
                 "bmg": null,
                 "bmg_loop": false,
                 "text": "You have died."

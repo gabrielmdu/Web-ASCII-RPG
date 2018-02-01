@@ -24,7 +24,7 @@ $game = new Game();
 <body>
   
     <div id="main-panel">
-        <pre><?php echo $game->drawScene(); ?></pre>
+        <pre><?php echo $game->draw(); ?></pre>
     </div>
 
 </body>

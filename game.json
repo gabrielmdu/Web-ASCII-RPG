@@ -77,7 +77,7 @@
                 "image": "2.txt",
                 "bmg": null,
                 "bmg_loop": false,
-                "title": "Second Room",
+                "title": "Cemetery",
                 "text": "You were brave to face the snake, but not smart enough to know it would attack fiercely. You are dead, resting forever in your grave."
             },
             {
@@ -88,6 +88,7 @@
                 "image": "3.txt",
                 "bmg": null,
                 "bmg_loop": false,
+                "title": "House",
                 "text": "A beautiful, eerie house stands there. There's no apparent movement inside, yet the fear prevents you from going further.",
                 "options": [
                     {

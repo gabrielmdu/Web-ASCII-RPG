@@ -1,6 +1,20 @@
 <?php 
-class Game
+final class Game
 {
+    private $gameStruct;
+
+    private $startingScene;
+    private $imgDir;
+
+    public function __construct()
+    {
+        $gameFile = file_get_contents("game.json");
+        $this->gameStruct = json_decode($gameFile, true);
+
+        $this->imgDir = $this->gameStruct["adventure"]["img_dir"];
+        $this->startingScene = $this->gameStruct["story"]["starting_scene"];
+    }
+
     private function wrapDOMTagInLine(string $line, string $element, string $params, int $position) : string
     {
         $str = substr_replace($line, "<" . $element . $params . ">", $position, 0);
@@ -82,7 +96,7 @@ class Game
         $str = "";
 
         foreach ($options as $optIndex => $opt) {
-            $optWithIndex = ($optIndex + 1) . ") " . $opt;
+            $optWithIndex = ($optIndex + 1) . ") " . $opt["text"];
 
             $lines = explode("\0", wordwrap($optWithIndex, $imgWidth, "\0"));
 
@@ -104,21 +118,25 @@ class Game
         return $str;
     }
 
-    public function drawScene() : string
+    private function drawScene($id) : string
     {
-        $imgFile = file("img/1.txt", FILE_IGNORE_NEW_LINES);
+        $sceneArray = array_filter($this->gameStruct["story"]["scenes"], function ($currScene) use($id) { return $currScene["id"] === $id ; });
+        $scene = reset($sceneArray);
+
+        $imgFile = file($this->imgDir . "/" . $scene["image"], FILE_IGNORE_NEW_LINES);
         $imgWidth = max(array_map("strlen", $imgFile)) + 2;
 
-        $scene = $this->createSceneHeader("The Desert", $imgWidth) 
-               . $this->createSceneImage($imgFile, $imgWidth, "|| ", " ||")
-               . $this->createSceneText("You wake up in the middle of an unknown land. It's hot and dry, and you feel tired. "
-                                      . "Still dizzy, suddenly your eyes point to a creature. It's a snake, and it doesn't seem friendly as its tongue and tail keep moving in an hypnotic way. " 
-                                      . "Your next move can seal your destiny.", $imgWidth)
-               . $this->createSceneOptions(["Go forward, slowly.",
-                                            "Go to your right."], 
-                                            $imgWidth);
+        $sceneStr = $this->createSceneHeader($scene["title"], $imgWidth) 
+                  . $this->createSceneImage($imgFile, $imgWidth, "|| ", " ||")
+                  . $this->createSceneText($scene["text"], $imgWidth)
+                  . (array_key_exists("options", $scene) ? $this->createSceneOptions($scene["options"], $imgWidth) : "");
 
-        return $scene;
+        return $sceneStr;
+    }
+
+    public function draw()
+    {
+        return $this->drawScene($this->startingScene);
     }
 }
 ?>

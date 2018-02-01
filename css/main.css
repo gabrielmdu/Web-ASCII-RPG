@@ -49,4 +49,9 @@ html {
 
 .scene-option {
     background: inherit;
+    cursor: pointer;
+}
+
+.scene-option:hover {
+    color: #d5ff9d;
 }

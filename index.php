@@ -79,8 +79,8 @@ function createSceneOptions(array $options, int $imgWidth) : string
 {
     $str = "";
 
-    foreach ($options as $i => $opt) {
-        $optWithIndex = ($i + 1) . ") " . $opt;
+    foreach ($options as $optIndex => $opt) {
+        $optWithIndex = ($optIndex + 1) . ") " . $opt;
 
         $lines = explode("\0", wordwrap($optWithIndex, $imgWidth, "\0"));
 
@@ -91,7 +91,7 @@ function createSceneOptions(array $options, int $imgWidth) : string
                      . str_repeat(" ", ($imgWidth - strlen(utf8_decode($line))) - 1)
                      . "||\n";
         
-            $optLine = wrapDOMTagInLine($optLine, "span", " class='scene-option'", 2);
+            $optLine = wrapDOMTagInLine($optLine, "span", " class='scene-option' data-id='" . $optIndex . "'", 2);
 
             $str .= $optLine;
         }

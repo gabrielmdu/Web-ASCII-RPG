@@ -46,59 +46,55 @@
         }
     ],
     "story": {
-        "starting_scene": "first_room",
+        "starting_scene": "desert",
         "scenes": [
             {
-                "id": "first_room",
+                "id": "desert",
                 "type": "view",
                 "in_anim": "fade_in",
                 "out_anim": "fade_out",
                 "image": "1.txt",
                 "bmg": null,
                 "bmg_loop": false,
-                "title": "First Room",
-                "text": "Hello, this is the first room.",
+                "title": "The Desert",
+                "text": "You wake up in the middle of an unknown land. It's hot and dry, and you feel tired. Still dizzy, suddenly your eyes point to a creature. It's a snake, and it doesn't seem friendly as its tongue and tail keep moving in an hypnotic way. Your next move can seal your destiny",
                 "options": [
                     {
-                        "text": "You will go to another room.",
-                        "destiny": "second_room"
+                        "text": "Go forward, slowly.",
+                        "destiny": "cemetery"
                     },
                     {
-                        "text": "You will die.",
-                        "destiny": "death_room"
+                        "text": "Go to your right.",
+                        "destiny": "house"
                     }
                 ]
             },
             {
-                "id": "second_room",
-                "type": "view",
-                "in_anim": "fade_in",
-                "out_anim": "fade_out",
-                "image": "",
-                "bmg": null,
-                "bmg_loop": false,
-                "title": "Second Room",
-                "text": "Hello, this is the second room.",
-                "options": [
-                    {
-                        "text": "Go back to the first room.",
-                        "destiny": "first_room"
-                    },
-                    {
-                        "text": "You will die.",
-                        "destiny": "death_room"
-                    }
-                ]
-            },
-            {
-                "id": "death_room",
+                "id": "cemetery",
                 "type": "end_view",
                 "in_anim": "fade_in",
                 "out_anim": "fade_out",
-                "image": "",
+                "image": "2.txt",
                 "bmg": null,
                 "bmg_loop": false,
-                "text": "You have died."
+                "title": "Second Room",
+                "text": "You were brave to face the snake, but not smart enough to know it would attack fiercely. You are dead, resting forever in your grave."
+            },
+            {
+                "id": "house",
+                "type": "view",
+                "in_anim": "fade_in",
+                "out_anim": "fade_out",
+                "image": "3.txt",
+                "bmg": null,
+                "bmg_loop": false,
+                "text": "A beautiful, eerie house stands there. There's no apparent movement inside, yet the fear prevents you from going further.",
+                "options": [
+                    {
+                        "text": "Go back. The snake is not that scary.",
+                        "destiny": "desert"
+                    }
+                ]
             }
         ]
     }

@@ -26,10 +26,7 @@ final class Game
     private function loadScenes()
     {
         foreach($this->gameStruct["story"]["scenes"] as $sceneArray)
-        {
-            $s = new Scene($sceneArray, $this->imgDir);
-            array_push($this->scenes, $s);
-        }    
+            $this->scenes[] = new Scene($sceneArray, $this->imgDir);
     }
 
     private function getScene($id) : Scene

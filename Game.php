@@ -40,9 +40,11 @@ final class Game
         return $this->currScene->getStr();
     }
 
-    public function draw()
+    public function getCurrSceneJSON() : string
     {
-        return $this->drawCurrScene();
+        return json_encode([
+            "html" => $this->drawCurrScene()
+        ]);
     }
 }
 ?>

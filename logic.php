@@ -17,5 +17,5 @@ if (isset($_GET["opt"]))
     $_SESSION["game"] = serialize($game);
 }
 
-echo $game->draw();
+echo $game->getCurrSceneJSON();
 ?>

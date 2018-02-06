@@ -1,6 +1,8 @@
 (function () {
     function renderScene(data) {
-        $("#main-panel > pre").html(data.html);
+        $("#main-panel > pre").css("color", data.default_colors.color)
+            .css("background", data.default_colors.background)
+            .html(data.html);
     }
 
     $(function () {

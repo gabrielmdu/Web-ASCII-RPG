@@ -3,13 +3,23 @@
         "name": "My New Adventure",
         "dice": 2,
         "char_width": 120,
-        "font-size": 14,
-        "default_color": "white",
-        "default_background": "black",
+        "font-size": 30,
         "languages": [
             "english"
         ],
-        "img_dir": "img"
+        "image_dir": "img"
+    },
+    "default_colors": {
+        "color": "grey",
+        "background": "#eee",
+        "title_color": "white",
+        "title_background": "black",
+        "image_color": "white",
+        "image_background": "black",
+        "option_color": "white",
+        "option_background": "black",
+        "option_hover_color": "orange",
+        "option_hover_background": "black"
     },
     "player": {
         "default_name": "Adventurer",

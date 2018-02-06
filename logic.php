@@ -3,6 +3,8 @@ require_once "Game.php";
 
 session_start();
 
+//$_SESSION = [];
+
 if (!isset($_SESSION["game"]))
 {
     $game = new Game();

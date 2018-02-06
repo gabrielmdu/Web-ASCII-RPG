@@ -11,8 +11,9 @@ class Scene
     private $text;
     private $str;
     private $options;
+    private $defaultColors;
 
-    public function __construct(array $sceneArray, string $imgDir)
+    public function __construct(array $sceneArray, string $imgDir, array $defaultColors)
     {
         $this->id = $sceneArray["id"];
         $this->imgFile = file($imgDir . "/" . $sceneArray["image"], FILE_IGNORE_NEW_LINES);
@@ -21,6 +22,7 @@ class Scene
         $this->title = $sceneArray["title"];
         $this->text = $sceneArray["text"];
         $this->options = [];
+        $this->defaultColors = $defaultColors;
 
         if (array_key_exists("options", $sceneArray))
             foreach($sceneArray["options"] as $opt)

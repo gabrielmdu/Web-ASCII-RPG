@@ -10,11 +10,9 @@
 
 @font-face {
     font-family: 'aerx_tabletsregular';
-    src: url('../font/aerxtabs_memesbruh03-webfont.woff2') format('woff2'),
-         url('../font/aerxtabs_memesbruh03-webfont.woff') format('woff');
+    src: url('../font/aerxtabs_memesbruh03-webfont.woff2') format('woff2'), url('../font/aerxtabs_memesbruh03-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-
 }
 
 html {
@@ -28,30 +26,39 @@ html {
     text-align: center;
 }
 
+.scene-option {
+    cursor: pointer;
+}
+
+
 #main-panel pre {
     font-family: 'aerx_tabletsregular', monospace;
     text-align: left;
-    margin: auto 0;
+    margin: auto;
+    display: inline-block;
 }
 
+/*
 .scene-title {
-    color: #ffd27f;
+    color: white;
 }
 
 .scene-img {
-    background: #ffd280;
-    color: black;
+    background: black;
+    color: white;
 }
 
 .scene-text {
-    background: #015230; 
+    background: black;
+    color: white; 
 }
 
 .scene-option {
-    background: inherit;
+    background: black;
+    color: white;
     cursor: pointer;
 }
 
 .scene-option:hover {
-    color: #d5ff9d;
-}
+    color: orange;
+}*/

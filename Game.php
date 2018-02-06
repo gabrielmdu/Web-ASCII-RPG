@@ -5,10 +5,10 @@ final class Game
 {
     private $gameStruct;
 
-    private $startingScene;
+    private $startingSceneId;
+    private $currSceneId;
     private $currScene;
     private $imgDir;
-    private $scenes;
 
     public function __construct()
     {
@@ -16,33 +16,33 @@ final class Game
         $this->gameStruct = json_decode($gameFile, true);
 
         $this->imgDir = $this->gameStruct["adventure"]["img_dir"];
-        $this->startingScene = $this->gameStruct["story"]["starting_scene"];
-        $this->currScene = $this->startingScene;
-        $this->scenes = [];
-
-        $this->loadScenes();
+        $this->startingSceneId = $this->gameStruct["story"]["starting_scene"];
+        $this->currSceneId = $this->startingSceneId;
+        $this->currScene = $this->loadScene($this->currSceneId);
     }
 
-    private function loadScenes()
+    public function setChosenScene($index)
     {
-        foreach($this->gameStruct["story"]["scenes"] as $sceneArray)
-            $this->scenes[] = new Scene($sceneArray, $this->imgDir);
+        $this->currSceneId = $this->currScene->getOptions()[$index]->getDestiny();
+        $this->currScene = $this->loadScene($this->currSceneId);
     }
 
-    private function getScene($id) : Scene
+    private function loadScene($id) : Scene
     {
-        $sceneArray = array_filter($this->scenes, function ($currScene) use($id) { return $currScene->getId("id") === $id; });
-        return reset($sceneArray);
+        $sceneArray = array_filter($this->gameStruct["story"]["scenes"], function ($scene) use($id) { return $scene["id"] === $id; });
+        $sceneArray = reset($sceneArray);
+
+        return new Scene($sceneArray, $this->imgDir);
     }
 
-    private function drawScene($id) : string
+    private function drawCurrScene() : string
     {
-        return $this->getScene($id)->getStr();
+        return $this->currScene->getStr();
     }
 
     public function draw()
     {
-        return $this->drawScene($this->currScene);
+        return $this->drawCurrScene();
     }
 }
 ?>

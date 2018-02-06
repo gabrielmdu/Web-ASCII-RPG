@@ -144,5 +144,15 @@ class Scene
     {
             return $this->id;
     }
+
+    public function getOptions() : array
+    {
+        return $this->options;
+    }
+
+    public function getType() : string
+    {
+        return $this->type;
+    } 
 }
 ?>

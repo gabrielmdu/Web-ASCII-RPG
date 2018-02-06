@@ -1,4 +1,6 @@
-<?php 
+<?php
+require_once "Option.php";
+
 class Scene
 {
     private $id;
@@ -8,6 +10,7 @@ class Scene
     private $title;
     private $text;
     private $str;
+    private $options;
 
     public function __construct(array $sceneArray, string $imgDir)
     {
@@ -17,11 +20,16 @@ class Scene
         $this->type = $sceneArray["type"];
         $this->title = $sceneArray["title"];
         $this->text = $sceneArray["text"];
+        $this->options = [];
+
+        if (array_key_exists("options", $sceneArray))
+            foreach($sceneArray["options"] as $opt)
+                $this->options[] = new Option($opt["destiny"], $opt["text"]);
 
         $this->str = $this->createHeader() 
                    . $this->createImage("|| ", " ||")
                    . $this->createText()
-                   . (array_key_exists("options", $sceneArray) ? $this->createOptions($sceneArray["options"]) : "");
+                   . $this->createOptions();
     }
 
     private function wrapDOMTagInLine(string $line, string $element, string $params, int $position) : string
@@ -100,12 +108,12 @@ class Scene
         return $str;
     }
 
-    private function createOptions(array $options) : string
+    private function createOptions() : string
     {
         $str = "";
 
-        foreach ($options as $optIndex => $opt) {
-            $optWithIndex = ($optIndex + 1) . ") " . $opt["text"];
+        foreach ($this->options as $optIndex => $opt) {
+            $optWithIndex = ($optIndex + 1) . ") " . $opt->getText();
 
             $lines = explode("\0", wordwrap($optWithIndex, $this->imgWidth, "\0"));
 

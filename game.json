@@ -10,12 +10,14 @@
         "image_dir": "img"
     },
     "default_colors": {
-        "color": "grey",
-        "background": "#eee",
+        "color": "white",
+        "background": "black",
         "title_color": "white",
         "title_background": "black",
         "image_color": "white",
         "image_background": "black",
+        "text_color": "white",
+        "text_background": "black",
         "option_color": "white",
         "option_background": "black",
         "option_hover_color": "orange",

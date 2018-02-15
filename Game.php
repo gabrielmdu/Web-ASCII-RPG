@@ -9,8 +9,6 @@ final class Game
     private $currSceneId;
     private $currScene;
     private $imgDir;
-    private $defaultColor;
-    private $defaultBackground;
 
     public function __construct()
     {
@@ -21,8 +19,6 @@ final class Game
         $this->startingSceneId = $this->gameStruct["story"]["starting_scene"];
         $this->currSceneId = $this->startingSceneId;
         $this->currScene = $this->loadScene($this->currSceneId);
-        $this->defaultColor = $this->gameStruct["default_colors"]["color"];
-        $this->defaultBackground = $this->gameStruct["default_colors"]["background"];
     }
 
     public function setChosenScene($index)
@@ -44,14 +40,16 @@ final class Game
         return $this->currScene->getStr();
     }
 
+    private function getCurrSceneColors() : array
+    {
+        return $this->currScene->getColors();
+    }
+
     public function getCurrSceneJSON() : string
     {
         return json_encode([
             "html" => $this->drawCurrScene(),
-            "default_colors" => [
-                "color" => $this->defaultColor,
-                "background" => $this->defaultBackground
-            ]
+            "colors" => $this->getCurrSceneColors()
         ]);
     }
 }

@@ -137,6 +137,24 @@ class Scene
         return $str;
     }
 
+    public function getColors() : array
+    {
+        return [
+            "color" => $this->defaultColors["color"],
+            "background" => $this->defaultColors["background"],
+            "title_color" => $this->defaultColors["title_color"],
+            "title_background" => $this->defaultColors["title_background"],
+            "image_color" => $this->defaultColors["image_color"],
+            "image_background" => $this->defaultColors["image_background"],
+            "text_color" => $this->defaultColors["text_color"],
+            "text_background" => $this->defaultColors["text_background"],
+            "option_color" => $this->defaultColors["option_color"],
+            "option_background" => $this->defaultColors["option_background"],
+            "option_hover_color" => $this->defaultColors["option_hover_color"],
+            "option_hover_background" => $this->defaultColors["option_hover_background"]
+        ];
+    }
+
     public function getStr() : string
     {
         return $this->str;

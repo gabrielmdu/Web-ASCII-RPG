@@ -12,6 +12,7 @@ class Scene
     private $str;
     private $options;
     private $defaultColors;
+    private $sceneColors; 
 
     public function __construct(array $sceneArray, string $imgDir, array $defaultColors)
     {
@@ -23,12 +24,13 @@ class Scene
         $this->text = $sceneArray["text"];
         $this->options = [];
         $this->defaultColors = $defaultColors;
+        $this->sceneColors = $sceneArray["colors"] ?? null;
 
         if (array_key_exists("options", $sceneArray))
             foreach($sceneArray["options"] as $opt)
                 $this->options[] = new Option($opt["destiny"], $opt["text"]);
 
-        $this->str = $this->createHeader() 
+        $this->str = $this->createHeader()
                    . $this->createImage("|| ", " ||")
                    . $this->createText()
                    . $this->createOptions();
@@ -137,21 +139,26 @@ class Scene
         return $str;
     }
 
+    private function getSceneColor(string $color) : string
+    {
+        return $this->sceneColors ? ($this->sceneColors[$color] ?? $this->defaultColors[$color]) : $this->defaultColors[$color];
+    }
+
     public function getColors() : array
     {
         return [
-            "color" => $this->defaultColors["color"],
-            "background" => $this->defaultColors["background"],
-            "title_color" => $this->defaultColors["title_color"],
-            "title_background" => $this->defaultColors["title_background"],
-            "image_color" => $this->defaultColors["image_color"],
-            "image_background" => $this->defaultColors["image_background"],
-            "text_color" => $this->defaultColors["text_color"],
-            "text_background" => $this->defaultColors["text_background"],
-            "option_color" => $this->defaultColors["option_color"],
-            "option_background" => $this->defaultColors["option_background"],
-            "option_hover_color" => $this->defaultColors["option_hover_color"],
-            "option_hover_background" => $this->defaultColors["option_hover_background"]
+            "color" => $this->getSceneColor("color"),
+            "background" => $this->getSceneColor("background"),
+            "title_color" => $this->getSceneColor("title_color"),
+            "title_background" => $this->getSceneColor("title_background"),
+            "image_color" => $this->getSceneColor("image_color"),
+            "image_background" => $this->getSceneColor("image_background"),
+            "text_color" => $this->getSceneColor("text_color"),
+            "text_background" => $this->getSceneColor("text_background"),
+            "option_color" => $this->getSceneColor("option_color"),
+            "option_background" => $this->getSceneColor("option_background"),
+            "option_hover_color" => $this->getSceneColor("option_hover_color"),
+            "option_hover_background" => $this->getSceneColor("option_hover_background")
         ];
     }
 

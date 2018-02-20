@@ -79,7 +79,12 @@
                         "text": "Go to your right.",
                         "destiny": "house"
                     }
-                ]
+                ],
+                "colors": {
+                    "title_color": "purple",
+                    "text_color": "yellow",
+                    "image_background": "blue"
+                }
             },
             {
                 "id": "cemetery",

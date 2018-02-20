@@ -25,19 +25,24 @@ final class Game
 
     public function setChosenScene($id)
     {
-        $this->currSceneId = $id === "start" ? 
-            $this->startingSceneId : 
+        $this->currSceneId = $id === "start" ?
+            $this->startingSceneId :
             $this->currSceneId = $this->currScene->getOptions()[$id]->getDestiny();
-        
+
         $this->currScene = $this->loadScene($this->currSceneId);
     }
 
     private function loadScene($id) : Scene
     {
-        $sceneArray = array_filter($this->gameStruct["story"]["scenes"], function ($scene) use($id) { return $scene["id"] === $id; });
+        $sceneArray = array_filter(
+            $this->gameStruct["story"]["scenes"],
+            function ($scene) use ($id) {
+                return $scene["id"] === $id;
+            }
+        );
         $sceneArray = reset($sceneArray);
 
-        return new Scene($sceneArray, $this->imgDir, $this->imgHSpaces, $this->gameStruct["default_colors"]);
+        return new Scene($sceneArray, $this->imgDir, $this->imgHSpaces, $this->gameStruct["adventure"]["default_colors"]);
     }
 
     private function drawCurrScene() : string

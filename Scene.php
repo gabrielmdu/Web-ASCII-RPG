@@ -29,7 +29,7 @@ class Scene
         $this->sceneColors = $sceneArray["colors"] ?? null;
 
         if (array_key_exists("options", $sceneArray))
-            foreach($sceneArray["options"] as $opt)
+            foreach ($sceneArray["options"] as $opt)
                 $this->options[] = new Option($opt["destiny"], $opt["text"]);
 
         $this->str = $this->createHeader()

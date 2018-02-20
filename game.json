@@ -8,21 +8,21 @@
             "english"
         ],
         "image_dir": "img",
-        "image_h_spaces": 1
-    },
-    "default_colors": {
-        "color": "white",
-        "background": "black",
-        "title_color": "white",
-        "title_background": "black",
-        "image_color": "white",
-        "image_background": "black",
-        "text_color": "white",
-        "text_background": "black",
-        "option_color": "white",
-        "option_background": "black",
-        "option_hover_color": "orange",
-        "option_hover_background": "black"
+        "image_h_spaces": 1,
+        "default_colors": {
+            "color": "white",
+            "background": "black",
+            "title_color": "white",
+            "title_background": "black",
+            "image_color": "white",
+            "image_background": "black",
+            "text_color": "white",
+            "text_background": "black",
+            "option_color": "white",
+            "option_background": "black",
+            "option_hover_color": "orange",
+            "option_hover_background": "black"
+        }
     },
     "player": {
         "default_name": "Adventurer",
@@ -64,8 +64,8 @@
             {
                 "id": "desert",
                 "type": "view",
-                "in_anim": "fade_in",
-                "out_anim": "fade_out",
+                "in_anim": "fade-in",
+                "out_anim": "fade-out",
                 "image": "1.txt",
                 "bmg": null,
                 "bmg_loop": false,
@@ -82,9 +82,10 @@
                     }
                 ],
                 "colors": {
-                    "title_color": "purple",
-                    "text_color": "yellow",
-                    "image_background": "blue"
+                    "title_color": "#ffca68",
+                    "text_color": "#ffca68",
+                    "image_color": "black",
+                    "image_background": "#ffca68"
                 }
             },
             {

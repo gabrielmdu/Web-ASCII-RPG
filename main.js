@@ -2,7 +2,12 @@
     function renderScene(data) {
         $("#main-panel > pre").css("color", data.colors.color)
             .css("background", data.colors.background)
-            .html(data.html);
+            .html(data.html)
+            .addClass("animated fade-in")
+            .one("webkitAnimationEnd oanimationend msAnimationEnd animationend", function (e) {
+
+                $(this).removeClass("animated fade-in");
+            });
 
         $(".scene-title").css("color", data.colors.title_color)
             .css("background", data.colors.title_background);
@@ -28,10 +33,18 @@
     $(function () {
         $.get("logic.php", renderScene, "json");
 
-        $("#main-panel").on("click", ".scene-option", function () {
+        $("#main-panel > pre").on("click", ".scene-option", function () {
             let optionId = $(this).data("id");
 
-            $.get("logic.php?", { scene_opt: optionId }, renderScene, "json");
+            $(this).parent().addClass("animated fade-out")
+                .one("webkitAnimationEnd oanimationend msAnimationEnd animationend", function (e) {
+                    $(this).removeClass("animated fade-out")
+                        .empty();
+
+                    $.get("logic.php?", { scene_opt: optionId }, renderScene, "json");
+                });
+
+            //$.get("logic.php?", { scene_opt: optionId }, renderScene, "json");
         });
     });
 })();

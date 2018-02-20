@@ -7,7 +7,8 @@
         "languages": [
             "english"
         ],
-        "image_dir": "img"
+        "image_dir": "img",
+        "image_h_spaces": 1
     },
     "default_colors": {
         "color": "white",
@@ -69,7 +70,7 @@
                 "bmg": null,
                 "bmg_loop": false,
                 "title": "The Desert",
-                "text": "You wake up in the middle of an unknown land. It's hot and dry, and you feel tired. Still dizzy, suddenly your eyes point to a creature. It's a snake, and it doesn't seem friendly as its tongue and tail keep moving in an hypnotic way. Your next move can seal your destiny",
+                "text": "You wake up in the middle of an unknown land. It's hot and dry, and you feel tired. Still dizzy, suddenly your eyes point to a creature. It's a snake, and it doesn't seem friendly as its tongue and tail keep moving in an hypnotic way. Your next move a seal your destiny",
                 "options": [
                     {
                         "text": "Go forward, slowly.",

@@ -5,6 +5,7 @@ class Scene
 {
     private $id;
     private $imgFile;
+    private $imgHSpaces;
     private $imgWidth;
     private $type;
     private $title;
@@ -14,11 +15,12 @@ class Scene
     private $defaultColors;
     private $sceneColors; 
 
-    public function __construct(array $sceneArray, string $imgDir, array $defaultColors)
+    public function __construct(array $sceneArray, string $imgDir, int $imgHSpaces, array $defaultColors)
     {
         $this->id = $sceneArray["id"];
         $this->imgFile = file($imgDir . "/" . $sceneArray["image"], FILE_IGNORE_NEW_LINES);
-        $this->imgWidth = max(array_map("strlen", $this->imgFile)) + 2;
+        $this->imgHSpaces = $imgHSpaces;
+        $this->imgWidth = max(array_map("strlen", $this->imgFile)) + ($this->imgHSpaces * 2);
         $this->type = $sceneArray["type"];
         $this->title = $sceneArray["title"];
         $this->text = $sceneArray["text"];
@@ -31,7 +33,7 @@ class Scene
                 $this->options[] = new Option($opt["destiny"], $opt["text"]);
 
         $this->str = $this->createHeader()
-                   . $this->createImage("|| ", " ||")
+                   . $this->createImage()
                    . $this->createText()
                    . $this->createOptions();
     }
@@ -72,15 +74,15 @@ class Scene
         return $imgH1 . $imgH2 . $imgH3;
     }
 
-    private function createImage(string $initial, string $final) : string
+    private function createImage() : string
     {
         $img = "";
 
         foreach ($this->imgFile as $line)
         {
-            $lineLeft = ($this->imgWidth - 2) - strlen(utf8_decode($line));
+            $lineLeft = ($this->imgWidth - ($this->imgHSpaces * 2)) - strlen(utf8_decode($line));
 
-            $imgLine = $initial . $line . str_repeat(" ", $lineLeft) . $final . "\n";
+            $imgLine = "||" . str_repeat(" ", $this->imgHSpaces) . $line . str_repeat(" ", $lineLeft) . str_repeat(" ", $this->imgHSpaces) . "||" . "\n";
             $imgLine = $this->wrapDOMTagInLine($imgLine, "span", " class='scene-img'", 2);
 
             $img .= $imgLine;
@@ -93,7 +95,7 @@ class Scene
     {
         $str = $this->createLine($this->imgWidth, "-", "|*", "*|");
 
-        $lines = explode("\0", wordwrap($this->text, $this->imgWidth - 1, "\0"));
+        $lines = explode("\0", wordwrap($this->text, $this->imgWidth - 2, "\0"));
 
         foreach ($lines as $line)
         {

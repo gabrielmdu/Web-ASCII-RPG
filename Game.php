@@ -9,6 +9,7 @@ final class Game
     private $currSceneId;
     private $currScene;
     private $imgDir;
+    private $imgHSpaces;
 
     public function __construct()
     {
@@ -16,6 +17,7 @@ final class Game
         $this->gameStruct = json_decode($gameFile, true);
 
         $this->imgDir = $this->gameStruct["adventure"]["image_dir"];
+        $this->imgHSpaces = $this->gameStruct["adventure"]["image_h_spaces"];
         $this->startingSceneId = $this->gameStruct["story"]["starting_scene"];
         $this->currSceneId = $this->startingSceneId;
         $this->currScene = $this->loadScene($this->currSceneId);
@@ -35,7 +37,7 @@ final class Game
         $sceneArray = array_filter($this->gameStruct["story"]["scenes"], function ($scene) use($id) { return $scene["id"] === $id; });
         $sceneArray = reset($sceneArray);
 
-        return new Scene($sceneArray, $this->imgDir, $this->gameStruct["default_colors"]);
+        return new Scene($sceneArray, $this->imgDir, $this->imgHSpaces, $this->gameStruct["default_colors"]);
     }
 
     private function drawCurrScene() : string

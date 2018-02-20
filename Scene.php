@@ -116,21 +116,36 @@ class Scene
     {
         $str = "";
 
-        foreach ($this->options as $optIndex => $opt) {
-            $optWithIndex = ($optIndex + 1) . ") " . $opt->getText();
+        if ($this->type == "end_view")
+        {
+            $backLine = $this->createLine($this->imgWidth, " ", "|*", "*|");
+            $backLine = $this->createMiddleTextLine($backLine, "Go back to the beginning");
+            $backLine = $this->wrapDOMTagInLine($backLine, "span", " class='scene-option' data-id='start'", 2);
 
-            $lines = explode("\0", wordwrap($optWithIndex, $this->imgWidth, "\0"));
+            $str .= $this->createLine($this->imgWidth, " ", "|*", "*|")
+                  . $this->createMiddleTextLine($this->createLine($this->imgWidth, " ", "|*", "*|"), "------------------------")
+                  . $backLine
+                  . $this->createMiddleTextLine($this->createLine($this->imgWidth, " ", "|*", "*|"), "------------------------")
+                  . $this->createLine($this->imgWidth, " ", "|*", "*|");
+        }
+        else
+        {
+            foreach ($this->options as $optIndex => $opt) {
+                $optWithIndex = ($optIndex + 1) . ") " . $opt->getText();
 
-            foreach ($lines as $line)
-            {
-                $optLine = "|| " 
-                        . $line 
-                        . str_repeat(" ", ($this->imgWidth - strlen(utf8_decode($line))) - 1)
-                        . "||\n";
-            
-                $optLine = $this->wrapDOMTagInLine($optLine, "span", " class='scene-option' data-id='" . $optIndex . "'", 2);
+                $lines = explode("\0", wordwrap($optWithIndex, $this->imgWidth, "\0"));
 
-                $str .= $optLine;
+                foreach ($lines as $line)
+                {
+                    $optLine = "|| " 
+                            . $line 
+                            . str_repeat(" ", ($this->imgWidth - strlen(utf8_decode($line))) - 1)
+                            . "||\n";
+                
+                    $optLine = $this->wrapDOMTagInLine($optLine, "span", " class='scene-option' data-id='" . $optIndex . "'", 2);
+
+                    $str .= $optLine;
+                }
             }
         }
 

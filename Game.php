@@ -21,9 +21,12 @@ final class Game
         $this->currScene = $this->loadScene($this->currSceneId);
     }
 
-    public function setChosenScene($index)
+    public function setChosenScene($id)
     {
-        $this->currSceneId = $this->currScene->getOptions()[$index]->getDestiny();
+        $this->currSceneId = $id === "start" ? 
+            $this->startingSceneId : 
+            $this->currSceneId = $this->currScene->getOptions()[$id]->getDestiny();
+        
         $this->currScene = $this->loadScene($this->currSceneId);
     }
 

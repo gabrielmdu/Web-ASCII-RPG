@@ -31,7 +31,7 @@
         $("#main-panel").on("click", ".scene-option", function () {
             let optionId = $(this).data("id");
 
-            $.get("logic.php?", { opt: optionId }, renderScene, "json");
+            $.get("logic.php?", { scene_opt: optionId }, renderScene, "json");
         });
     });
 })();

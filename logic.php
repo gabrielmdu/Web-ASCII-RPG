@@ -13,9 +13,9 @@ if (!isset($_SESSION["game"]))
 else
     $game = unserialize($_SESSION["game"]);
 
-if (isset($_GET["opt"]))
+if (isset($_GET["scene_opt"]))
 {
-    $game->setChosenScene($_GET["opt"]);
+    $game->setChosenScene($_GET["scene_opt"]);
     $_SESSION["game"] = serialize($game);
 }
 

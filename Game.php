@@ -45,21 +45,13 @@ final class Game
         return new Scene($sceneArray, $this->imgDir, $this->imgHSpaces, $this->gameStruct["adventure"]["default_colors"]);
     }
 
-    private function drawCurrScene() : string
-    {
-        return $this->currScene->getStr();
-    }
-
-    private function getCurrSceneColors() : array
-    {
-        return $this->currScene->getColors();
-    }
-
     public function getCurrSceneJSON() : string
     {
         return json_encode([
-            "html" => $this->drawCurrScene(),
-            "colors" => $this->getCurrSceneColors()
+            "html" => $this->currScene->getStr(),
+            "colors" => $this->currScene->getColors(),
+            "in_anim" => $this->currScene->getAnimationIn(),
+            "out_anim" => $this->currScene->getAnimationOut(),
         ]);
     }
 }

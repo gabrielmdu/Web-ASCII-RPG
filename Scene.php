@@ -13,7 +13,9 @@ class Scene
     private $str;
     private $options;
     private $defaultColors;
-    private $sceneColors; 
+    private $sceneColors;
+    private $animationIn; 
+    private $animationOut;
 
     public function __construct(array $sceneArray, string $imgDir, int $imgHSpaces, array $defaultColors)
     {
@@ -27,6 +29,8 @@ class Scene
         $this->options = [];
         $this->defaultColors = $defaultColors;
         $this->sceneColors = $sceneArray["colors"] ?? null;
+        $this->animationIn = $sceneArray["in_anim"] ?? null;
+        $this->animationOut = $sceneArray["out_anim"] ?? null;
 
         if (array_key_exists("options", $sceneArray))
             foreach ($sceneArray["options"] as $opt)
@@ -186,7 +190,7 @@ class Scene
 
     public function getId()
     {
-            return $this->id;
+        return $this->id;
     }
 
     public function getOptions() : array
@@ -197,6 +201,16 @@ class Scene
     public function getType() : string
     {
         return $this->type;
-    } 
+    }
+
+    public function getAnimationIn()
+    {
+        return $this->animationIn;
+    }
+
+    public function getAnimationOut()
+    {
+        return $this->animationOut;
+    }
 }
 ?>

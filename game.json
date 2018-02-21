@@ -91,8 +91,7 @@
             {
                 "id": "cemetery",
                 "type": "end_view",
-                "in_anim": "fade_in",
-                "out_anim": "fade_out",
+                "in_anim": "fade-in",
                 "image": "2.txt",
                 "bmg": null,
                 "bmg_loop": false,
@@ -102,8 +101,7 @@
             {
                 "id": "house",
                 "type": "view",
-                "in_anim": "fade_in",
-                "out_anim": "fade_out",
+                "out_anim": "fade-out",
                 "image": "3.txt",
                 "bmg": null,
                 "bmg_loop": false,

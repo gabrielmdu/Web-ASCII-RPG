@@ -1,4 +1,23 @@
 (function () {
+    // jQuery plugin to add animation to the element
+    $.fn.addAnimation = function (time, name) {
+        this.css({
+            "animation-duration": time,
+            "animation-name": name
+        });
+        return this;
+    };
+
+    // jQuery plugin to remove animation to the element
+    $.fn.delAnimation = function () {
+        this.css({
+            "animation-duration": "",
+            "animation-name": ""
+        });
+        return this;
+    };
+
+    // shows the scene and adds its colors and animations
     function renderScene(data) {
         let animationInEnded = false;
 
@@ -9,11 +28,12 @@
 
         if (data.in_anim !== null)
             $("#main-panel pre")
-                .addClass("animated " + data.in_anim)
-                .one("webkitAnimationEnd oanimationend msAnimationEnd animationend", function (e) {
+                .addAnimation("2s", data.in_anim)
+                .on("webkitAnimationEnd oanimationend msAnimationEnd animationend", function (e) {
 
                     animationInEnded = true;
-                    $(this).removeClass("animated " + data.in_anim);
+                    $(this).delAnimation()
+                        .off("webkitAnimationEnd oanimationend msAnimationEnd animationend");
                 });
         else
             animationInEnded = true;
@@ -44,9 +64,10 @@
                 let optionId = $(this).data("id");
 
                 if (data.out_anim)
-                    $(this).parent().addClass("animated " + data.out_anim)
-                        .one("webkitAnimationEnd oanimationend msAnimationEnd animationend", function (e) {
-                            $(this).removeClass("animated " + data.out_anim)
+                    $(this).parent().addAnimation("2s", data.out_anim)
+                        .on("webkitAnimationEnd oanimationend msAnimationEnd animationend", function (e) {
+                            $(this).delAnimation()
+                                .off("webkitAnimationEnd oanimationend msAnimationEnd animationend")
                                 .empty();
 
                             $.get("logic.php?", { scene_opt: optionId }, renderScene, "json");

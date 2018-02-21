@@ -55,19 +55,6 @@ html {
     cursor: pointer;
 }
 
-.animated {
-    position: relative;
-    animation-duration: 2s;
-}
-
-.fade-in {
-    animation-name: fade-in;
-}
-
-.fade-out {
-    animation-name: fade-out;
-}
-
 @keyframes fade-in {
     from {
         opacity: 0;

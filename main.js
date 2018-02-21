@@ -2,13 +2,13 @@
     function renderScene(data) {
         let animationInEnded = false;
 
-        $("#main-panel > pre").empty()
+        $("#main-panel pre").empty()
             .css("color", data.colors.color)
             .css("background", data.colors.background)
             .html(data.html);
 
         if (data.in_anim !== null)
-            $("#main-panel > pre")
+            $("#main-panel pre")
                 .addClass("animated " + data.in_anim)
                 .one("webkitAnimationEnd oanimationend msAnimationEnd animationend", function (e) {
 

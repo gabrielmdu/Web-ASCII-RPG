@@ -19,7 +19,9 @@ session_start();
 <body>
   
     <div id="main-panel">
-        <pre></pre>
+        <div class="pre-wrapper">
+            <pre></pre>
+        </div>
     </div>
 
 </body>

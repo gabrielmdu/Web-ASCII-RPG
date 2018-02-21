@@ -15,6 +15,14 @@
     font-style: normal;
 }
 
+html,
+body {
+    border: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+
 html {
     font-family: 'aerx_tabletsregular', monospace;
     font-size: 30px;
@@ -24,10 +32,8 @@ html {
 
 #main-panel {
     text-align: center;
-}
-
-.scene-option {
-    cursor: pointer;
+    height: 100%;
+    width: 100%;
 }
 
 #main-panel pre {
@@ -35,6 +41,18 @@ html {
     text-align: left;
     margin: auto;
     display: inline-block;
+    line-height: 23px;
+}
+
+.pre-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.scene-option {
+    cursor: pointer;
 }
 
 .animated {

@@ -1,6 +1,8 @@
 (function () {
     // jQuery plugin to add animation to the element
     $.fn.addAnimation = function (time, name) {
+        $("#main-panel").css("overflow", "hidden");
+        
         this.css({
             "animation-duration": time,
             "animation-name": name
@@ -10,6 +12,8 @@
 
     // jQuery plugin to remove animation to the element
     $.fn.delAnimation = function () {
+        $("#main-panel").css("overflow", "");
+
         this.css({
             "animation-duration": "",
             "animation-name": ""

@@ -64,8 +64,8 @@
             {
                 "id": "desert",
                 "type": "view",
-                "in_anim": "fade-in, zoom-in",
-                "out_anim": "fade-out",
+                "in_anim": "slide-right-in",
+                "out_anim": "slide-right-out",
                 "image": "1.txt",
                 "bmg": null,
                 "bmg_loop": false,

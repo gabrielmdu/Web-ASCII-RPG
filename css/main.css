@@ -31,6 +31,7 @@ html {
 }
 
 #main-panel {
+    position: relative;
     text-align: center;
     height: 100%;
     width: 100%;
@@ -88,6 +89,96 @@ html {
     }
     to {
         transform: scale(0, 0);
+    }
+}
+
+@keyframes rotate-left {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(-360deg);
+    }
+}
+
+@keyframes rotate-right {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes slide-up-in {
+    from {
+        transform: translateY(-1500px);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-down-in {
+    from {
+        transform: translateY(1500px);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-left-in {
+    from {
+        transform: translateX(-1500px);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-right-in {
+    from {
+        transform: translateX(1500px);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-up-out {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-1500px);
+    }
+}
+
+@keyframes slide-down-out {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(1500px);
+    }
+}
+
+@keyframes slide-left-out {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateX(-1500px);
+    }
+}
+
+@keyframes slide-right-out {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateX(1500px);
     }
 }
 

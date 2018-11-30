@@ -1,0 +1,21 @@
+{
+  "name": "web-ascii-rpg",
+  "version": "1.0.0",
+  "description": "Web ASCII RPG",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabrielmdu/Web-ASCII-RPG.git"
+  },
+  "author": "Gabriel Schulte",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gabrielmdu/Web-ASCII-RPG/issues"
+  },
+  "homepage": "https://github.com/gabrielmdu/Web-ASCII-RPG#readme",
+  "devDependencies": {
+    "@types/jquery": "^3.3.22"
+  },
+  "dependencies": {
+    "jquery": "^3.3.1"
+  }
+}

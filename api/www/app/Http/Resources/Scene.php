@@ -54,7 +54,7 @@ class Scene extends JsonResource
     {
         $allLines = [];
         foreach ($this->image as $img) {
-            $lines = explode("\r\n", $img);
+            $lines = explode("\n", $img);
             $allLines[] = $this->mapLinesSizes($lines);
         }
 
@@ -64,7 +64,7 @@ class Scene extends JsonResource
     private function getImageWidth(): int
     {
         $img = $this->image[0];
-        $lines = explode("\r\n", $img);
+        $lines = explode("\n", $img);
         usort($lines, fn ($a, $b) => mb_strlen($a) <=> mb_strlen($b));
         return mb_strlen(array_pop($lines)) + ($this->border_width * 2);
     }

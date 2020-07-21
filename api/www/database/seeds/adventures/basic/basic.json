@@ -1,0 +1,152 @@
+{
+    "adventure": {
+        "name": "My New Adventure",
+        "border_width": 1,
+        "colors": {
+            "color": "white",
+            "background": "black",
+            "title_color": "unset",
+            "title_background": "unset",
+            "image_color": "unset",
+            "image_background": "unset",
+            "text_color": "white",
+            "text_background": "unset",
+            "option_color": "unset",
+            "option_background": "unset",
+            "option_hover_color": "orange",
+            "option_hover_background": "unset"
+        },
+        "animations": {
+            "in": "fadeIn",
+            "out": "fadeOut"
+        },
+        "chars": {
+            "header": {
+                "top_char": "-",
+                "top_left": "**",
+                "top_right": "**",
+                "mid_left": "**",
+                "mid_right": "**",
+                "title_left": ">> ",
+                "title_right": " <<",
+                "bottom_char": "-",
+                "bottom_left": "|*",
+                "bottom_right": "*|"
+            },
+            "image": {
+                "left": "||",
+                "right": "||"
+            },
+            "text": {
+                "top_char": "-",
+                "top_left": "|*",
+                "top_right": "*|",
+                "left": "||",
+                "right": "||",
+                "bottom_char": "~",
+                "bottom_left": "~~",
+                "bottom_right": "~~"
+            },
+            "option": {
+                "left": "||",
+                "right": "||",
+                "bottom_char": "-",
+                "bottom_left": "**",
+                "bottom_right": "**"
+            }
+        }
+    },
+    "player": {
+        "default_name": "Adventurer",
+        "hp": 100,
+        "strength": 5,
+        "dexterity": 5,
+        "gold": 50,
+        "items": [
+            "hp_potion_small",
+            "hp_potion_medium"
+        ]
+    },
+    "items": [{
+            "id": "hp_potion_small",
+            "name": "Small HP Potion",
+            "desc": "Heals 15 HP.",
+            "type": "healing",
+            "points": 15
+        },
+        {
+            "id": "hp_potion_medium",
+            "name": "Medium HP Potion",
+            "desc": "Heals 40 HP.",
+            "type": "healing",
+            "points": 40
+        },
+        {
+            "id": "poison_small",
+            "name": "Small Poison",
+            "desc": "Poisons 5 HP.",
+            "type": "poisoning",
+            "points": 5
+        }
+    ],
+    "starting_scene": "desert",
+    "scenes": [{
+            "id": "desert",
+            "type": "view",
+            "in_anim": "backInDown",
+            "image": [
+                "img/desert_1.txt",
+                "img/desert_2.txt"
+            ],
+            "image_interval": 2000,
+            "bmg": null,
+            "bmg_loop": false,
+            "title": "The Desert",
+            "text": "You wake up in the middle of an unknown land. It's hot and dry, and you feel tired. Still dizzy, suddenly your eyes point to a creature. It's a snake, and it doesn't seem friendly as its tongue and tail keep moving in an hypnotic way. Your next move can seal your destiny.",
+            "options": [{
+                    "text": "Go forward, slowly.",
+                    "destiny": "cemetery",
+                    "out_anim": "flipOutY"
+                },
+                {
+                    "text": "Go to your right.",
+                    "destiny": "house",
+                    "out_anim": "rotateOutDownLeft"
+                }
+            ],
+            "colors": {
+                "title_color": "#ffca68",
+                "text_color": "#ffca68",
+                "image_color": "rgb(23, 30, 100)",
+                "image_background": "rgb(150, 220, 10)"
+            }
+        },
+        {
+            "id": "cemetery",
+            "type": "end_view",
+            "in_anim": "flipInY",
+            "image": "img/cemetery.txt",
+            "bmg": null,
+            "bmg_loop": false,
+            "title": "Cemetery",
+            "text": "You were brave to face the snake, but not smart enough to know it would attack fiercely. You are dead, resting forever in your grave.",
+            "options": [],
+            "colors": {}
+        },
+        {
+            "id": "house",
+            "type": "view",
+            "in_anim": "rotateInDownLeft",
+            "image": "img/house.txt",
+            "bmg": null,
+            "bmg_loop": false,
+            "title": "House",
+            "text": "A beautiful, eerie house stands there. There's no apparent movement inside, yet the fear prevents you from going further.",
+            "options": [{
+                "text": "Go back. The snake is not that scary.",
+                "destiny": "desert"
+            }],
+            "colors": {}
+        }
+    ]
+}

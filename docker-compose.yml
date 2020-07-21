@@ -1,0 +1,55 @@
+version: "3.7"
+
+services:
+
+    api:
+        build:
+            context: ./api
+        networks:
+            - api_net
+        volumes:
+            - ./api/www:/var/www/warpg/api
+        environment:
+            #XDEBUG_CONFIG: remote_port=9001 remote_enable=1 #remote_host=172.24.70.123
+            XDG_CONFIG_HOME: /var/www/warpg/api
+        depends_on:
+            - db
+
+    app:
+        build:
+            context: ./app
+        volumes:
+            - ./app/warpg:/var/www/warpg/app
+        working_dir: /var/www/warpg/app
+        ports:
+            - 3500:3500
+        networks:
+            - app_net
+
+    webserver:
+        build:
+            context: ./webserver
+        ports:
+            - 8080:80
+        networks:
+            - app_net
+            - api_net
+        volumes:
+            - ./app/warpg:/var/www/warpg/app
+            - ./api/www:/var/www/warpg/api
+        depends_on:
+            - api
+
+    db:
+        image: mongo:4.2.6
+        ports:
+            - 27017:27017
+        networks:
+            - api_net
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: root
+
+networks:
+    app_net:
+    api_net:

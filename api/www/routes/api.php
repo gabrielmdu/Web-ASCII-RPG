@@ -1,7 +1,5 @@
 <?php
 
-use App\Car;
-use App\Http\Resources\Car as CarResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,12 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-Route::middleware('auth:api')->get('/cars/{name}', function ($name) {
-    return new CarResource(Car::where(['name' => $name])->first());
-});
-
-Route::get('/cars', 'CarController@index');
 
 //Route::group(['middleware' => ['sessions']], function () {
 Route::get('/game', 'GameController@getCurrentGame')->middleware(['auth:api', 'user.only']);

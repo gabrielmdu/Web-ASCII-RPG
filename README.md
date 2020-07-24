@@ -14,3 +14,13 @@
 * Webserver: Nginx
 * Testing: PHP Unit & Jest
 * Docker containers
+
+### Setup & Run
+
+Clone the repository and run the following to install all dependencies and write hosts rules:
+
+    sudo ./setup.sh
+
+And then, to bring everything up:
+
+    docker-compose up -d

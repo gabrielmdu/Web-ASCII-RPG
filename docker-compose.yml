@@ -12,12 +12,12 @@ services:
         environment:
             #XDEBUG_CONFIG: remote_port=9001 remote_enable=1 #remote_host=172.24.70.123
             XDG_CONFIG_HOME: /var/www/warpg/api
+        working_dir: /var/www/warpg/api
         depends_on:
             - db
 
     app:
-        build:
-            context: ./app
+        image: node:12.16.1
         volumes:
             - ./app/warpg:/var/www/warpg/app
         working_dir: /var/www/warpg/app
@@ -25,6 +25,9 @@ services:
             - 3500:3500
         networks:
             - app_net
+        tty: true
+        stdin_open: true
+        command: npm start
 
     webserver:
         build:

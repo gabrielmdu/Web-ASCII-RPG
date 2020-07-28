@@ -1,6 +1,7 @@
 {
     "adventure": {
-        "name": "My New Adventure",
+        "name": "Basic Adventure",
+        "description": "A basic adventure where the main WARPG's features are shown",
         "border_width": 1,
         "colors": {
             "color": "white",
@@ -98,7 +99,7 @@
                 "img/desert_1.txt",
                 "img/desert_2.txt"
             ],
-            "image_interval": 2000,
+            "image_interval": 1000,
             "bmg": null,
             "bmg_loop": false,
             "title": "The Desert",
@@ -118,7 +119,9 @@
                 "title_color": "#ffca68",
                 "text_color": "#ffca68",
                 "image_color": "rgb(23, 30, 100)",
-                "image_background": "rgb(150, 220, 10)"
+                "image_background": "rgb(150, 220, 10)",
+                "option_color": "#e4ff00",
+                "option_hover_color": "#6eff00"
             }
         },
         {
@@ -130,23 +133,34 @@
             "bmg_loop": false,
             "title": "Cemetery",
             "text": "You were brave to face the snake, but not smart enough to know it would attack fiercely. You are dead, resting forever in your grave.",
-            "options": [],
-            "colors": {}
+            "colors": {
+                "image_color": "#9a0000",
+                "image_background": "#060502",
+                "title_color": "#883f00",
+                "text_background": "#380101"
+            }
         },
         {
             "id": "house",
             "type": "view",
             "in_anim": "rotateInDownLeft",
-            "image": "img/house.txt",
+            "image": [
+                "img/house_1.txt",
+                "img/house_2.txt"
+            ],
+            "image_interval": 1500,
             "bmg": null,
             "bmg_loop": false,
             "title": "House",
-            "text": "A beautiful, eerie house stands there. There's no apparent movement inside, yet the fear prevents you from going further.",
+            "text": "A beautiful, eerie house stands there. There's no apparent movement inside, yet the fear prevents you from going farther.",
             "options": [{
                 "text": "Go back. The snake is not that scary.",
                 "destiny": "desert"
             }],
-            "colors": {}
+            "colors": {
+                "image_color": "#afafaf",
+                "image_background": "#202229"
+            }
         }
     ]
 }

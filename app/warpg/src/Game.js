@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { fetchGet, fetchPost } from './utils.js';
-import Scene from './screen/Scene.js';
 import { values } from './consts.js';
+import Modal from './screen/Modal.js';
+import Scene from './screen/Scene.js';
 import 'animate.css/animate.min.css';
 import './scss/index.scss';
 
@@ -13,6 +14,8 @@ const Game = ({ gameInfo }) => {
   const [canSetDestiny, setCanSetDestiny] = useState(false);
   const [isExited, setIsExited] = useState(false);
   const [outAnim, setOutAnim] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [modalText, setModalText] = useState('');
 
   const setDestiny = async (option) => {
     if (!canSetDestiny) {
@@ -56,6 +59,11 @@ const Game = ({ gameInfo }) => {
 
   return (
     <>
+      {showModal
+        && <Modal handleModalHide={() => setShowModal(false)}>
+          {modalText}
+        </Modal>}
+
       <div className="main-panel">
         <div className="pre-wrapper">
           {sceneInfo

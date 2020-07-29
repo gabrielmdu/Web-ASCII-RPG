@@ -39,6 +39,23 @@ button {
     min-height: 100%;
 }
 
+.modal-background {
+    display: flex;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.8);
+
+    .modal {
+        max-width: 238px;
+        background: black;
+        border: 4px solid white;
+        padding: 8px;
+    }
+}
+
 .main-panel {
     .pre-wrapper {
         margin: 0 auto;

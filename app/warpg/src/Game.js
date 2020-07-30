@@ -22,13 +22,18 @@ const Game = ({ gameInfo }) => {
       return;
     }
 
-    setCanSetDestiny(false);
-    setShowScene(false);
-    setOutAnim(option.out_anim || sceneInfo.out_anim);
+    if (option.destiny) {
+      setCanSetDestiny(false);
+      setShowScene(false);
+      setOutAnim(option.out_anim || sceneInfo.out_anim);
 
-    const request = await fetchPost(values.API_BASE_URL + 'scene', { 'scene_id': option.destiny })
-    const info = await request.json();
-    setNextSceneInfo(info);
+      const request = await fetchPost(values.API_BASE_URL + 'scene', { 'scene_id': option.destiny })
+      const info = await request.json();
+      setNextSceneInfo(info);
+    } else if (option.note) {
+      setModalText(option.note);
+      setShowModal(true);
+    }
   };
 
   useEffect(() => {

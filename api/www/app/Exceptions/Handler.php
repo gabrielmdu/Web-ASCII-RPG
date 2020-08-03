@@ -5,7 +5,6 @@ namespace App\Exceptions;
 use App\Http\Utilities\JsonUtility;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
@@ -67,6 +66,6 @@ class Handler extends ExceptionHandler
             return JsonUtility::respond(false, $exception->getMessage(), $exception->getHttpCode());
         }
 
-        return JsonUtility::respond(false, 'Unknown exception: ' . $exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        return JsonUtility::respond(false, get_class($exception) . ': ' . $exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 }

@@ -69,27 +69,11 @@
         ]
     },
     "items": [{
-            "id": "hp_potion_small",
-            "name": "Small HP Potion",
-            "desc": "Heals 15 HP.",
-            "type": "healing",
-            "points": 15
-        },
-        {
-            "id": "hp_potion_medium",
-            "name": "Medium HP Potion",
-            "desc": "Heals 40 HP.",
-            "type": "healing",
-            "points": 40
-        },
-        {
-            "id": "poison_small",
-            "name": "Small Poison",
-            "desc": "Poisons 5 HP.",
-            "type": "poisoning",
-            "points": 5
-        }
-    ],
+        "id": "house_key",
+        "name": "Key",
+        "description": "A common key.",
+        "unique": true
+    }],
     "starting_scene": "desert",
     "scenes": [{
             "id": "desert",
@@ -164,12 +148,29 @@
         {
             "id": "house_inside",
             "type": "view",
+            "in_anim": "zoomIn",
             "image": "img/house_inside.txt",
             "title": "House - Living Room",
-            "text": "You're in a nice and cozy living room. The fireplace is lit, there's a sofa and a glass of wine ready to be served.",
+            "text": "You're in a nice and cozy living room. The fireplace is lit, there's a sofa and a cabinet with a glass of wine on top of it, ready to be served. In your right, a wooden door.",
             "options": [{
                     "text": "Sit on the sofa.",
                     "note": "The chair is very cozy, but it's time to move on with the adventure."
+                },
+                {
+                    "text": "Open the cabinet.",
+                    "note": {
+                        "without": "There's a key inside. It's now in your pocket.",
+                        "with": "It's empty."
+                    },
+                    "item": "house_key"
+                },
+                {
+                    "text": "Open the door on the right.",
+                    "need_item": {
+                        "id": "house_key",
+                        "note": "The door is locked."
+                    },
+                    "destiny": "the_room"
                 },
                 {
                     "text": "Leave the house.",
@@ -178,7 +179,21 @@
             ],
             "colors": {
                 "image_color": "yellow",
-                "image_background": "black"
+                "image_background": "black",
+                "title_background": "yellow",
+                "title_color": "black"
+            }
+        },
+        {
+            "id": "the_room",
+            "type": "end_view",
+            "in_anim": "wobble",
+            "image": "img/the_room.txt",
+            "title": "House - The Room",
+            "text": "A crazy long-haired guy is screaming something about someone named Lisa.",
+            "colors": {
+                "image_color": "white",
+                "image_background": "rgb(0, 188, 245)"
             }
         }
     ]

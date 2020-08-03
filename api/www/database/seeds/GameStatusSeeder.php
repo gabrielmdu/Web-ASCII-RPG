@@ -20,7 +20,8 @@ class GameStatusSeeder extends Seeder
         GameStatus::create([
             'user_id' => $user->id,
             'game_id' => $game->id,
-            'scene' => $game->starting_scene
+            'scene' => $game->starting_scene,
+            'items' => []
         ]);
     }
 }

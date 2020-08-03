@@ -16,22 +16,52 @@ const Game = ({ gameInfo }) => {
   const [outAnim, setOutAnim] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [modalText, setModalText] = useState('');
+  const [items, setItems] = useState([]);
 
-  const setDestiny = async (option) => {
+  const setDestiny = async (index, option) => {
     if (!canSetDestiny) {
       return;
     }
 
     if (option.destiny) {
       setCanSetDestiny(false);
-      setShowScene(false);
-      setOutAnim(option.out_anim || sceneInfo.out_anim);
 
-      const request = await fetchPost(values.API_BASE_URL + 'scene', { 'scene_id': option.destiny })
+      const request = await fetchPost(values.API_BASE_URL + 'scene', { 'option': index });
       const info = await request.json();
-      setNextSceneInfo(info);
+
+      console.log(info);
+
+      if (request.status === 200 && info.success === false) {
+        setModalText(info.message);
+        setShowModal(true);
+        setCanSetDestiny(true);
+      } else {
+        setShowScene(false);
+        setOutAnim(option.out_anim || sceneInfo.out_anim);
+
+        setNextSceneInfo(info);
+      }
     } else if (option.note) {
-      setModalText(option.note);
+      let noteText;
+
+      if (option.item) {
+        if (items.some(item => item.id === option.item)) {
+          noteText = option.note.with;
+        } else {
+          setCanSetDestiny(false);
+          const request = await fetchPost(values.API_BASE_URL + 'game/item', { 'option': 1, 'item_id': option.item });
+          const item = await request.json();
+          const newItems = items.slice();
+          newItems.push(item);
+          setItems(newItems);
+          noteText = option.note.without;
+          setCanSetDestiny(true);
+        }
+      } else {
+        noteText = option.note;
+      }
+
+      setModalText(noteText);
       setShowModal(true);
     }
   };

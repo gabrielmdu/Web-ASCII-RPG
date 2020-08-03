@@ -106,13 +106,13 @@ const SceneText = ({ imgWidth, borderWidth, textLines, color, backgroundColor, c
   </>
 };
 
-const Option = ({ option, length, borderWidth, color, backgroundColor, hoverColor, hoverBackgroundColor, leftChar, rightChar, setDestiny }) => {
+const Option = ({ option, index, length, borderWidth, color, backgroundColor, hoverColor, hoverBackgroundColor, leftChar, rightChar, setDestiny }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return <span
     onMouseEnter={() => setIsHovered(true)}
     onMouseLeave={() => setIsHovered(false)}
-    onClick={() => setDestiny(option)}
+    onClick={() => setDestiny(index, option)}
   >
     {option.lines.map((line, i) =>
       <React.Fragment key={i}>
@@ -134,9 +134,10 @@ const Option = ({ option, length, borderWidth, color, backgroundColor, hoverColo
 
 const Options = ({ options, imgWidth, borderWidth, colors, chars, setDestiny }) => {
   return <>
-    {options.map(opt =>
+    {options.map((opt, i) =>
       <Option
-        key={opt.destiny}
+        key={i}
+        index={i}
         length={imgWidth}
         borderWidth={borderWidth}
         option={opt}

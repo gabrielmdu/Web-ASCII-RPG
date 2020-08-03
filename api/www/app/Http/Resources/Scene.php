@@ -91,6 +91,7 @@ class Scene extends JsonResource
                 'lines' => $this->mapLinesSizes($lines),
                 'destiny' => $opt['destiny'] ?? null,
                 'note' => $opt['note'] ?? null,
+                'item' => $opt['item'] ?? null,
                 'out_anim' => $opt['out_anim'] ?? null
             ];
         }

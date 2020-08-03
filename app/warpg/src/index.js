@@ -25,7 +25,6 @@ const App = () => {
     const request = await fetchGet(values.API_BASE_URL + 'game/reset')
     const info = await request.json();
     setGameInfo(info);
-    console.log(info.adventure);
   };
 
   const fetchGame = async () => {

@@ -3,6 +3,7 @@ import { CSSTransition } from 'react-transition-group';
 import { fetchGet, fetchPost } from './utils.js';
 import { values } from './consts.js';
 import Modal from './screen/Modal.js';
+import LoadingModal from './screen/LoadingModal.js';
 import Scene from './screen/Scene.js';
 import 'animate.css/animate.min.css';
 import './scss/index.scss';
@@ -16,12 +17,26 @@ const Game = ({ gameInfo }) => {
   const [outAnim, setOutAnim] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [modalText, setModalText] = useState('');
+  const [isModalLoading, setisModalLoading] = useState(false);
   const [items, setItems] = useState([]);
+
+  const setModal = (type, text) => {
+    if (type === 'loading') {
+      setisModalLoading(true);
+    } else if (type === 'normal') {
+      setisModalLoading(false);
+      setModalText(text);
+    }
+
+    setShowModal(true);
+  };
 
   const setDestiny = async (index, option) => {
     if (!canSetDestiny) {
       return;
     }
+
+    setModal('loading');
 
     if (option.destiny) {
       setCanSetDestiny(false);
@@ -32,10 +47,10 @@ const Game = ({ gameInfo }) => {
       console.log(info);
 
       if (request.status === 200 && info.success === false) {
-        setModalText(info.message);
-        setShowModal(true);
+        setModal('normal', info.message);
         setCanSetDestiny(true);
       } else {
+        setShowModal(false);
         setShowScene(false);
         setOutAnim(option.out_anim || sceneInfo.out_anim);
 
@@ -61,8 +76,7 @@ const Game = ({ gameInfo }) => {
         noteText = option.note;
       }
 
-      setModalText(noteText);
-      setShowModal(true);
+      setModal('normal', noteText);
     }
   };
 
@@ -92,12 +106,23 @@ const Game = ({ gameInfo }) => {
     setShowScene(true);
   }, [nextSceneInfo, isExited]);
 
+  const handleModal = () => {
+    if (!showModal) {
+      return;
+    }
+
+    return (
+      isModalLoading
+        ? <LoadingModal></LoadingModal>
+        : <Modal handleModalHide={() => setShowModal(false)}>
+          {modalText}
+        </Modal>
+    )
+  }
+
   return (
     <>
-      {showModal
-        && <Modal handleModalHide={() => setShowModal(false)}>
-          {modalText}
-        </Modal>}
+      {handleModal()}
 
       <div className="main-panel">
         <div className="pre-wrapper">

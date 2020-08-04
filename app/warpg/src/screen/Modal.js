@@ -4,7 +4,7 @@ const Modal = ({ children, handleModalHide }) => {
     return (
         <div
             className="modal-background"
-            onClick={() => handleModalHide()}
+            onClick={handleModalHide}
         >
             <div className="modal">
                 {children}

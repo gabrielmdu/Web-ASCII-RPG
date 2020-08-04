@@ -51,8 +51,8 @@ const Game = ({ gameInfo }) => {
         setCanSetDestiny(true);
       } else {
         setShowModal(false);
-        setShowScene(false);
         setOutAnim(option.out_anim || sceneInfo.out_anim);
+        setShowScene(false);
 
         setNextSceneInfo(info);
       }
@@ -134,7 +134,7 @@ const Game = ({ gameInfo }) => {
                 enter: values.ANIMATION_DEFAULT_CLASS,
                 enterActive: values.ANIMATION_PREFIX_CLASS + sceneInfo.in_anim,
                 exit: values.ANIMATION_DEFAULT_CLASS,
-                exitActive: values.ANIMATION_PREFIX_CLASS + outAnim
+                exitActive: values.ANIMATION_PREFIX_CLASS + (outAnim ? outAnim : sceneInfo.out_anim)
               }}
               unmountOnExit
               onEntered={() => setCanSetDestiny(true)}

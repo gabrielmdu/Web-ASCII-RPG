@@ -24,25 +24,20 @@ class GameStatus extends Model
         return $this->save();
     }
 
-    public function storeItem(int $option, string $itemId)
+    public function storeItem(int $option)
     {
-        $optItem = $this
+        $itemId = $this
             ->game
             ->getScene($this->scene)
-            ->options[$option]['item'];
+            ->options[$option]['item']['id'];
 
-        // checks if the item belongs to the scene
-        if ($optItem !== $itemId) {
-            throw new WarpgException("Item '{$itemId}' doesn't belong to the scene", Response::HTTP_BAD_REQUEST);
-        }
+        $item = $this->game->getItem($itemId);
 
-        $item = array_filter($this->game->items, fn ($i) => $i['id'] === $itemId)[0];
-
-        if ($item['unique'] && in_array($itemId, $this->items)) {
+        if ($item['unique'] && $this->hasItem($itemId)) {
             throw new WarpgException('Item already in inventory', Response::HTTP_BAD_REQUEST);
         }
 
-        $result = DB::collection('game_statuses')
+        $result = DB::collection($this->getTable())
             ->where('_id', $this->id)
             ->update([
                 '$push' => [
@@ -55,6 +50,11 @@ class GameStatus extends Model
         }
 
         return $item;
+    }
+
+    public function hasItem(string $itemId): bool
+    {
+        return in_array($itemId, $this->items);
     }
 
     public function game()

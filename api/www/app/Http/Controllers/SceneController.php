@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\WarpgException;
 use App\GameStatus;
 use App\Http\Resources\Scene as SceneResource;
+use App\Scene;
+use App\SceneNote;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Throwable;
 
 class SceneController extends Controller
 {
@@ -18,28 +17,37 @@ class SceneController extends Controller
         return $asResource ? new SceneResource($scene) : $scene;
     }
 
-    public function setCurrentScene(Request $request)
+    public function chooseSceneOption(Request $request)
     {
         $validatedData = $request->validate([
             'option' => 'required|int'
         ]);
 
         $currScene = $this->getCurrentScene(false);
+        $option = $currScene->getOption($validatedData['option']);
 
-        try {
-            $option = $currScene->options[$validatedData['option']];
-        } catch (Throwable $t) {
-            throw new WarpgException('Invalid option for scene', Response::HTTP_BAD_REQUEST);
-        }
+        switch (Scene::getOptionType($option)) {
+            case Scene::OPTION_TYPE_NEED_ITEM:
+                if ($this->getGameStatus()->hasItem($option['need_item']['id'])) {
+                    $this->getGameStatus()->setCurrentScene($option['destiny']);
+                } else {
+                    return new SceneNote($option['need_item']['note']);
+                }
+            break;
+            
+            case Scene::OPTION_TYPE_ITEM:
+                if ($this->getGameStatus()->hasItem($option['item']['id'])) {
+                    return new SceneNote($option['item']['with']);
+                } else {
+                    $this->getGameStatus()->storeItem($validatedData['option'], $option['item']['id']);
+                    return new SceneNote($option['item']['without']);
+                }
 
-        if (isset($option['need_item'])) {
-            if (in_array($option['need_item']['id'], $this->getGameStatus()->items)) {
+            case Scene::OPTION_TYPE_NOTE:
+                return new SceneNote($option['note']);
+            
+            case Scene::OPTION_TYPE_NORMAL:
                 $this->getGameStatus()->setCurrentScene($option['destiny']);
-            } else {
-                throw new WarpgException('The door is locked.', Response::HTTP_OK);
-            }
-        } else {
-            $this->getGameStatus()->setCurrentScene($option['destiny']);
         }
         
         return $this->getCurrentScene();

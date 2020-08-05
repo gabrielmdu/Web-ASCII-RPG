@@ -20,11 +20,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/game', 'GameController@getCurrentGame')->middleware(['auth:api', 'user.only']);
 Route::get('/game/reset', 'GameController@resetCurrentGame')->middleware(['auth:api', 'user.only']);
-Route::post('/game/item', 'GameController@storeItem')->middleware(['auth:api', 'user.only']);
-
 
 Route::get('/scene', 'SceneController@getCurrentScene')->middleware(['auth:api', 'user.only']);
-Route::post('/scene', 'SceneController@setCurrentScene')->middleware(['auth:api', 'user.only']);
+Route::post('/scene', 'SceneController@chooseSceneOption')->middleware(['auth:api', 'user.only']);
 
 Route::post('login', 'AuthController@login');
 Route::post('logout', 'AuthController@logout');

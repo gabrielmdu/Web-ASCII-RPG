@@ -18,7 +18,6 @@ const Game = ({ gameInfo }) => {
   const [showModal, setShowModal] = useState(false);
   const [modalText, setModalText] = useState('');
   const [isModalLoading, setisModalLoading] = useState(false);
-  const [items, setItems] = useState([]);
 
   const setModal = (type, text) => {
     if (type === 'loading') {
@@ -37,46 +36,22 @@ const Game = ({ gameInfo }) => {
     }
 
     setModal('loading');
+    setCanSetDestiny(false);
 
-    if (option.destiny) {
-      setCanSetDestiny(false);
+    const request = await fetchPost(values.API_BASE_URL + 'scene', { 'option': index });
+    const info = await request.json();
 
-      const request = await fetchPost(values.API_BASE_URL + 'scene', { 'option': index });
-      const info = await request.json();
+    console.log(info);
 
-      console.log(info);
+    if (info.resource_type === 'note') {
+      setModal('normal', info.text);
+      setCanSetDestiny(true);
+    } else if (info.resource_type === 'scene') {
+      setShowModal(false);
+      setOutAnim(option.out_anim || sceneInfo.out_anim);
+      setShowScene(false);
 
-      if (request.status === 200 && info.success === false) {
-        setModal('normal', info.message);
-        setCanSetDestiny(true);
-      } else {
-        setShowModal(false);
-        setOutAnim(option.out_anim || sceneInfo.out_anim);
-        setShowScene(false);
-
-        setNextSceneInfo(info);
-      }
-    } else if (option.note) {
-      let noteText;
-
-      if (option.item) {
-        if (items.some(item => item.id === option.item)) {
-          noteText = option.note.with;
-        } else {
-          setCanSetDestiny(false);
-          const request = await fetchPost(values.API_BASE_URL + 'game/item', { 'option': 1, 'item_id': option.item });
-          const item = await request.json();
-          const newItems = items.slice();
-          newItems.push(item);
-          setItems(newItems);
-          noteText = option.note.without;
-          setCanSetDestiny(true);
-        }
-      } else {
-        noteText = option.note;
-      }
-
-      setModal('normal', noteText);
+      setNextSceneInfo(info);
     }
   };
 

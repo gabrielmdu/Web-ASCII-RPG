@@ -21,17 +21,4 @@ class GameController extends Controller
 
         return $this->getCurrentGame();
     }
-
-    public function storeItem(Request $request)
-    {
-        $validatedData = $request->validate([
-            'option' => 'required|int',
-            'item_id' => 'required|string'
-        ]);
-
-        return auth()
-            ->user()
-            ->gameStatus
-            ->storeItem($validatedData['option'], $validatedData['item_id']);
-    }
 }

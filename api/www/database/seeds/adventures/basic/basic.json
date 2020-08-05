@@ -158,11 +158,11 @@
                 },
                 {
                     "text": "Open the cabinet.",
-                    "note": {
+                    "item": {
+                        "id": "house_key",
                         "without": "There's a key inside. It's now in your pocket.",
                         "with": "It's empty."
-                    },
-                    "item": "house_key"
+                    }
                 },
                 {
                     "text": "Open the door on the right.",

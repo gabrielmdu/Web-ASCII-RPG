@@ -24,6 +24,7 @@ class Scene extends JsonResource
         $this->image_width = $this->getImageWidth();
 
         return [
+            'resource_type' => 'scene',
             'type' => $this->type,
             'title' => $this->title,
             'image_lines' => $this->getImageLines(),
@@ -89,9 +90,6 @@ class Scene extends JsonResource
 
             $optLines[] = [
                 'lines' => $this->mapLinesSizes($lines),
-                'destiny' => $opt['destiny'] ?? null,
-                'note' => $opt['note'] ?? null,
-                'item' => $opt['item'] ?? null,
                 'out_anim' => $opt['out_anim'] ?? null
             ];
         }

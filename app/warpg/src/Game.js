@@ -88,12 +88,12 @@ const Game = ({ gameInfo }) => {
 
     return (
       isModalLoading
-        ? <LoadingModal></LoadingModal>
+        ? <LoadingModal />
         : <Modal handleModalHide={() => setShowModal(false)}>
           {modalText}
         </Modal>
-    )
-  }
+    );
+  };
 
   return (
     <>
@@ -122,6 +122,6 @@ const Game = ({ gameInfo }) => {
       </div>
     </>
   );
-}
+};
 
 export default Game;

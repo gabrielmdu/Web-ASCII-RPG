@@ -15,3 +15,4 @@ settings:
 rules:
     no-console: 1
     react/prop-types: 0
+    semi: 2

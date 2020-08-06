@@ -3,7 +3,7 @@ import { values } from '../consts.js';
 
 const SceneLine = ({ length, char, initial, final }) => {
   return <>{initial + char.repeat(length) + final + values.NEW_LINE}</>;
-}
+};
 
 const SceneCenterText = ({ length, initial, final, text, textLeft, textRight, color, backgroundColor, elementClass }) => {
   const middleText = `${textLeft}${text}${textRight}`;
@@ -20,7 +20,7 @@ const SceneCenterText = ({ length, initial, final, text, textLeft, textRight, co
       {final + values.NEW_LINE}
     </>
   );
-}
+};
 
 const SceneHeader = ({ imgWidth, title, colors, chars }) =>
   <>
@@ -47,7 +47,7 @@ const SceneHeader = ({ imgWidth, title, colors, chars }) =>
       initial={chars.bottom_left}
       final={chars.bottom_right}
     />
-  </>
+  </>;
 
 const SceneImage = ({ imageLines, imageInterval, imageWidth, borderWidth, color, backgroundColor, chars }) => {
   const [image, setImage] = useState(imageLines[0]);
@@ -65,7 +65,7 @@ const SceneImage = ({ imageLines, imageInterval, imageWidth, borderWidth, color,
           : currImgIndex + 1
       );
 
-      setImage(imageLines[currImgIndex])
+      setImage(imageLines[currImgIndex]);
     }, imageInterval);
 
     return () => clearInterval(intervalId);
@@ -85,7 +85,7 @@ const SceneImage = ({ imageLines, imageInterval, imageWidth, borderWidth, color,
             </span>
             {chars.right + values.NEW_LINE}
           </React.Fragment>
-        )
+        );
       })}
     </>
   );
@@ -103,7 +103,7 @@ const SceneText = ({ imgWidth, borderWidth, textLines, color, backgroundColor, c
         {chars.right + values.NEW_LINE}
       </React.Fragment>)}
     <SceneLine length={imgWidth} char={chars.bottom_char} initial={chars.bottom_left} final={chars.bottom_right} />
-  </>
+  </>;
 };
 
 const Option = ({ option, index, length, borderWidth, color, backgroundColor, hoverColor, hoverBackgroundColor, leftChar, rightChar, setDestiny }) => {
@@ -129,7 +129,7 @@ const Option = ({ option, index, length, borderWidth, color, backgroundColor, ho
         </span>
         {rightChar + values.NEW_LINE}
       </React.Fragment>)}
-  </span>
+  </span>;
 };
 
 const Options = ({ options, imgWidth, borderWidth, colors, chars, setDestiny }) => {
@@ -156,7 +156,7 @@ const Options = ({ options, imgWidth, borderWidth, colors, chars, setDestiny }) 
       initial={chars.bottom_left}
       final={chars.bottom_right}
     />
-  </>
+  </>;
 };
 
 const Scene = ({ info, setDestiny }) => {
@@ -210,6 +210,6 @@ const Scene = ({ info, setDestiny }) => {
         : 'THE END'}
     </pre>
   );
-}
+};
 
 export default Scene;

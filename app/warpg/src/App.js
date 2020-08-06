@@ -21,19 +21,19 @@ const App = () => {
 
   const resetGame = async () => {
     setGameInfo(null);
-    const request = await fetchGet(values.API_BASE_URL + 'game/reset')
+    const request = await fetchGet(values.API_BASE_URL + 'game/reset');
     const info = await request.json();
     setGameInfo(info);
   };
 
   const fetchGame = async () => {
-    const request = await fetchGet(values.API_BASE_URL + 'game')
+    const request = await fetchGet(values.API_BASE_URL + 'game');
     if (request.status === 200) {
       const info = await request.json();
       setGameInfo(info);
       console.log(info.adventure);
     }
-  }
+  };
 
   useEffect(() => {
     fetchGame();

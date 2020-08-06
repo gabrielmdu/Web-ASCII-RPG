@@ -1,31 +1,56 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import { fetchGet } from './utils.js';
+import Game from './Game.js';
+import { values } from './consts.js';
 
-import StupidButton from './StupidButton.js';
+const App = () => {
+  const [gameInfo, setGameInfo] = useState(null);
 
-export default class App extends React.Component {
-	render() {
-		return (
-			<div className="App">
-				<header className="App-header">
-					<img src={logo} className="App-logo" alt="logo" />
-					<p>
-						Edit <code>src/App.js</code> and save to reload.
-        			</p>
-					<a
-						className="App-link"
-						href="https://reactjs.org"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						Learn React right now!
-        			</a>
+  const login = async () => {
+    const req = await fetch(values.API_BASE_URL + 'login', {
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+      body: JSON.stringify({ 'email': 'admin@admin.com', 'password': '123' })
+    });
 
-					<StupidButton text="Press me" counter="0" />
-					<StupidButton text="Don't press me" counter="99" />
-				</header>
-			</div>
-		);
-	}
+    const result = await req.json();
+
+    localStorage.setItem('api_token', result.access_token);
+    console.log('logged in with token ' + result.access_token);
+  };
+
+  const resetGame = async () => {
+    setGameInfo(null);
+    const request = await fetchGet(values.API_BASE_URL + 'game/reset')
+    const info = await request.json();
+    setGameInfo(info);
+  };
+
+  const fetchGame = async () => {
+    const request = await fetchGet(values.API_BASE_URL + 'game')
+    if (request.status === 200) {
+      const info = await request.json();
+      setGameInfo(info);
+      console.log(info.adventure);
+    }
+  }
+
+  useEffect(() => {
+    fetchGame();
+  }, []);
+
+  return (
+    <>
+      <button onClick={login}>Login</button>
+      {gameInfo
+        ? <>
+          <Game gameInfo={gameInfo} />
+          <button onClick={() => resetGame()}>Reset</button>
+        </>
+        : <span>loading game info...</span>
+      }
+    </>
+  );
 };
+
+export default App;

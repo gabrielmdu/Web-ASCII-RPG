@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 const fetchAuth = (url, method, body) => {
     const token = localStorage.getItem('api_token');
 
@@ -18,6 +20,16 @@ const fetchAuth = (url, method, body) => {
     }
 
     return fetch(url, options);
+};
+
+export const GlobalKeyUpEvent = ({ handler }) => {
+    useEffect(() => {
+        document.addEventListener("keyup", handler, false);
+
+        return () => document.removeEventListener("keyup", handler, false);
+    }, [handler]);
+
+    return null;
 };
 
 export const fetchGet = url => fetchAuth(url, 'GET');

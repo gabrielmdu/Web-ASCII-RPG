@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { fetchGet, fetchPost } from './utils.js';
+import { fetchGet, fetchPost, GlobalKeyUpEvent } from './utils.js';
 import { values } from './consts.js';
 import Modal from './screen/Modal.js';
 import LoadingModal from './screen/LoadingModal.js';
@@ -97,6 +97,9 @@ const Game = ({ gameInfo }) => {
 
   return (
     <>
+      <GlobalKeyUpEvent 
+        handler={(evt) => { console.log(evt); }}
+      />
       {handleModal()}
 
       <div className="main-panel">

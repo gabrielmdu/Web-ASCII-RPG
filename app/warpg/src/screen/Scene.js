@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { values } from '../consts.js';
+import { commons } from '../consts.js';
 
 const SceneLine = ({ length, char, initial, final }) => {
-  return <>{initial + char.repeat(length) + final + values.NEW_LINE}</>;
+  return <>{initial + char.repeat(length) + final + commons.NEW_LINE}</>;
 };
 
 const SceneCenterText = ({ length, initial, final, text, textLeft, textRight, color, backgroundColor, elementClass }) => {
@@ -17,7 +17,7 @@ const SceneCenterText = ({ length, initial, final, text, textLeft, textRight, co
       <span className={elementClass} style={{ color: color, backgroundColor: backgroundColor }}>
         {' '.repeat(firstHalf) + middleText + ' '.repeat(secondHalf)}
       </span>
-      {final + values.NEW_LINE}
+      {final + commons.NEW_LINE}
     </>
   );
 };
@@ -83,7 +83,7 @@ const SceneImage = ({ imageLines, imageInterval, imageWidth, borderWidth, color,
             <span key={i} className='scene-image' style={{ color: color, backgroundColor: backgroundColor }}>
               {' '.repeat(borderWidth) + line.str + ' '.repeat(lineLeft) + ' '.repeat(borderWidth)}
             </span>
-            {chars.right + values.NEW_LINE}
+            {chars.right + commons.NEW_LINE}
           </React.Fragment>
         );
       })}
@@ -100,7 +100,7 @@ const SceneText = ({ imgWidth, borderWidth, textLines, color, backgroundColor, c
         <span className='scene-text' style={{ color: color, backgroundColor: backgroundColor }} >
           {line.str + ' '.repeat((imgWidth - line.size) - borderWidth)}
         </span>
-        {chars.right + values.NEW_LINE}
+        {chars.right + commons.NEW_LINE}
       </React.Fragment>)}
     <SceneLine length={imgWidth} char={chars.bottom_char} initial={chars.bottom_left} final={chars.bottom_right} />
   </>;
@@ -127,7 +127,7 @@ const Option = ({ option, index, length, borderWidth, color, backgroundColor, ho
         >
           {line.str + ' '.repeat((length - line.size) - borderWidth)}
         </span>
-        {rightChar + values.NEW_LINE}
+        {rightChar + commons.NEW_LINE}
       </React.Fragment>)}
   </span>;
 };

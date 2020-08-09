@@ -1,13 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { fetchGet } from './utils.js';
+import { commons } from './consts.js';
 import Game from './Game.js';
-import { values } from './consts.js';
 
 const App = () => {
   const [gameInfo, setGameInfo] = useState(null);
 
+  useEffect(() => {
+    const fetchGame = async () => {
+      const request = await fetchGet(commons.API_BASE_URL + 'game');
+      if (request.status === 200) {
+        const info = await request.json();
+        setGameInfo(info);
+        console.log(info);
+      }
+    };
+
+    fetchGame();
+  }, []);
+
   const login = async () => {
-    const req = await fetch(values.API_BASE_URL + 'login', {
+    const req = await fetch(commons.API_BASE_URL + 'login', {
       headers: { 'content-type': 'application/json' },
       method: 'POST',
       body: JSON.stringify({ 'email': 'admin@admin.com', 'password': '123' })
@@ -21,23 +34,10 @@ const App = () => {
 
   const resetGame = async () => {
     setGameInfo(null);
-    const request = await fetchGet(values.API_BASE_URL + 'game/reset');
+    const request = await fetchGet(commons.API_BASE_URL + 'game/reset');
     const info = await request.json();
     setGameInfo(info);
   };
-
-  const fetchGame = async () => {
-    const request = await fetchGet(values.API_BASE_URL + 'game');
-    if (request.status === 200) {
-      const info = await request.json();
-      setGameInfo(info);
-      console.log(info.adventure);
-    }
-  };
-
-  useEffect(() => {
-    fetchGame();
-  }, []);
 
   return (
     <>

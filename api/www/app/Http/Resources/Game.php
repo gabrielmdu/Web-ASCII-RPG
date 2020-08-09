@@ -15,7 +15,23 @@ class Game extends JsonResource
     public function toArray($request)
     {
         return [
-            'adventure' => $this->adventure
+            'adventure' => $this->adventure,
+            'player_items' => $this->getStatusItems()
         ];
+    }
+
+    private function getStatusItems(): array
+    {
+        $items = [];
+        foreach (auth()->user()->gameStatus->items as $itemId) {
+            $item = $this->getItem($itemId);
+            $items[] = [
+                'id' => $item['id'],
+                'name' => $item['name'],
+                'description' => $item['description'],
+            ];
+        }
+
+        return $items;
     }
 }

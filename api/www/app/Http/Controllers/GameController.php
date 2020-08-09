@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\Game as GameResource;
-use Illuminate\Http\Request;
 
 class GameController extends Controller
 {

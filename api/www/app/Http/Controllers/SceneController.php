@@ -6,6 +6,7 @@ use App\GameStatus;
 use App\Http\Resources\Scene as SceneResource;
 use App\Scene;
 use App\SceneNote;
+use App\SceneItem;
 use Illuminate\Http\Request;
 
 class SceneController extends Controller
@@ -40,7 +41,8 @@ class SceneController extends Controller
                     return new SceneNote($option['item']['with']);
                 } else {
                     $this->getGameStatus()->storeItem($validatedData['option'], $option['item']['id']);
-                    return new SceneNote($option['item']['without']);
+                    return new SceneItem($option['item']['without'],
+                        $this->getGameStatus()->game->getItem($option['item']['id']));
                 }
 
             case Scene::OPTION_TYPE_NOTE:

@@ -51,10 +51,56 @@ button {
     background: rgba(0, 0, 0, 0.8);
 
     .modal {
-        max-width: 238px;
         background: black;
         border: 4px solid white;
         padding: 8px;
+    }
+}
+
+.inventory {
+    margin: 5px 15px;
+
+    .title {
+        text-align: center;
+        margin-bottom: 12px;
+
+        .title-text {
+            display: inline-block;
+            border-top: 2px dashed white;
+            border-bottom: 2px dashed white;
+        }
+    }
+
+    table {
+        border-spacing: 0;
+
+        td,
+        th {
+            padding: 4px;
+        }
+
+        th {
+            text-align: left;
+            font-weight: normal;
+            text-decoration: underline;
+
+            &.name {
+                min-width: 100px;
+                max-width: 200px;
+            }
+        }
+
+        tbody {
+            tr:hover {
+                cursor: pointer;
+                background: white;
+                color: black;
+            }
+
+            td.name {
+                padding-right: 20px;
+            }
+        }
     }
 }
 

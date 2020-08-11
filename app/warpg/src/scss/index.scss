@@ -145,3 +145,10 @@ button {
 .scene-option {
     cursor: pointer;
 }
+
+.tippy-box[data-theme~='warpg-tooltip'] {
+    background-color: black;
+    color: rgb(57, 223, 15);
+    border: 2px solid white;
+    padding: 3px;
+}

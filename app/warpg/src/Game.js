@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { fetchGet, fetchPost, GlobalKeyUpEvent } from './utils.js';
 import { commons } from './consts.js';
+import Tippy from '@tippyjs/react';
+import { followCursor } from 'tippy.js';
 import Modal from './screen/Modal.js';
 import LoadingModal from './screen/LoadingModal.js';
 import InventoryModal from './screen/InventoryModal.js';
@@ -10,6 +12,7 @@ import 'animate.css/animate.min.css';
 import './scss/index.scss';
 
 const Game = ({ gameInfo }) => {
+  const mainPanel = useRef(null);
   // scene
   const [sceneInfo, setSceneInfo] = useState(null);
   const [nextSceneInfo, setNextSceneInfo] = useState(null);
@@ -164,7 +167,7 @@ const Game = ({ gameInfo }) => {
       <GlobalKeyUpEvent handler={handleKeyUp} />
       {handleModal()}
 
-      <div className="main-panel">
+      <div ref={mainPanel} className="main-panel">
         <div className="pre-wrapper">
           {sceneInfo
             ? <CSSTransition
@@ -185,6 +188,15 @@ const Game = ({ gameInfo }) => {
             : <div>loading scene...</div>}
         </div>
       </div>
+
+      <Tippy
+        content={currInvItem.item ? `Combine ${currInvItem.item.name} with...` : ''}
+        followCursor
+        duration={0}
+        reference={mainPanel}
+        plugins={[followCursor]}
+        theme={'warpg-tooltip'}
+        disabled={!currInvItem.using} />
     </>
   );
 };

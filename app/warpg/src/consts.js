@@ -4,7 +4,7 @@ export const commons = {
     ANIMATION_PREFIX_CLASS: 'animate__',
     NEW_LINE: '\n',
     modalTypes: {
-        MODAL: 'normal',
+        COMMON: 'common',
         LOADING: 'loading',
         INVENTORY: 'inventory'
     },

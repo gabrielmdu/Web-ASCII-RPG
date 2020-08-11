@@ -3,7 +3,7 @@ import Modal from './Modal.js';
 
 const LoadingModal = () => {
   return (
-    <Modal>
+    <Modal modalClass="modal-loading">
       loading...
     </Modal>
   );

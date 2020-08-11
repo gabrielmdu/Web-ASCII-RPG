@@ -84,13 +84,13 @@ const Game = ({ gameInfo }) => {
         if (info.data && info.data.used === true) {
           setInventory(inventory.filter(i => i.id !== currInvItem.item.id));
         }
-        createModal(commons.modalTypes.MODAL, info.text);
+        createModal(commons.modalTypes.COMMON, info.text);
         setCanSetDestiny(true);
         break;
 
       case commons.resourceTypes.ITEM:
         setInventory([...inventory, info.attributes]);
-        createModal(commons.modalTypes.MODAL, info.note);
+        createModal(commons.modalTypes.COMMON, info.note);
         setCanSetDestiny(true);
         break;
 
@@ -115,7 +115,7 @@ const Game = ({ gameInfo }) => {
     }
 
     switch (modalType) {
-      case commons.modalTypes.MODAL:
+      case commons.modalTypes.COMMON:
         return <Modal handleModalHide={() => setShowModal(false)}>
           {modalContent}
         </Modal>;

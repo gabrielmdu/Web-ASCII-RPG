@@ -3,28 +3,30 @@ import Modal from './Modal.js';
 
 const InventoryModal = ({ items, handleClickItem }) => {
   return (
-    <Modal>
-      <div className="inventory">
-        <div className="title">
-          <div className="title-text">Inventory</div>
+    <Modal modalClass="modal-inventory">
+      <div className="inventory-container">
+        <div className="inventory-title">
+          <div className="inventory-title-text">Inventory</div>
         </div>
-        {items.length > 0
-          ? <table>
-            <thead>
-              <tr>
-                <th className="name">Name</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.map(item =>
-                <tr key={item.id} onClick={() => handleClickItem(item)}>
-                  <td className="name">{item.name}</td>
-                  <td>{item.description}</td>
-                </tr>)}
-            </tbody>
-          </table>
-          : 'No items'}
+        <div className="inventory-items">
+          {items.length > 0
+            ? <table>
+              <thead>
+                <tr>
+                  <th className="name">Name</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.map(item =>
+                  <tr key={item.id} onClick={() => handleClickItem(item)}>
+                    <td className="name">{item.name}</td>
+                    <td>{item.description}</td>
+                  </tr>)}
+              </tbody>
+            </table>
+            : <span>No items</span>}
+        </div>
       </div>
     </Modal>
   );

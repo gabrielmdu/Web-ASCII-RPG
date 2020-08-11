@@ -23,8 +23,8 @@ class Game extends JsonResource
     private function getStatusItems(): array
     {
         $items = [];
-        foreach (auth()->user()->gameStatus->items as $itemId) {
-            $item = $this->getItem($itemId);
+        foreach (auth()->user()->gameStatus->items as $item) {
+            $item = $this->getItem($item['id']);
             $items[] = [
                 'id' => $item['id'],
                 'name' => $item['name'],

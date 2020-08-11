@@ -9,9 +9,13 @@ class SceneNote implements JsonSerializable
     /** @var string Note text */
     private $text;
 
-    public function __construct(string $text)
+    /** @var array Note additional data */
+    private $data;
+
+    public function __construct(string $text, array $data = [])
     {
         $this->text = $text;
+        $this->data = $data;
     }
 
     public function jsonSerialize() {
@@ -20,9 +24,15 @@ class SceneNote implements JsonSerializable
 
     public function toArray()
     {
-        return [
+        $arr = [
             'resource_type' => 'note',
             'text' => $this->text
         ];
+
+        if ($this->data) {
+            $arr['data'] = $this->data;
+        }
+
+        return $arr;
     }
 }

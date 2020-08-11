@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from './Modal.js';
 
-const InventoryModal = ({ items }) => {
+const InventoryModal = ({ items, handleClickItem }) => {
   return (
     <Modal>
       <div className="inventory">
@@ -18,7 +18,7 @@ const InventoryModal = ({ items }) => {
             </thead>
             <tbody>
               {items.map(item =>
-                <tr key={item.id}>
+                <tr key={item.id} onClick={() => handleClickItem(item)}>
                   <td className="name">{item.name}</td>
                   <td>{item.description}</td>
                 </tr>)}

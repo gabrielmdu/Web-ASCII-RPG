@@ -3,9 +3,9 @@
 namespace App;
 
 use App\Exceptions\WarpgException;
-use Illuminate\Support\Facades\DB;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class GameStatus extends Model
 {
@@ -33,28 +33,52 @@ class GameStatus extends Model
 
         $item = $this->game->getItem($itemId);
 
-        if ($item['unique'] && $this->hasItem($itemId)) {
+        if ($item['unique'] && $this->getItem($itemId)) {
             throw new WarpgException('Item already in inventory', Response::HTTP_BAD_REQUEST);
         }
 
-        $result = DB::collection($this->getTable())
-            ->where('_id', $this->id)
-            ->update([
-                '$push' => [
-                    'items' => $itemId
-                ]
-            ]);
+        $result = $this->push('items', [
+            'id' => $itemId,
+            'used' => false
+        ]);
 
         if (!$result) {
-            throw new WarpgException("Error while storing item '{$itemId}'", Response::HTTP_INTERNAL_SERVER_ERROR);
+            throw new WarpgException("Error while storing item '{$itemId}'",
+                Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $item;
     }
 
-    public function hasItem(string $itemId): bool
+    public function useItem(array $item): bool
     {
-        return in_array($itemId, $this->items);
+        if (!$item['used']) {
+            // removes the item from the items array
+            $this->pull('items', $item);
+
+            // defines item as used and add it to the array
+            $item['used'] = true;
+            $this->push('items', $item);
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * Gets the item from the current game status
+     *
+     * @param  string $id The item's id
+     * @return array|null The item or null if not found
+     */
+    public function getItem(string $id)
+    {
+        try {
+            return array_filter($this->items, fn ($item) => $item['id'] === $id)[0];
+        } catch (Throwable $t) {
+            return null;
+        }
     }
 
     public function game()

@@ -24,6 +24,11 @@ const Game = ({ gameInfo }) => {
   const [modalContent, setModalContent] = useState('');
   // inventory
   const [inventory, setInventory] = useState(gameInfo.player_items);
+  const defaultInvItem = {
+    using: false,
+    item: null
+  };
+  const [currInvItem, setCurrInvItem] = useState(defaultInvItem);
 
   useEffect(() => {
     const fetchScene = async () => {
@@ -65,13 +70,20 @@ const Game = ({ gameInfo }) => {
     createModal(commons.modalTypes.LOADING);
     setCanSetDestiny(false);
 
-    const request = await fetchPost(commons.API_BASE_URL + 'scene', { 'option': index });
+    const request = await fetchPost(
+      commons.API_BASE_URL + 'scene', {
+      'option': index,
+      'item': currInvItem.using ? currInvItem.item.id : null
+    });
     const info = await request.json();
 
     console.log(info);
 
     switch (info.resource_type) {
       case commons.resourceTypes.NOTE:
+        if (info.data && info.data.used === true) {
+          setInventory(inventory.filter(i => i.id !== currInvItem.item.id));
+        }
         createModal(commons.modalTypes.MODAL, info.text);
         setCanSetDestiny(true);
         break;
@@ -81,15 +93,19 @@ const Game = ({ gameInfo }) => {
         createModal(commons.modalTypes.MODAL, info.note);
         setCanSetDestiny(true);
         break;
-      
+
       case commons.resourceTypes.SCENE:
         setShowModal(false);
         setOutAnim(option.out_anim || sceneInfo.out_anim);
         setShowScene(false);
         setNextSceneInfo(info);
         break;
-      
+
       default:
+    }
+
+    if (currInvItem.using) {
+      setCurrInvItem(defaultInvItem);
     }
   };
 
@@ -108,29 +124,44 @@ const Game = ({ gameInfo }) => {
         return <LoadingModal />;
 
       case commons.modalTypes.INVENTORY:
-        return <InventoryModal items={inventory} />;
+        return <InventoryModal items={inventory} handleClickItem={handleClickInvItem} />;
 
       default: return null;
     }
   };
 
-  const handleInventory = ({ keyCode }) => {
-    if (!showModal) {
-      if (keyCode !== commons.keys.I || !canSetDestiny) {
-        return;
-      }
+  const handleKeyUp = ({ keyCode }) => {
+    switch (keyCode) {
+      case commons.keys.I:
+        if (!showModal && canSetDestiny) {
+          createModal(commons.modalTypes.INVENTORY);
+        }
+        break;
 
-      createModal(commons.modalTypes.INVENTORY);
-    } else {
-      if (modalType === commons.modalTypes.INVENTORY && keyCode === commons.keys.ESCAPE) {
-        setShowModal(false);
-      }
+      case commons.keys.ESCAPE:
+        if (showModal && modalType === commons.modalTypes.INVENTORY) {
+          setShowModal(false);
+        } else if (currInvItem.using) {
+          setCurrInvItem(defaultInvItem);
+        }
+        break;
+
+      default: return;
     }
+  };
+
+  const handleClickInvItem = item => {
+    setCurrInvItem({
+      using: true,
+      item: item
+    });
+
+    setShowModal(false);
   };
 
   return (
     <>
-      <GlobalKeyUpEvent handler={handleInventory} />
+      <GlobalKeyUpEvent handler={handleKeyUp} />
       {handleModal()}
 
       <div className="main-panel">

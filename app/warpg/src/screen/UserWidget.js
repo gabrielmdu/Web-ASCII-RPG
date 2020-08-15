@@ -25,19 +25,21 @@ const UserWidget = ({ user }) => {
   }];
 
   return (
-    <div className={'user-widget'} >
-      Welcome,&nbsp;
+    <div className={'user-widget-wrapper'}>
+      <div className={'user-widget'}>
+        Welcome,&nbsp;
       <span
-        ref={ref}
-        className="user-name"
-        onClick={() => setIsComponentVisible(true)}
-      >
-        {user ? user : 'guest'}
-      </span>
-      <Dropdown
-        visible={isComponentVisible}
-        items={user ? userItems : guestItems}
-      />
+          ref={ref}
+          className="user-name"
+          onClick={() => setIsComponentVisible(true)}
+        >
+          {user ? user : 'guest'}
+        </span>
+        <Dropdown
+          visible={isComponentVisible}
+          items={user ? userItems : guestItems}
+        />
+      </div>
     </div>
   );
 };

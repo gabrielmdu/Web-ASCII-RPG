@@ -1,17 +1,22 @@
-.user-widget {
-    position: relative;
-    text-align: right;
+.user-widget-wrapper {
+    display: flex;
+    justify-content: flex-end;
 
     @media only screen and (max-width: 530px) {
-        text-align: center;
+        justify-content: center;
     }
 
-    .user-name {
-        color: #f3f700;
-        cursor: pointer;
+    .user-widget {
+        display: inline-block;
+        position: relative;
 
-        &:hover {
-            text-decoration: underline;
+        .user-name {
+            color: #f3f700;
+            cursor: pointer;
+
+            &:hover {
+                text-decoration: underline;
+            }
         }
     }
 }

@@ -1,0 +1,29 @@
+.dropdown {
+    position: absolute;
+    right: 0;
+    border: 2px solid white;
+    background: black;
+    color: white;
+    text-align: left;
+
+    ul {
+        margin: 0;
+        padding: 0;
+
+        li {
+            display: block;
+            cursor: pointer;
+            padding: 2px 5px;
+            font-size: 24px;
+
+            &:hover {
+                color: #131313;
+                background: #8825b1;
+            }
+
+            &:not(:last-child) {
+                border-bottom: 2px solid white;
+            }
+        }
+    }
+}

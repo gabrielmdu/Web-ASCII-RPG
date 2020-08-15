@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { getLoggedUser } from '../utils.js';
+import UserWidget from './UserWidget.js';
 import '../scss/main-menu.scss';
 
 const MainMenu = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    setUser(getLoggedUser());
+  }, []);
+
   return (
     <div className="main-menu">
       <div className="menu-container">
+        <UserWidget classes={'text-right'} />
         <div className="game-title">
           <pre>
 {String.raw`
@@ -23,8 +32,8 @@ const MainMenu = () => {
 
         <div className="menu-buttons">
           <button>New Game</button>
-          <button>Continue</button>
-          <button>Credits</button>
+          <button disabled={user === null}>Continue</button>
+          <button>About</button>
         </div>
       </div>
     </div>

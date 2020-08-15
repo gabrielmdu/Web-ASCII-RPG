@@ -1,0 +1,17 @@
+.user-widget {
+    position: relative;
+    text-align: right;
+
+    @media only screen and (max-width: 530px) {
+        text-align: center;
+    }
+
+    .user-name {
+        color: #f3f700;
+        cursor: pointer;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}

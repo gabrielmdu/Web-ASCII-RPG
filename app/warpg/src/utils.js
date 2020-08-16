@@ -35,7 +35,11 @@ export const useComponentVisible = initialIsVisible => {
   };
 
   const handleClickOutside = event => {
-    if (ref.current && !ref.current.contains(event.target)) {
+    if (
+      ref.current &&
+      !ref.current.contains(event.target) &&
+      isComponentVisible
+    ) {
       setIsComponentVisible(false);
     }
   };
@@ -49,7 +53,11 @@ export const useComponentVisible = initialIsVisible => {
     };
   });
 
-  return { ref, isComponentVisible, setIsComponentVisible };
+  return {
+    ref,
+    isComponentVisible,
+    setIsComponentVisible
+  };
 };
 
 export const getLoggedUser = () => {

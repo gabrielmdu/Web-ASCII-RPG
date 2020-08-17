@@ -93,30 +93,6 @@ export const login = async (email, password) => {
   return result;
 };
 
-export const getLoggedUser = () => {
-  const token = localStorage.getItem('api_token');
-
-  if (!token) {
-    return null;
-  }
-
-  let decoded;
-
-  try {
-    decoded = jwt_decode(token);
-  } catch (e) {
-    localStorage.removeItem('api_token');
-    return null;
-  }
-
-  if (decoded.exp < Math.floor(Date.now() / 1000)) {
-    localStorage.removeItem('api_token');
-    return null;
-  }
-
-  return decoded.user_name;
-};
-
 export const GlobalKeyUpEvent = ({ handler }) => {
   useEffect(() => {
     document.addEventListener("keyup", handler, false);

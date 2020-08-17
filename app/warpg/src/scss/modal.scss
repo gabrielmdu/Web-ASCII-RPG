@@ -92,6 +92,13 @@
     display: block !important;
     width: 320px;
 
+    .modal-error {
+        text-align: center;
+        font-size: 25px;
+        background: #c10707;
+        padding: 4px 0;
+    }
+
     .modal-inputs {
         height: 70px;
         padding: 12px;
@@ -133,6 +140,10 @@
                 height: 34px;
                 font-size: 33px;
                 text-shadow: 2px 2px 0px black;
+            }
+
+            &:disabled {
+                opacity: 50%;
             }
         }
     }

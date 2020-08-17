@@ -1,23 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { getLoggedUser } from '../utils.js';
+import React from 'react';
 import UserWidget from './UserWidget.js';
+import { useLoggedUser } from '../hooks/useLoggedUser.js';
 import '../scss/main-menu.scss';
 import '../scss/modal.scss';
 
 const MainMenu = () => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    setUser(getLoggedUser());
-  }, []);
+  const [user, setCheck] = useLoggedUser(true);
 
   return (
     <div className="main-menu">
       <div className="menu-container">
-        <UserWidget userName={user} setUserName={() => setUser(getLoggedUser())} />
+        <UserWidget user={user} checkUser={() => setCheck()} />
         <div className="game-title">
           <pre>
-{String.raw`
+            {String.raw`
           _______  _______  _______  _______ 
 |\     /|(  ___  )(  ____ )(  ____ )(  ____ \
 | )   ( || (   ) || (    )|| (    )|| (    \/

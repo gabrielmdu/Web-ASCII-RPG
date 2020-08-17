@@ -5,20 +5,29 @@ import { login } from '../utils.js';
 const SignInModal = ({ handleClose, handleSuccess }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async event => {
     event.preventDefault();
+    setLoading(true);
+    setError('');
 
     const result = await login(email, password);
+
     if (result.success) {
       handleSuccess();
     } else {
-      console.log(result.message);
+      setLoading(false);
+      setError(result.message);
     }
   };
 
   return (
     <Modal modalClass="modal-sign-in">
+
+      {error && <div className="modal-error">{error}</div>}
+
       <form onSubmit={handleSubmit}>
         <div className="modal-inputs">
           <div className="modal-input">
@@ -32,8 +41,10 @@ const SignInModal = ({ handleClose, handleSuccess }) => {
         </div>
 
         <div className="modal-buttons">
-          <button className="bt-sign-in" type="submit">Sign in</button>
-          <button onClick={handleClose} type="button">Cancel</button>
+          <button className="bt-sign-in" type="submit" disabled={loading}>
+            {loading ? 'Signing in...' : 'Sign in'}
+          </button>
+          <button onClick={handleClose} type="button" disabled={loading}>Cancel</button>
         </div>
       </form>
 

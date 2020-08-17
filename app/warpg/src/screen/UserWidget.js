@@ -4,7 +4,7 @@ import SignInModal from './SignInModal.js';
 import { commons } from '../consts.js';
 import '../scss/user-widget.scss';
 
-const UserWidget = ({ userName, setUserName }) => {
+const UserWidget = ({ user, checkUser }) => {
   const [modal, setModal] = useState({
     show: false,
     type: null
@@ -38,7 +38,7 @@ const UserWidget = ({ userName, setUserName }) => {
         return <SignInModal
           handleClose={() => setModal({ show: false })}
           handleSuccess={() => {
-            setUserName();
+            checkUser();
             setModal({ show: false });
           }}
         />;
@@ -54,8 +54,8 @@ const UserWidget = ({ userName, setUserName }) => {
         <div className={'user-widget'}>
           Welcome,&nbsp;
           <Dropdown
-            text={userName ? userName : 'guest'}
-            items={userName ? userItems : guestItems}
+            text={user ? user.name : 'guest'}
+            items={user ? userItems : guestItems}
           />
         </div>
       </div>

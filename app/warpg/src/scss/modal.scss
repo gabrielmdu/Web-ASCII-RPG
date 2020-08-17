@@ -1,0 +1,139 @@
+.modal-background {
+    display: flex;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.8);
+
+    .modal {
+        display: flex;
+        align-items: center;
+        background: black;
+        border: 4px solid white;
+        padding: 8px;
+    }
+}
+
+.modal-common {
+    min-width: 200px;
+    min-height: 75px;
+    max-width: 290px;
+}
+
+.modal-loading {
+    width: 150px;
+    text-align: center;
+}
+
+.modal-inventory {
+    max-width: 530px;
+
+    .inventory-container {
+        margin: 5px 15px;
+
+        .inventory-title {
+            text-align: center;
+            margin-bottom: 12px;
+
+            .inventory-title-text {
+                display: inline-block;
+                border-top: 2px dashed white;
+                border-bottom: 2px dashed white;
+            }
+        }
+
+        .inventory-items {
+            display: flex;
+            justify-content: center;
+            overflow: auto;
+            max-height: 230px;
+
+            table {
+                border-spacing: 0;
+
+                td,
+                th {
+                    padding: 4px;
+                }
+
+                th {
+                    text-align: left;
+                    font-weight: normal;
+                    text-decoration: underline;
+
+                    &.name {
+                        min-width: 100px;
+                        max-width: 200px;
+                    }
+                }
+
+                tbody {
+                    tr:hover {
+                        cursor: pointer;
+                        background: white;
+                        color: black;
+                    }
+
+                    td.name {
+                        padding-right: 20px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.modal-sign-in {
+    display: block !important;
+    width: 320px;
+
+    .modal-inputs {
+        height: 70px;
+        padding: 12px;
+
+        .modal-input {
+            width: 100%;
+            margin-bottom: 10px;
+
+            label {
+                font-size: 28px;
+                color: #ffbc00;
+            }
+
+            input {
+                font-family: 'aerx_tabletsregular', monospace;
+                font-size: 24px;
+                float: right;
+                border: 2px solid #3c2c00;
+                background: black;
+                color: #00ff08;
+            }
+        }
+    }
+
+    .modal-buttons {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        height: 82px;
+
+        button {
+            font-size: 25px;
+
+            &.bt-sign-in {
+                background: #0d5fc5;
+                border: 2px solid #b6a9ff;
+                width: 93%;
+                height: 34px;
+                font-size: 33px;
+                text-shadow: 2px 2px 0px black;
+            }
+        }
+    }
+}

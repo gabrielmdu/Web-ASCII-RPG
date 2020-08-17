@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Dropdown from './Dropdown.js';
-import { useComponentVisible } from '../utils.js';
+import SignInModal from './SignInModal.js';
+import { commons } from '../consts.js';
 import '../scss/user-widget.scss';
 
-const UserWidget = ({ user }) => {
-  const {
-    ref,
-    isComponentVisible,
-    setIsComponentVisible
-  } = useComponentVisible(false);
+const UserWidget = ({ userName, setUserName }) => {
+  const [modal, setModal] = useState({
+    show: false,
+    type: null
+  });
 
   const userItems = [{
     name: 'sign out x',
@@ -18,29 +18,48 @@ const UserWidget = ({ user }) => {
   const guestItems = [{
     name: 'sign in >',
     callback: () => {
+      setModal({
+        show: true,
+        type: commons.modalTypes.SIGN_IN
+      });
     }
   }, {
     name: 'sign up ^',
     callback: () => { }
   }];
 
+  const handleModal = () => {
+    if (!modal.show) {
+      return;
+    }
+
+    switch (modal.type) {
+      case commons.modalTypes.SIGN_IN:
+        return <SignInModal
+          handleClose={() => setModal({ show: false })}
+          handleSuccess={() => {
+            setUserName();
+            setModal({ show: false });
+          }}
+        />;
+
+      default: return null;
+    }
+  };
+
   return (
-    <div className={'user-widget-wrapper'}>
-      <div className={'user-widget'}>
-        Welcome,&nbsp;
-      <span
-          ref={ref}
-          className="user-name"
-          onClick={() => setIsComponentVisible(true)}
-        >
-          {user ? user : 'guest'}
-        </span>
-        <Dropdown
-          visible={isComponentVisible}
-          items={user ? userItems : guestItems}
-        />
+    <>
+      {handleModal()}
+      <div className={'user-widget-wrapper'}>
+        <div className={'user-widget'}>
+          Welcome,&nbsp;
+          <Dropdown
+            text={userName ? userName : 'guest'}
+            items={userName ? userItems : guestItems}
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

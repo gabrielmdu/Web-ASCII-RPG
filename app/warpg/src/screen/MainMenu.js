@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getLoggedUser } from '../utils.js';
 import UserWidget from './UserWidget.js';
 import '../scss/main-menu.scss';
+import '../scss/modal.scss';
 
 const MainMenu = () => {
   const [user, setUser] = useState(null);
@@ -13,7 +14,7 @@ const MainMenu = () => {
   return (
     <div className="main-menu">
       <div className="menu-container">
-        <UserWidget classes={'text-right'} />
+        <UserWidget userName={user} setUserName={() => setUser(getLoggedUser())} />
         <div className="game-title">
           <pre>
 {String.raw`

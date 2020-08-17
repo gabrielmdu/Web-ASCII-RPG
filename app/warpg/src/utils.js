@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import jwt_decode from 'jwt-decode';
+import { commons } from './consts';
 
 const fetchAuth = (url, method, body) => {
   const token = localStorage.getItem('api_token');
@@ -58,6 +59,38 @@ export const useComponentVisible = initialIsVisible => {
     isComponentVisible,
     setIsComponentVisible
   };
+};
+
+export const login = async (email, password) => {
+  const result = {
+    success: false,
+    message: ''
+  };
+
+  try {
+    const request = await fetch(commons.API_BASE_URL + 'login', {
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+      body: JSON.stringify({
+        'email': email,
+        'password': password
+      })
+    });
+
+    if (request.status === 200) {
+      const response = await request.json();
+      localStorage.setItem('api_token', response.access_token);
+      console.log('logged in with token ' + response.access_token);
+
+      result.success = true;
+    } else if (request.status === 401) {
+      result.message = 'Invalid credentials';
+    }
+  } catch (e) {
+    result.message = e.message;
+  }
+
+  return result;
 };
 
 export const getLoggedUser = () => {

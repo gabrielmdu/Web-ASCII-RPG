@@ -9,14 +9,5 @@
     .user-widget {
         display: inline-block;
         position: relative;
-
-        .user-name {
-            color: #f3f700;
-            cursor: pointer;
-
-            &:hover {
-                text-decoration: underline;
-            }
-        }
     }
 }

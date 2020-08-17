@@ -6,7 +6,9 @@ export const commons = {
     modalTypes: {
         COMMON: 'common',
         LOADING: 'loading',
-        INVENTORY: 'inventory'
+        INVENTORY: 'inventory',
+        SIGN_IN: 'sign_in',
+        SIGN_UP: 'sign_up'
     },
     keys: {
         ESCAPE: 27,

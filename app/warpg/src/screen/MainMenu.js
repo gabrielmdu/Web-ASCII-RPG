@@ -28,8 +28,7 @@ const MainMenu = () => {
         </div>
 
         <div className="menu-buttons">
-          <button>New Game</button>
-          <button disabled={user === null}>Continue</button>
+          <button>Start</button>
           <button>About</button>
         </div>
       </div>

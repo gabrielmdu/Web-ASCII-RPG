@@ -1,0 +1,26 @@
+@mixin ascii-title($color1, $color2) {
+    pre {
+        display: inline-block;
+        font-family: 'aerx_tabletsregular', monospace;
+        margin: 0;
+        padding: 0;
+        text-align: left;
+        line-height: 18px;
+
+        background: linear-gradient(0deg, $color1, $color2);
+        background-size: 100%;
+        background-repeat: repeat;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        -moz-background-clip: text;
+        -moz-text-fill-color: transparent;
+    }
+
+    @media only screen and (max-width: 530px) {
+        pre {
+            font-size: 5vw;
+            line-height: 3vw;
+        }
+    }
+}

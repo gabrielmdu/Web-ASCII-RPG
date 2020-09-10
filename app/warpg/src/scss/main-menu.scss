@@ -1,4 +1,4 @@
-@import 'index.scss';
+@import './common.scss';
 
 .main-menu {
     display: flex;
@@ -15,30 +15,7 @@
             flex-direction: column;
             align-items: center;
 
-            pre {
-                display: inline-block;
-                font-family: 'aerx_tabletsregular', monospace;
-                margin: 0;
-                padding: 0;
-                text-align: left;
-                line-height: 18px;
-
-                background: linear-gradient(0deg, #002ba5 13%, #ff00c9 90%);
-                background-size: 100%;
-                background-repeat: repeat;
-                background-clip: text;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                -moz-background-clip: text;
-                -moz-text-fill-color: transparent;
-            }
-
-            @media only screen and (max-width: 530px) {
-                pre {
-                    font-size: 5vw;
-                    line-height: 3vw;
-                }
-            }
+            @include ascii-title(#002ba5 13%, #ff00c9 90%);
 
             span {
                 display: block;

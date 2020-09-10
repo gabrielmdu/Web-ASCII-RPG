@@ -1,4 +1,5 @@
 import React from 'react';
+import '../scss/modal.scss';
 
 const Modal = ({ children, handleModalHide, modalClass }) => {
   const className = modalClass ? modalClass : 'modal-common';

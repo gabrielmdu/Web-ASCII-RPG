@@ -1,13 +1,9 @@
 import React from 'react';
-import { useComponentVisible } from '../utils.js';
-import '../scss/dropdown.scss';
+import { useComponentVisible } from '../hooks/useComponentVisible.js';
+import './Dropdown.scss';
 
 const Dropdown = ({ text, items }) => {
-  const {
-    ref,
-    isComponentVisible,
-    setIsComponentVisible
-  } = useComponentVisible(false);
+  const [ref, isComponentVisible, setIsComponentVisible] = useComponentVisible(false);
 
   return (
     <div className="dropdown-wrapper" ref={ref}>

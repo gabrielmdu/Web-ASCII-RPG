@@ -1,0 +1,80 @@
+@font-face {
+    font-family: 'aerx_tabletsregular';
+    src: url('./font/aerxtabs_memesbruh03-webfont.woff2') format('woff2'), url('./font/aerxtabs_memesbruh03-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+:root {
+    --animate-duration: 1.5s;
+}
+
+html,
+body {
+    border: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+
+html {
+    font-family: 'aerx_tabletsregular', monospace;
+    font-size: 30px;
+    color: white;
+    background: black;
+}
+
+button {
+    font-family: 'aerx_tabletsregular', monospace;
+    font-size: 33px;
+    background: none;
+    color: white;
+}
+
+#root {
+    /*
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    */
+    height: 100%;
+}
+
+.main-container {
+    min-height: 100%;
+    //width: 530px;
+    margin: 0 auto;
+    padding: 10px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 800px;
+
+    @media only screen and (min-width: 768px) {
+        //width: 1024px;
+    }
+}
+
+.main-panel {
+    .pre-wrapper {
+        margin: 0 auto;
+
+        pre {
+            font-family: 'aerx_tabletsregular', monospace;
+            text-align: left;
+            display: inline-block;
+            line-height: 23px;
+        }
+    }
+}
+
+.scene-option {
+    cursor: pointer;
+}
+
+.tippy-box[data-theme~='warpg-tooltip'] {
+    background-color: black;
+    color: rgb(57, 223, 15);
+    border: 2px solid white;
+    padding: 3px;
+}

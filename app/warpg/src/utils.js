@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import jwt_decode from 'jwt-decode';
-import { commons } from './consts';
+import { useEffect } from 'react';
+import { common } from './common/common.js';
 
 const fetchAuth = (url, method, body) => {
   const token = localStorage.getItem('api_token');
@@ -24,43 +23,6 @@ const fetchAuth = (url, method, body) => {
   return fetch(url, options);
 };
 
-// https://stackoverflow.com/a/54570068
-export const useComponentVisible = initialIsVisible => {
-  const [isComponentVisible, setIsComponentVisible] = useState(initialIsVisible);
-  const ref = useRef(null);
-
-  const handleHideDropdown = (event) => {
-    if (event.key === "Escape") {
-      setIsComponentVisible(false);
-    }
-  };
-
-  const handleClickOutside = event => {
-    if (
-      ref.current &&
-      !ref.current.contains(event.target) &&
-      isComponentVisible
-    ) {
-      setIsComponentVisible(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("keydown", handleHideDropdown, true);
-    document.addEventListener("click", handleClickOutside, true);
-    return () => {
-      document.removeEventListener("keydown", handleHideDropdown, true);
-      document.removeEventListener("click", handleClickOutside, true);
-    };
-  });
-
-  return {
-    ref,
-    isComponentVisible,
-    setIsComponentVisible
-  };
-};
-
 export const login = async (email, password) => {
   const result = {
     success: false,
@@ -68,7 +30,7 @@ export const login = async (email, password) => {
   };
 
   try {
-    const request = await fetch(commons.API_BASE_URL + 'login', {
+    const request = await fetch(common.API_BASE_URL + 'login', {
       headers: { 'content-type': 'application/json' },
       method: 'POST',
       body: JSON.stringify({
@@ -95,9 +57,9 @@ export const login = async (email, password) => {
 
 export const GlobalKeyUpEvent = ({ handler }) => {
   useEffect(() => {
-    document.addEventListener("keyup", handler, false);
+    document.addEventListener('keyup', handler, false);
 
-    return () => document.removeEventListener("keyup", handler, false);
+    return () => document.removeEventListener('keyup', handler, false);
   }, [handler]);
 
   return null;

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Dropdown from './Dropdown.js';
-import SignInModal from './SignInModal.js';
-import { commons } from '../consts.js';
-import '../scss/user-widget.scss';
+import SignInModal from './modal/SignInModal.js';
+import { common } from '../common/common.js';
+import './UserWidget.scss';
 
 const UserWidget = ({ user, checkUser }) => {
   const [modal, setModal] = useState({
@@ -20,7 +20,7 @@ const UserWidget = ({ user, checkUser }) => {
     callback: () => {
       setModal({
         show: true,
-        type: commons.modalTypes.SIGN_IN
+        type: common.modalTypes.SIGN_IN
       });
     }
   }, {
@@ -34,7 +34,7 @@ const UserWidget = ({ user, checkUser }) => {
     }
 
     switch (modal.type) {
-      case commons.modalTypes.SIGN_IN:
+      case common.modalTypes.SIGN_IN:
         return <SignInModal
           handleClose={() => setModal({ show: false })}
           handleSuccess={() => {

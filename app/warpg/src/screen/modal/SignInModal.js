@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Modal from './Modal.js';
-import { login } from '../utils.js';
+import { login } from '../../utils.js';
 
 const SignInModal = ({ handleClose, handleSuccess }) => {
   const [email, setEmail] = useState('');

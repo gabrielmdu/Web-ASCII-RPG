@@ -1,0 +1,60 @@
+.modal-sign-in {
+    display: block !important;
+    width: 320px;
+
+    .modal-error {
+        text-align: center;
+        font-size: 25px;
+        background: #c10707;
+        padding: 4px 0;
+    }
+
+    .modal-inputs {
+        height: 70px;
+        padding: 12px;
+
+        .modal-input {
+            width: 100%;
+            margin-bottom: 10px;
+
+            label {
+                font-size: 28px;
+                color: #ffbc00;
+            }
+
+            input {
+                font-family: 'aerx_tabletsregular', monospace;
+                font-size: 24px;
+                float: right;
+                border: 2px solid #3c2c00;
+                background: black;
+                color: #00ff08;
+            }
+        }
+    }
+
+    .modal-buttons {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        height: 82px;
+
+        button {
+            font-size: 25px;
+
+            &.bt-sign-in {
+                background: #0d5fc5;
+                border: 2px solid #b6a9ff;
+                width: 93%;
+                height: 34px;
+                font-size: 33px;
+                text-shadow: 2px 2px 0px black;
+            }
+
+            &:disabled {
+                opacity: 50%;
+            }
+        }
+    }
+}

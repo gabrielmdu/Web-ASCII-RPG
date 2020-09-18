@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { fetchGet, fetchPost, GlobalKeyUpEvent } from './utils.js';
+import { fetchAuthGet, fetchAuthPost, GlobalKeyUpEvent } from './utils.js';
 import { commons } from './consts.js';
 import Tippy from '@tippyjs/react';
 import { followCursor } from 'tippy.js';
@@ -36,7 +36,7 @@ const Game = ({ gameInfo }) => {
   useEffect(() => {
     const fetchScene = async () => {
       let info;
-      const request = await fetchGet(commons.API_BASE_URL + 'scene');
+      const request = await fetchAuthGet('scene');
       if (request.status === 200) {
         info = await request.json();
       }
@@ -73,8 +73,7 @@ const Game = ({ gameInfo }) => {
     createModal(commons.modalTypes.LOADING);
     setCanSetDestiny(false);
 
-    const request = await fetchPost(
-      commons.API_BASE_URL + 'scene', {
+    const request = await fetchAuthPost('scene', {
       'option': index,
       'item': currInvItem.using ? currInvItem.item.id : null
     });

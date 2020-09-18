@@ -1,6 +1,10 @@
 import { useEffect } from 'react';
 import { common } from './common/common.js';
 
+export const fetchGet = url => {
+  return fetch(common.API_BASE_URL + url);
+};
+
 const fetchAuth = (url, method, body) => {
   const token = localStorage.getItem('api_token');
 
@@ -20,7 +24,7 @@ const fetchAuth = (url, method, body) => {
     options['body'] = body;
   }
 
-  return fetch(url, options);
+  return fetch(common.API_BASE_URL + url, options);
 };
 
 export const login = async (email, password) => {
@@ -65,5 +69,5 @@ export const GlobalKeyUpEvent = ({ handler }) => {
   return null;
 };
 
-export const fetchGet = url => fetchAuth(url, 'GET');
-export const fetchPost = (url, body) => fetchAuth(url, 'POST', JSON.stringify(body));
+export const fetchAuthGet = url => fetchAuth(url, 'GET');
+export const fetchAuthPost = (url, body) => fetchAuth(url, 'POST', JSON.stringify(body));

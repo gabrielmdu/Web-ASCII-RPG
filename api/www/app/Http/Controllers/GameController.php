@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Game;
 use App\Http\Resources\Game as GameResource;
+use App\Http\Resources\GameBasicInfo;
 
 class GameController extends Controller
 {
@@ -19,5 +21,11 @@ class GameController extends Controller
             ->resetCurrentGame();
 
         return $this->getCurrentGame();
+    }
+
+    public function getGameList()
+    {
+        // paginate this in the future
+        return GameBasicInfo::collection(Game::all());
     }
 }

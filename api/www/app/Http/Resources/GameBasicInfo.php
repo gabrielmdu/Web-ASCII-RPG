@@ -15,6 +15,7 @@ class GameBasicInfo extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'name' => $this->adventure['name'],
             'description' => $this->adventure['description']
         ];

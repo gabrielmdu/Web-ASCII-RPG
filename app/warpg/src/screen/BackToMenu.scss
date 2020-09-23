@@ -1,0 +1,11 @@
+.back-to-menu {
+    color: white;
+    text-decoration: none;
+    margin-top: 0.95rem;
+    align-self: flex-start;
+    margin-left: 0.5rem;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}

@@ -1,4 +1,7 @@
 import React from 'react';
+
+import BackToMenu from './BackToMenu';
+
 import './About.scss';
 
 const About = () => {
@@ -22,6 +25,7 @@ const About = () => {
           Gabriel Schulte
         </a>
       </div>
+      <BackToMenu />
     </div>
   );
 };

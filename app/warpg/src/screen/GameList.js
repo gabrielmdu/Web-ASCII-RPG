@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { fetchGet } from '../utils';
 import { useLoggedUser } from '../hooks/useLoggedUser.js';
+
+import BackToMenu from './BackToMenu';
+
 import './GameList.scss';
 
 const GameList = () => {
@@ -55,6 +58,7 @@ const GameList = () => {
             <button disabled={!selectedGameId}>New Game</button>
           </div>
         </div>}
+      <BackToMenu />
     </div>
   );
 };

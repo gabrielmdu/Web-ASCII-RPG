@@ -11,7 +11,7 @@
     }
 
     .table-wrapper {
-        min-height: 340px;
+        min-height: 320px;
         border: 2px solid white;
 
         table {
@@ -55,9 +55,10 @@
     .game-list-buttons {
         display: flex;
         align-items: center;
-        justify-content: space-evenly;
+        justify-content: space-between;
         flex-direction: column;
-        height: 112px;
+        height: 2.45rem;
+        margin-top: 0.3rem;
 
         button {
             cursor: pointer;

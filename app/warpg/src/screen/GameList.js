@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { fetchGet } from '../utils';
+import { fetchAuthPost, fetchGet } from '../utils';
 import { useLoggedUser } from '../hooks/useLoggedUser.js';
 
 import BackToMenu from './BackToMenu';
 
 import './GameList.scss';
+import { useHistory } from 'react-router-dom';
 
 const GameList = () => {
   const [gameList, setGameList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedGameId, setSelectedGameId] = useState(null);
   const [user] = useLoggedUser();
+  const history = useHistory();
 
   useEffect(() => {
     const fetchGameList = async () => {
@@ -25,6 +27,14 @@ const GameList = () => {
 
     fetchGameList();
   }, []);
+
+  const handleNewGame = async () => {
+    const request = await fetchAuthPost('game', { 'game_id': selectedGameId });
+
+    if (request.status === 200) {
+      history.push('/play');
+    }
+  };
 
   return (
     <div className="game-list">
@@ -55,7 +65,12 @@ const GameList = () => {
           </div>
           <div className="game-list-buttons">
             <button disabled={!user}>Continue</button>
-            <button disabled={!selectedGameId}>New Game</button>
+            <button
+              disabled={!selectedGameId}
+              onClick={handleNewGame}
+            >
+              New Game
+            </button>
           </div>
         </div>}
       <BackToMenu />

@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/game', 'GameController@getCurrentGame')->middleware(['auth:api', 'user.only']);
+Route::post('/game', 'GameController@setCurrentGame')->middleware(['auth:api', 'user.only']);
 Route::get('/game/reset', 'GameController@resetCurrentGame')->middleware(['auth:api', 'user.only']);
 Route::get('/game/list', 'GameController@getGameList');
 

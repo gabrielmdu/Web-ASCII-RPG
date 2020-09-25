@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\GameStatus;
 use App\Http\Resources\Scene as SceneResource;
 use App\Scene;
 use App\SceneNote;
@@ -13,7 +12,10 @@ class SceneController extends Controller
 {
     public function getCurrentScene(bool $asResource = true)
     {
-        $scene = auth()->user()->getCurrentScene();
+        $scene = auth()
+            ->user()
+            ->gameStatus
+            ->getCurrentScene();
 
         return $asResource ? new SceneResource($scene) : $scene;
     }

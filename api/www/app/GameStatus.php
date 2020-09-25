@@ -9,9 +9,20 @@ use Throwable;
 
 class GameStatus extends Model
 {
+    public function getCurrentScene()
+    {
+        return $this->game->getScene($this->scene);
+    }
+
     public function setCurrentScene(string $scene)
     {
         $this->scene = $scene;
+        return $this->save();
+    }
+
+    public function setCurrentGame(string $gameId)
+    {
+        $this->game_id = $gameId;
         return $this->save();
     }
 

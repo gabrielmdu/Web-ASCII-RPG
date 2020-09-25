@@ -47,16 +47,6 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasOne(GameStatus::class);
     }
 
-    public function getCurrentGame()
-    {
-        return Game::find($this->gameStatus->game_id);
-    }
-
-    public function getCurrentScene()
-    {
-        return $this->getCurrentGame()->getScene($this->gameStatus->scene);
-    }
-
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *

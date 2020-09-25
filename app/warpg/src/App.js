@@ -6,26 +6,13 @@ import MainMenu from './screen/MainMenu.js';
 import About from './screen/About.js';
 import UserWidget from './screen/UserWidget.js';
 import GameList from './screen/GameList';
+import Game from './Game';
 import Warpg404 from './screen/Warpg404';
 
 import './App.scss';
 
 const App = () => {
   const [user, setCheck] = useLoggedUser();
-  //const [gameInfo, setGameInfo] = useState(null);
-
-  //useEffect(() => {
-  /*const fetchGame = async () => {
-    const request = await fetchAuthGet('game');
-    if (request.status === 200) {
-      const info = await request.json();
-      setGameInfo(info);
-      console.log(info);
-    }
-  };
-
-  fetchGame();*/
-  //}, []);
 
   /*const resetGame = async () => {
     setGameInfo(null);
@@ -53,6 +40,10 @@ const App = () => {
             <About />
           </Route>
 
+          <Route path="/play">
+            <Game />
+          </Route>
+
           <Route>
             <Warpg404 />
           </Route>
@@ -60,17 +51,6 @@ const App = () => {
 
       </div>
     </Router>
-    /*<>
-      <button onClick={login}>Login</button>
-      {gameInfo
-        ? <>
-          <Game gameInfo={gameInfo} />
-          <button onClick={() => resetGame()}>Reset</button>
-        </>
-        : <span>loading game info...</span>
-      }
-    </>*/
-
   );
 };
 

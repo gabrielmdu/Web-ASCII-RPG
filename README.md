@@ -24,3 +24,13 @@ Clone the repository and run the following to install all dependencies and write
 And then, to bring everything up:
 
     docker-compose up -d
+
+### Testing
+
+Back-end testing is done with:
+
+    php artisan test
+
+Or:
+
+    vendor/bin/phpunit

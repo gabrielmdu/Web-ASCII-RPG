@@ -8,12 +8,12 @@
 
 ### Environment
 
-* Back-end API: PHP/Laravel
-* Database: MongoDB
-* Front-end: React
-* Webserver: Nginx
-* Testing: PHP Unit & Jest
-* Docker containers
+* Back-end API: [PHP](https://github.com/php/php-src)/[Laravel](https://github.com/laravel/laravel)
+* Database: [MongoDB](https://github.com/mongodb/mongo)
+* Front-end: [React](https://github.com/facebook/react)
+* Webserver: [Nginx](https://github.com/nginx/nginx)
+* Testing: [PHPUnit](https://github.com/sebastianbergmann/phpunit) & [Jest](https://github.com/facebook/jest)
+* [Docker](https://github.com/docker/docker-ce) containers
 
 ### Setup & Run
 

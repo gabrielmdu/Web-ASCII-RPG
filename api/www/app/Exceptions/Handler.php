@@ -6,6 +6,7 @@ use App\Http\Utilities\JsonUtility;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
@@ -60,6 +61,10 @@ class Handler extends ExceptionHandler
 
         if ($exception instanceof AuthenticationException) {
             return JsonUtility::respond(false, 'Unauthorized', Response::HTTP_UNAUTHORIZED);
+        }
+
+        if ($exception instanceof MethodNotAllowedHttpException) {
+            return JsonUtility::respond(false, $exception->getMessage(), $exception->getStatusCode());
         }
 
         if ($exception instanceof WarpgException) {

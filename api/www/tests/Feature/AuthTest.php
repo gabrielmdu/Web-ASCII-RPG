@@ -69,12 +69,28 @@ class AuthTest extends TestCase
             ->assertOk()
             ->assertJsonStructure(['access_token'])
             ->decodeResponseJson('access_token');
-        
+
         $this->assertNotEquals($originalToken, $newToken);
 
-        return $newToken;
+        return $originalToken;
     }
     
+    /**
+     * testCantUseBlacklistedToken
+     *
+     * @depends testCanRefreshLogin
+     * @param  mixed $token
+     * @return void
+     */
+    public function testCantUseBlacklistedToken(string $token)
+    {
+        $this->get('/v1/game', [
+            'Authorization' => 'Bearer ' . $token,
+            'Accept' => 'application/json'
+        ])
+            ->assertUnauthorized();
+    }
+
     /**
      * Tests if the user can be removed
      *
@@ -84,8 +100,7 @@ class AuthTest extends TestCase
      */
     public function testCanRemoveUser(string $token)
     {
-        auth()->setToken($token);
-        $user = auth()->authenticate();
+        $user = User::first();
 
         $this->assertInstanceOf(User::class, $user);
         $this->assertTrue($user->delete());

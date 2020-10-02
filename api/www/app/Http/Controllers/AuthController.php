@@ -49,7 +49,7 @@ class AuthController extends Controller
     {
         auth()->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return JsonUtility::respond(true, 'Successfully logged out');
     }
 
     /**

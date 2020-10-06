@@ -22,7 +22,7 @@ class AuthTest extends TestCase
     {
         $user = factory(User::class)->make([
             'email' => self::USER_TEST_EMAIL,
-            'password' => password_hash(self::USER_TEST_PASS, PASSWORD_DEFAULT),
+            'password' => password_hash(self::USER_TEST_PASS, PASSWORD_DEFAULT)
         ]);
 
         $this->assertInstanceOf(User::class, $user);
@@ -39,15 +39,7 @@ class AuthTest extends TestCase
      */
     public function testCanLogin()
     {
-        $token = $this->postJSON(
-            '/v1/login',
-            [
-                'email' => self::USER_TEST_EMAIL,
-                'password' => self::USER_TEST_PASS,
-            ])
-            ->assertOk()
-            ->assertJsonStructure(['access_token'])
-            ->decodeResponseJson('access_token');
+        $token = $this->createNewLoginToken();
 
         $this->assertInstanceOf(User::class, auth()->user());
 
@@ -55,7 +47,8 @@ class AuthTest extends TestCase
     }
 
     /**
-     * Tests if login can be refreshed/renewed
+     * Tests if login can be refreshed/renewed, then sends the original
+     * token to the next test which should fail to authorize
      *
      * @depends testCanLogin
      * @param string $originalToken
@@ -76,33 +69,57 @@ class AuthTest extends TestCase
     }
     
     /**
-     * testCantUseBlacklistedToken
+     * Tests if the user can be logged out
      *
-     * @depends testCanRefreshLogin
-     * @param  mixed $token
      * @return void
      */
-    public function testCantUseBlacklistedToken(string $token)
+    public function testCanLogoutUser()
     {
-        $this->get('/v1/game', [
-            'Authorization' => 'Bearer ' . $token,
-            'Accept' => 'application/json'
-        ])
-            ->assertUnauthorized();
+        $token = $this->createNewLoginToken();
+
+        $this->postJSON(
+            '/v1/logout', [
+                'Authorization' => 'Bearer ' . $token
+            ])
+            ->assertOk()
+            ->assertJsonFragment(['success' => true]);
+
+        return $token;
     }
 
     /**
-     * Tests if the user can be removed
+     * Tests if a blacklisted token should get an unauthorized status
      *
      * @depends testCanRefreshLogin
+     * @depends testCanLogoutUser
      * @param string $token
      * @return void
      */
-    public function testCanRemoveUser(string $token)
+    public function testCantUseBlacklistedToken(string $tokenRefresh, string $tokenLogout)
     {
-        $user = User::first();
-
-        $this->assertInstanceOf(User::class, $user);
-        $this->assertTrue($user->delete());
+        foreach ([$tokenRefresh, $tokenLogout] as $token) {
+            $this->get('/v1/game', [
+                'Authorization' => 'Bearer ' . $token
+            ])
+                ->assertUnauthorized();
+        }
     }
+    
+    /**
+     * Creates and asserts a new login token
+     *
+     * @return void
+     */
+    private function createNewLoginToken()
+    {
+        return $this->postJSON(
+            '/v1/login',
+            [
+                'email' => self::USER_TEST_EMAIL,
+                'password' => self::USER_TEST_PASS
+            ])
+            ->assertOk()
+            ->assertJsonStructure(['access_token'])
+            ->decodeResponseJson('access_token');
+    } 
 }

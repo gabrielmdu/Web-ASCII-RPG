@@ -14,10 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::get('/game', 'GameController@getCurrentGame')->middleware(['auth:api', 'user.only']);
 Route::post('/game', 'GameController@setCurrentGame')->middleware(['auth:api', 'user.only']);
 Route::get('/game/reset', 'GameController@resetCurrentGame')->middleware(['auth:api', 'user.only']);

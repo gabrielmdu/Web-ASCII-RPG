@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\User;
+use Tests\HttpHeaderTrait;
 use Tests\TestCase;
 
 /**
@@ -10,6 +11,8 @@ use Tests\TestCase;
  */
 class AuthTest extends TestCase
 {
+    use HttpHeaderTrait;
+
     const USER_TEST_EMAIL = 'test@warpg.com';
     const USER_TEST_PASS = '123';
 
@@ -56,9 +59,10 @@ class AuthTest extends TestCase
      */
     public function testCanRefreshLogin(string $originalToken)
     {
-        $newToken = $this->postJson('/v1/refresh', [], [
-            'Authorization' => 'Bearer ' . $originalToken
-        ])
+        $newToken = $this->postJson(
+            '/v1/refresh',
+            [],
+            $this->getAuthHeader($originalToken))
             ->assertOk()
             ->assertJsonStructure(['access_token'])
             ->decodeResponseJson('access_token');
@@ -67,7 +71,7 @@ class AuthTest extends TestCase
 
         return $originalToken;
     }
-    
+
     /**
      * Tests if the user can be logged out
      *
@@ -78,9 +82,7 @@ class AuthTest extends TestCase
         $token = $this->createNewLoginToken();
 
         $this->postJSON(
-            '/v1/logout', [
-                'Authorization' => 'Bearer ' . $token
-            ])
+            '/v1/logout', $this->getAuthHeader($token))
             ->assertOk()
             ->assertJsonFragment(['success' => true]);
 
@@ -98,13 +100,11 @@ class AuthTest extends TestCase
     public function testCantUseBlacklistedToken(string $tokenRefresh, string $tokenLogout)
     {
         foreach ([$tokenRefresh, $tokenLogout] as $token) {
-            $this->get('/v1/game', [
-                'Authorization' => 'Bearer ' . $token
-            ])
+            $this->get('/v1/game', $this->getAuthHeader($token))
                 ->assertUnauthorized();
         }
     }
-    
+
     /**
      * Creates and asserts a new login token
      *
@@ -121,5 +121,5 @@ class AuthTest extends TestCase
             ->assertOk()
             ->assertJsonStructure(['access_token'])
             ->decodeResponseJson('access_token');
-    } 
+    }
 }

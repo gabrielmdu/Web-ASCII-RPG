@@ -4,11 +4,13 @@ namespace Tests\Feature;
 
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\HttpHeaderTrait;
 use Tests\TestCase;
 
 class GameTest extends TestCase
 {
     use DatabaseMigrations;
+    use HttpHeaderTrait;
 
     protected function setUp(): void
     {
@@ -17,7 +19,7 @@ class GameTest extends TestCase
     }
 
     /**
-     * Tests if the game list can be retrieved 
+     * Tests if the game list can be retrieved
      *
      * @return void
      */
@@ -28,7 +30,7 @@ class GameTest extends TestCase
         $this->assertIsArray($list);
         $this->assertEquals('Basic Adventure', $list[0]['name']);
     }
-    
+
     /**
      * Tests if the current game can be retrieved
      *
@@ -40,9 +42,7 @@ class GameTest extends TestCase
         $token = auth()->login($user);
 
         $this
-            ->get('/v1/game', [
-                'Authorization' => 'Bearer ' . $token
-            ])
+            ->get('/v1/game', $this->getAuthHeader($token))
             ->assertOk()
             ->assertJsonStructure(['adventure', 'player_items']);
     }
@@ -63,13 +63,11 @@ class GameTest extends TestCase
         $this
             ->post('/v1/game', [
                 'game_id' => $gameList[0]['id']
-            ], [
-                'Authorization' => 'Bearer ' . $token
-            ])
+            ], $this->getAuthHeader($token))
             ->assertOk()
             ->assertJsonStructure(['adventure', 'player_items']);
     }
-    
+
     /**
      * Tests if the game can be reset by setting a scene and
      * inserting an item to the user status, then resetting it
@@ -88,14 +86,12 @@ class GameTest extends TestCase
         // library has a bug which doesn't update the model's array keys after saving them
         //$this->assertEquals(['id' => 'house_key', 'used' => false], $user->gameStatus->items);
 
-        $this->get('/v1/game/reset', [
-            'Authorization' => 'Bearer ' . $token
-        ]);
-        
+        $this->get('/v1/game/reset', $this->getAuthHeader($token));
+
         $this->assertNotEquals('house_inside', $user->gameStatus->scene);
         $this->assertEmpty($user->gameStatus->items);
     }
-    
+
     /**
      * Retrieves the game list from the endpoint
      *

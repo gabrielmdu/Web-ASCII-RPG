@@ -71,6 +71,32 @@ class GameTest extends TestCase
     }
     
     /**
+     * Tests if the game can be reset by setting a scene and
+     * inserting an item to the user status, then resetting it
+     *
+     * @return void
+     */
+    public function testCanResetCurrentGame()
+    {
+        $user = User::first();
+        $token = auth()->login($user);
+
+        $user->gameStatus->setCurrentScene('house_inside');
+        $user->gameStatus->storeItem(1);
+
+        $this->assertEquals('house_inside', $user->gameStatus->scene);
+        // library has a bug which doesn't update the model's array keys after saving them
+        //$this->assertEquals(['id' => 'house_key', 'used' => false], $user->gameStatus->items);
+
+        $this->get('/v1/game/reset', [
+            'Authorization' => 'Bearer ' . $token
+        ]);
+        
+        $this->assertNotEquals('house_inside', $user->gameStatus->scene);
+        $this->assertEmpty($user->gameStatus->items);
+    }
+    
+    /**
      * Retrieves the game list from the endpoint
      *
      * @return array

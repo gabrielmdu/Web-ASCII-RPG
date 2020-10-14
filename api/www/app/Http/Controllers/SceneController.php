@@ -27,7 +27,7 @@ class SceneController extends Controller
             'item' => 'nullable|string'
         ]);
 
-        if ($validatedData['item']) {
+        if (!empty($validatedData['item'])) {
             return $this->useItem($validatedData['option'], $validatedData['item']);
         } else {
             return $this->getSceneResource($validatedData['option']);

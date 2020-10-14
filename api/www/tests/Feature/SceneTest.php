@@ -25,25 +25,25 @@ class SceneTest extends TestCase
      */
     public function testCanGetCurrentScene()
     {
-        $user = User::first();
-        $token = auth()->login($user);
-
         $this
-            ->get('/v1/scene', $this->getAuthHeader($token))
+            ->get('/v1/scene', $this->getAuthHeader())
             ->assertOk()
             ->assertJsonFragment(['resource_type' => 'scene'])
             ->assertJsonFragment(['title' => 'The Desert']);
     }
 
+    /**
+     * Tests if it's possible to choose an option for 
+     * the current scene
+     *
+     * @return void
+     */
     public function testCanChooseSceneOption()
     {
-        $user = User::first();
-        $token = auth()->login($user);
-
         $this
             ->post('/v1/scene', [
                 'option' => 1
-            ], $this->getAuthHeader($token))
+            ], $this->getAuthHeader())
             ->assertOk()
             ->assertJsonFragment(['resource_type' => 'scene'])
             ->assertJsonFragment(['title' => 'House']);

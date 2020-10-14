@@ -2,6 +2,8 @@
 
 namespace Tests;
 
+use App\User;
+
 trait HttpHeaderTrait
 {
     /**
@@ -11,8 +13,13 @@ trait HttpHeaderTrait
      * @param string $token
      * @return array
      */
-    public function getAuthHeader(string $token): array
+    public function getAuthHeader(string $token = ''): array
     {
+        if (empty($token)) {
+            $user = User::first();
+            $token = auth()->login($user);
+        }
+
         return ['Authorization' => 'Bearer ' . $token];
     }
 }

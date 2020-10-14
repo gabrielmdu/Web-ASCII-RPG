@@ -38,11 +38,8 @@ class GameTest extends TestCase
      */
     public function testCanGetCurrentGame()
     {
-        $user = User::first();
-        $token = auth()->login($user);
-
         $this
-            ->get('/v1/game', $this->getAuthHeader($token))
+            ->get('/v1/game', $this->getAuthHeader())
             ->assertOk()
             ->assertJsonStructure(['adventure', 'player_items']);
     }
@@ -54,16 +51,13 @@ class GameTest extends TestCase
      */
     public function testCanSetCurrentGame()
     {
-        $user = User::first();
-        $token = auth()->login($user);
-
         // gets the game list to set the first one as the new game
         $gameList = $this->getGameList();
 
         $this
             ->post('/v1/game', [
                 'game_id' => $gameList[0]['id']
-            ], $this->getAuthHeader($token))
+            ], $this->getAuthHeader())
             ->assertOk()
             ->assertJsonStructure(['adventure', 'player_items']);
     }

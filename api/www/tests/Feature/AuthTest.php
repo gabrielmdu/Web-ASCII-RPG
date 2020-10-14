@@ -21,7 +21,7 @@ class AuthTest extends TestCase
      *
      * @return User The created user
      */
-    public function testCanCreateUser()
+    public function testCanCreateUser(): User
     {
         $user = factory(User::class)->make([
             'email' => self::USER_TEST_EMAIL,
@@ -40,7 +40,7 @@ class AuthTest extends TestCase
      * @depends testCanCreateUser
      * @return string Newly created user token
      */
-    public function testCanLogin()
+    public function testCanLogin(): string
     {
         $token = $this->createNewLoginToken();
 
@@ -57,7 +57,7 @@ class AuthTest extends TestCase
      * @param string $originalToken
      * @return string
      */
-    public function testCanRefreshLogin(string $originalToken)
+    public function testCanRefreshLogin(string $originalToken): string
     {
         $newToken = $this->postJson(
             '/v1/refresh',
@@ -75,9 +75,9 @@ class AuthTest extends TestCase
     /**
      * Tests if the user can be logged out
      *
-     * @return void
+     * @return string
      */
-    public function testCanLogoutUser()
+    public function testCanLogoutUser(): string
     {
         $token = $this->createNewLoginToken();
 
@@ -108,9 +108,9 @@ class AuthTest extends TestCase
     /**
      * Creates and asserts a new login token
      *
-     * @return void
+     * @return string
      */
-    private function createNewLoginToken()
+    private function createNewLoginToken(): string
     {
         return $this->postJSON(
             '/v1/login',

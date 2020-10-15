@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { fetchAuthPost, fetchGet } from '../utils';
-import { useLoggedUser } from '../hooks/useLoggedUser.js';
 
 import BackToMenu from './BackToMenu';
 
 import './GameList.scss';
-import { useHistory } from 'react-router-dom';
 
-const GameList = () => {
+const GameList = ({ user }) => {
   const [gameList, setGameList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedGameId, setSelectedGameId] = useState(null);
-  const [user] = useLoggedUser();
   const history = useHistory();
 
   useEffect(() => {

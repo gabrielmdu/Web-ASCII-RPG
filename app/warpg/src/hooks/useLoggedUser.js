@@ -5,6 +5,8 @@ export const useLoggedUser = () => {
   const [check, setCheck] = useState(true);
   const [user, setUser] = useState(null);
 
+  const checkUser = () => setCheck(!check);
+
   useEffect(() => {
     const token = localStorage.getItem('api_token');
 
@@ -35,5 +37,5 @@ export const useLoggedUser = () => {
     });
   }, [check]);
 
-  return [user, setCheck];
+  return [user, checkUser];
 };

@@ -33,7 +33,7 @@ const App = () => {
           </Route>
 
           <Route path="/game-list">
-            <GameList />
+            <GameList user={user} />
           </Route>
 
           <Route path="/about">

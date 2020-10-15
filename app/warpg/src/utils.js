@@ -59,6 +59,31 @@ export const login = async (email, password) => {
   return result;
 };
 
+export const logout = async () => {
+  const result = {
+    success: false,
+    message: ''
+  };
+
+  try {
+    const request = await fetchAuthPost('logout');
+    if (request.status === 200) {
+      const response = await request.json();
+
+      result.success = true;
+      result.message = response.message;
+    } else {
+      result.message = 'Failed loggin out';
+    }
+  } catch (e) {
+    result.message = e.message;
+  }
+
+  // it doesn't matter the result, the user will be logged out
+  localStorage.removeItem('api_token');
+  return result;
+};
+
 export const GlobalKeyUpEvent = ({ handler }) => {
   useEffect(() => {
     document.addEventListener('keyup', handler, false);

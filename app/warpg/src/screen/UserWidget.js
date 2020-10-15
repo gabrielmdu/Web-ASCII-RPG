@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import { common } from '../common/common.js';
+import { logout } from '../utils.js';
+
 import Dropdown from './Dropdown.js';
 import SignInModal from './modal/SignInModal.js';
-import { common } from '../common/common.js';
+
 import './UserWidget.scss';
 
 const UserWidget = ({ user, checkUser }) => {
@@ -12,7 +15,10 @@ const UserWidget = ({ user, checkUser }) => {
 
   const userItems = [{
     name: 'sign out x',
-    callback: () => { }
+    callback: async () => {
+      await logout();
+      checkUser();
+    }
   }];
 
   const guestItems = [{

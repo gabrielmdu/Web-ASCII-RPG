@@ -1,6 +1,12 @@
 .modal-buttons {
     flex-direction: column;
 
+    .modal-title {
+        width: 100%;
+        text-align: center;
+        padding: 0.2rem 0;
+    }
+
     .modal-text {
         margin-bottom: 0.75rem;
         padding: 0.35rem;

@@ -18,5 +18,12 @@ export const common = {
         SCENE: 'scene',
         NOTE: 'note',
         ITEM: 'item'
+    },
+    dialogTypes: {
+        CONFIRMATION: 'confirmation',
+        WARNING: 'warning',
+        ERROR: 'error',
+        SUCCESS: 'success',
+        NORMAL: 'normal'
     }
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import './Modal.scss';
 
-const Modal = ({ children, handleModalHide, modalClass }) => {
+const Modal = ({ children, handleModalHide, modalClass, modalStyle }) => {
   const className = modalClass ? modalClass : 'modal-common';
 
   return (
@@ -9,7 +9,10 @@ const Modal = ({ children, handleModalHide, modalClass }) => {
       className="modal-background"
       onClick={handleModalHide}
     >
-      <div className={'modal ' + className}>
+      <div
+        className={'modal ' + className}
+        style={modalStyle}
+      >
         {children}
       </div>
     </div>

@@ -19,7 +19,7 @@ const getTypeColor = type => {
 
 const ButtonsModal = ({ type, title, text, buttons }) => {
   return (
-    <Modal modalClass="modal-buttons">
+    <Modal modalClass="modal-buttons" modalStyle={{ borderColor: getTypeColor(type) }}>
       {title
         && <div
           className="modal-title"

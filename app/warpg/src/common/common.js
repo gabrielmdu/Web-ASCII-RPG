@@ -7,6 +7,7 @@ export const common = {
         COMMON: 'common',
         LOADING: 'loading',
         INVENTORY: 'inventory',
+        BUTTONS: 'buttons',
         SIGN_IN: 'sign_in',
         SIGN_UP: 'sign_up'
     },

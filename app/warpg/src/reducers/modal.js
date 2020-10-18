@@ -4,13 +4,15 @@ import {
   SHOW_COMMON_MODAL,
   SHOW_LOADING_MODAL,
   SHOW_INVENTORY_MODAL,
+  SHOW_BUTTONS_MODAL,
   HIDE_MODAL
 } from '../actions/modalActions.js';
 import { common } from '../common/common.js';
 
+import Modal from '../screen/modal/Modal.js';
 import LoadingModal from '../screen/modal/LoadingModal.js';
 import InventoryModal from '../screen/modal/InventoryModal.js';
-import Modal from '../screen/modal/Modal.js';
+import ButtonsModal from '../screen/modal/ButtonsModal.js';
 
 const initialState = {
   show: false
@@ -45,6 +47,20 @@ export const modal = (state = initialState, action) => {
           <InventoryModal
             items={action.items}
             handleClickItem={action.handleClickItem}
+          />
+      };
+
+    case SHOW_BUTTONS_MODAL:
+      return {
+        ...state,
+        modalType: common.modalTypes.BUTTONS,
+        show: true,
+        component:
+          <ButtonsModal
+            type={action.dialogType}
+            title={action.title}
+            text={action.text}
+            buttons={action.buttons}
           />
       };
 

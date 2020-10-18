@@ -1,18 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Tippy from '@tippyjs/react';
 import { CSSTransition } from 'react-transition-group';
 import { fetchAuthGet, fetchAuthPost, GlobalKeyUpEvent } from './utils.js';
 import { common } from './common/common.js';
 import { followCursor } from 'tippy.js';
+import {
+  hideModal,
+  showLoadingModal,
+  showInventoryModal,
+  showCommonModal
+} from './actions/modalActions.js';
 
-import Modal from './screen/modal/Modal.js';
-import LoadingModal from './screen/modal/LoadingModal.js';
-import InventoryModal from './screen/modal/InventoryModal.js';
 import Scene from './screen/Scene.js';
 
 import 'animate.css/animate.min.css';
 
 const Game = () => {
+  const dispatch = useDispatch();
   const mainPanel = useRef(null);
   // scene
   const [sceneInfo, setSceneInfo] = useState(null);
@@ -22,10 +27,8 @@ const Game = () => {
   // transitions
   const [isExited, setIsExited] = useState(false);
   const [outAnim, setOutAnim] = useState('');
-  // modal
-  const [showModal, setShowModal] = useState(false);
-  const [modalType, setModalType] = useState('');
-  const [modalContent, setModalContent] = useState('');
+  // modal storage info
+  const modal = useSelector(state => state.modal);
   // inventory
   const [inventory, setInventory] = useState([]);
   const defaultInvItem = {
@@ -70,18 +73,12 @@ const Game = () => {
     setShowScene(true);
   }, [nextSceneInfo, isExited]);
 
-  const createModal = (type, content) => {
-    setModalType(type);
-    setModalContent(content);
-    setShowModal(true);
-  };
-
   const setDestiny = async (index, option) => {
     if (!canSetDestiny) {
       return;
     }
 
-    createModal(common.modalTypes.LOADING);
+    dispatch(showLoadingModal());
     setCanSetDestiny(false);
 
     const request = await fetchAuthPost('scene', {
@@ -97,18 +94,18 @@ const Game = () => {
         if (info.data && info.data.used === true) {
           setInventory(inventory.filter(i => i.id !== currInvItem.item.id));
         }
-        createModal(common.modalTypes.COMMON, info.text);
+        dispatch(showCommonModal(info.text, () => dispatch(hideModal())));
         setCanSetDestiny(true);
         break;
 
       case common.resourceTypes.ITEM:
         setInventory([...inventory, info.attributes]);
-        createModal(common.modalTypes.COMMON, info.note);
+        dispatch(showCommonModal(info.note, () => dispatch(hideModal())));
         setCanSetDestiny(true);
         break;
 
       case common.resourceTypes.SCENE:
-        setShowModal(false);
+        dispatch(hideModal());
         setOutAnim(option.out_anim || sceneInfo.out_anim);
         setShowScene(false);
         setNextSceneInfo(info);
@@ -122,38 +119,17 @@ const Game = () => {
     }
   };
 
-  const handleModal = () => {
-    if (!showModal) {
-      return;
-    }
-
-    switch (modalType) {
-      case common.modalTypes.COMMON:
-        return <Modal handleModalHide={() => setShowModal(false)}>
-          {modalContent}
-        </Modal>;
-
-      case common.modalTypes.LOADING:
-        return <LoadingModal />;
-
-      case common.modalTypes.INVENTORY:
-        return <InventoryModal items={inventory} handleClickItem={handleClickInvItem} />;
-
-      default: return null;
-    }
-  };
-
   const handleKeyUp = ({ keyCode }) => {
     switch (keyCode) {
       case common.keys.I:
-        if (!showModal && canSetDestiny) {
-          createModal(common.modalTypes.INVENTORY);
+        if (!modal.show && canSetDestiny) {
+          dispatch(showInventoryModal(inventory, handleClickInvItem));
         }
         break;
 
       case common.keys.ESCAPE:
-        if (showModal && modalType === common.modalTypes.INVENTORY) {
-          setShowModal(false);
+        if (modal.show && modal.modalType === common.modalTypes.INVENTORY) {
+          dispatch(hideModal());
         } else if (currInvItem.using) {
           setCurrInvItem(defaultInvItem);
         }
@@ -169,13 +145,12 @@ const Game = () => {
       item: item
     });
 
-    setShowModal(false);
+    dispatch(hideModal());
   };
 
   return (
     <>
       <GlobalKeyUpEvent handler={handleKeyUp} />
-      {handleModal()}
 
       <div ref={mainPanel} className="main-panel">
         <div className="pre-wrapper">

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { useLoggedUser } from './hooks/useLoggedUser.js';
 
@@ -13,6 +14,7 @@ import './App.scss';
 
 const App = () => {
   const [user, setCheck] = useLoggedUser();
+  const modal = useSelector(state => state.modal);
 
   /*const resetGame = async () => {
     setGameInfo(null);
@@ -24,6 +26,8 @@ const App = () => {
   return (
     <Router>
       <div className="main-container">
+
+        {modal.show && modal.component}
 
         <UserWidget user={user} checkUser={() => setCheck()} />
         <Switch>

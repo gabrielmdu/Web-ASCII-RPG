@@ -17,7 +17,7 @@ const getTypeColor = type => {
   }
 };
 
-const ButtonsModal = ({ type, title, text, buttons }) => {
+const ButtonsModal = ({ children, type, title, buttons }) => {
   return (
     <Modal modalClass="modal-buttons" modalStyle={{ borderColor: getTypeColor(type) }}>
       {title
@@ -27,7 +27,9 @@ const ButtonsModal = ({ type, title, text, buttons }) => {
           {title}
         </div>}
 
-      <div className="modal-text">{text}</div>
+      <div className="modal-content">
+        {children}
+      </div>
 
       <div className="modal-buttons-wrapper">
         {buttons.map(b =>

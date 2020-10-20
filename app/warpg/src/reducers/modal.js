@@ -5,6 +5,7 @@ import {
   SHOW_LOADING_MODAL,
   SHOW_INVENTORY_MODAL,
   SHOW_BUTTONS_MODAL,
+  SHOW_SIGN_IN_MODAL,
   HIDE_MODAL
 } from '../actions/modalActions.js';
 import { common } from '../common/common.js';
@@ -13,6 +14,7 @@ import Modal from '../screen/modal/Modal.js';
 import LoadingModal from '../screen/modal/LoadingModal.js';
 import InventoryModal from '../screen/modal/InventoryModal.js';
 import ButtonsModal from '../screen/modal/ButtonsModal.js';
+import SignInModal from '../screen/modal/SignInModal.js';
 
 const initialState = {
   show: false
@@ -59,9 +61,18 @@ export const modal = (state = initialState, action) => {
           <ButtonsModal
             type={action.dialogType}
             title={action.title}
-            text={action.text}
             buttons={action.buttons}
-          />
+          >
+            {action.content}
+          </ButtonsModal>
+      };
+
+    case SHOW_SIGN_IN_MODAL:
+      return {
+        ...state,
+        show: true,
+        component:
+          <SignInModal handleSuccess={action.handleSuccess} />
       };
 
     case HIDE_MODAL:

@@ -1,18 +1,15 @@
-import React, { useState } from 'react';
-import { common } from '../common/common.js';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { hideModal, showSignInModal } from '../actions/modalActions.js';
 import { logout } from '../utils.js';
 
 import Dropdown from './Dropdown.js';
-import SignInModal from './modal/SignInModal.js';
 
 import './UserWidget.scss';
 
 const UserWidget = ({ user, checkUser }) => {
-  const [modal, setModal] = useState({
-    show: false,
-    type: null
-  });
-
+  const dispatch = useDispatch();
+  
   const userItems = [{
     name: 'sign out x',
     callback: async () => {
@@ -23,39 +20,17 @@ const UserWidget = ({ user, checkUser }) => {
 
   const guestItems = [{
     name: 'sign in >',
-    callback: () => {
-      setModal({
-        show: true,
-        type: common.modalTypes.SIGN_IN
-      });
-    }
+    callback: () => dispatch(showSignInModal(() => {
+      checkUser();
+      dispatch(hideModal());
+    }))
   }, {
     name: 'sign up ^',
     callback: () => { }
   }];
 
-  const handleModal = () => {
-    if (!modal.show) {
-      return;
-    }
-
-    switch (modal.type) {
-      case common.modalTypes.SIGN_IN:
-        return <SignInModal
-          handleClose={() => setModal({ show: false })}
-          handleSuccess={() => {
-            checkUser();
-            setModal({ show: false });
-          }}
-        />;
-
-      default: return null;
-    }
-  };
-
   return (
     <>
-      {handleModal()}
       <div className={'user-widget-wrapper'}>
         <div className={'user-widget'}>
           Welcome,&nbsp;

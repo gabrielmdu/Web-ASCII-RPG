@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\Scene as SceneResource;
-use App\Scene;
 use App\SceneNote;
 use App\SceneItem;
+use App\SceneOption;
 use Illuminate\Http\Request;
 
 class SceneController extends Controller
@@ -45,11 +45,11 @@ class SceneController extends Controller
 
         $statusItem = $status->getItem($itemId);
         $gameItem = $status->game->getItem($itemId);
-        
+
         $note = "You can't use {$gameItem['name']} here";
         $data = ['used' => false];
-        
-        if (isset($option['need_item']['id']) && $option['need_item']['id'] === $itemId) {
+
+        if ($option->getNeedItem() && $option->getNeedItem()->getId() === $itemId) {
             if ($status->useItem($statusItem)) {
                 $note = "Used {$gameItem['name']} succesfully";
                 $data = ['used' => true];
@@ -68,32 +68,32 @@ class SceneController extends Controller
             ->user()
             ->gameStatus;
 
-        switch (Scene::getOptionType($option)) {
-            case Scene::OPTION_TYPE_NEED_ITEM:
-                $neededItem = $status->getItem($option['need_item']['id']);
+        switch ($option->getType()) {
+            case SceneOption::OPTION_TYPE_NEED_ITEM:
+                $neededItem = $status->getItem($option->getNeedItem()->getId());
                 if ($neededItem && $neededItem['used']) {
-                    $status->setCurrentScene($option['destiny']);
+                    $status->setCurrentScene($option->getDestiny());
                 } else {
-                    return new SceneNote($option['need_item']['note']);
+                    return new SceneNote($option->getNeedItem()->getNote());
                 }
             break;
-            
-            case Scene::OPTION_TYPE_ITEM:
-                if ($status->getItem($option['item']['id'])) {
-                    return new SceneNote($option['item']['with']);
+
+            case SceneOption::OPTION_TYPE_ITEM:
+                if ($status->getItem($option->getItem()->getId())) {
+                    return new SceneNote($option->getItem()->getWith());
                 } else {
-                    $status->storeItem($optionIndex, $option['item']['id']);
-                    return new SceneItem($option['item']['without'],
-                        $status->game->getItem($option['item']['id']));
+                    $status->storeItem($optionIndex, $option->getItem()->getId());
+                    return new SceneItem($option->getItem()->getWithout(),
+                        $status->game->getItem($option->getItem()->getId()));
                 }
 
-            case Scene::OPTION_TYPE_NOTE:
-                return new SceneNote($option['note']);
-            
-            case Scene::OPTION_TYPE_NORMAL:
-                $status->setCurrentScene($option['destiny']);
+            case SceneOption::OPTION_TYPE_NOTE:
+                return new SceneNote($option->getNote());
+
+            case SceneOption::OPTION_TYPE_NORMAL:
+                $status->setCurrentScene($option->getDestiny());
         }
-        
+
         return $this->getCurrentScene();
     }
 }

@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\Scene as SceneResource;
 use App\SceneNote;
-use App\SceneItem;
-use App\SceneOption;
 use Illuminate\Http\Request;
 
 class SceneController extends Controller
@@ -62,38 +60,6 @@ class SceneController extends Controller
     private function getSceneResource(int $optionIndex)
     {
         $currScene = $this->getCurrentScene(false);
-        $option = $currScene->getOption($optionIndex);
-
-        $status = auth()
-            ->user()
-            ->gameStatus;
-
-        switch ($option->getType()) {
-            case SceneOption::OPTION_TYPE_NEED_ITEM:
-                $neededItem = $status->getItem($option->getNeedItem()->getId());
-                if ($neededItem && $neededItem['used']) {
-                    $status->setCurrentScene($option->getDestiny());
-                } else {
-                    return new SceneNote($option->getNeedItem()->getNote());
-                }
-            break;
-
-            case SceneOption::OPTION_TYPE_ITEM:
-                if ($status->getItem($option->getItem()->getId())) {
-                    return new SceneNote($option->getItem()->getWith());
-                } else {
-                    $status->storeItem($optionIndex, $option->getItem()->getId());
-                    return new SceneItem($option->getItem()->getWithout(),
-                        $status->game->getItem($option->getItem()->getId()));
-                }
-
-            case SceneOption::OPTION_TYPE_NOTE:
-                return new SceneNote($option->getNote());
-
-            case SceneOption::OPTION_TYPE_NORMAL:
-                $status->setCurrentScene($option->getDestiny());
-        }
-
-        return $this->getCurrentScene();
+        return $currScene->getResource($optionIndex);
     }
 }

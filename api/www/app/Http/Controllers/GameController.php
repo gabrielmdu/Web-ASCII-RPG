@@ -11,15 +11,14 @@ class GameController extends Controller
 {
     public function getCurrentGame()
     {
-        $status = auth()
+        $game = auth()
             ->user()
-            ->gameStatus;
+            ->gameStatus
+            ->game;
 
-        if ($status) {
-            return new GameResource($status->game);
-        }
-
-        return response()->json(null);
+        return $game
+            ? new GameResource($game)
+            : response()->json(null);
     }
 
     public function setCurrentGame(Request $request)

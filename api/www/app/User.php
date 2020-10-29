@@ -44,7 +44,9 @@ class User extends Authenticatable implements JWTSubject
 
     public function gameStatus()
     {
-        return $this->hasOne(GameStatus::class);
+        return $this
+            ->hasOne(GameStatus::class)
+            ->withDefault(['user_id' => $this->id]);
     }
 
     /**

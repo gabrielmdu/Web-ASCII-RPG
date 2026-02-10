@@ -9,6 +9,7 @@ import { ref } from 'vue';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
 import WrSubmitButton from '@/components/ui/WrForm/WrSubmitButton.vue';
+import WrPasswordInput from '@/components/ui/WrForm/WrPasswordInput.vue';
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -95,14 +96,7 @@ const onSubmit = handleSubmit(async (values) => {
           <VeeField v-slot="{ field, errors }" name="password">
             <Field :data-invalid="!!errors.length">
               <FieldLabel class="text-lime-400" for="form-password"> Password </FieldLabel>
-              <Input
-                class="rounded-none border-2 border-lime-800 bg-transparent focus-visible:ring-lime-500 placeholder:text-lime-900"
-                id="form-password"
-                type="password"
-                v-bind="field"
-                :aria-invalid="!!errors.length"
-              />
-              <FieldError v-if="errors.length" :errors="errors" />
+              <WrPasswordInput :field="field" :errors="errors" />
             </Field>
           </VeeField>
 
@@ -111,14 +105,7 @@ const onSubmit = handleSubmit(async (values) => {
               <FieldLabel class="text-lime-400" for="form-password-confirmation">
                 Password confirmation
               </FieldLabel>
-              <Input
-                class="rounded-none border-2 border-lime-800 bg-transparent focus-visible:ring-lime-500 placeholder:text-lime-900"
-                id="form-password-confirmation"
-                type="password"
-                v-bind="field"
-                :aria-invalid="!!errors.length"
-              />
-              <FieldError v-if="errors.length" :errors="errors" />
+              <WrPasswordInput :field="field" :errors="errors" />
             </Field>
           </VeeField>
         </FieldGroup>

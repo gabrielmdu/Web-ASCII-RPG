@@ -9,12 +9,7 @@ import { useRouter } from 'vue-router';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
 import WrSubmitButton from '@/components/ui/WrForm/WrSubmitButton.vue';
-import {
-  InputGroup,
-  InputGroupInput,
-  InputGroupButton,
-  InputGroupAddon,
-} from './input-group/index';
+import WrPasswordInput from '@/components/ui/WrForm/WrPasswordInput.vue';
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -31,11 +26,6 @@ const formSchema = toTypedSchema(
 const { handleSubmit } = useForm({
   validationSchema: formSchema,
 });
-
-const passwordType = ref<string>('password');
-
-const onShowPassword = () =>
-  (passwordType.value = passwordType.value == 'password' ? 'text' : 'password');
 
 const onSubmit = handleSubmit(async (values) => {
   error.value = '';
@@ -79,23 +69,7 @@ const onSubmit = handleSubmit(async (values) => {
                   [ RECOVER_PASSWORD ]
                 </RouterLink>
               </div>
-              <InputGroup
-                class="rounded-none border-2 border-lime-800 bg-transparent focus-visible:ring-lime-500"
-              >
-                <InputGroupInput
-                  class=""
-                  id="form-password"
-                  :type="passwordType"
-                  v-bind="field"
-                  :aria-invalid="!!errors.length"
-                />
-                <InputGroupAddon align="inline-end">
-                  <InputGroupButton variant="secondary" @click.prevent="onShowPassword">
-                    {{ passwordType === 'password' ? 'O' : '-' }}
-                  </InputGroupButton>
-                </InputGroupAddon>
-              </InputGroup>
-              <FieldError v-if="errors.length" :errors="errors" />
+              <WrPasswordInput :field="field" :errors="errors" />
             </Field>
           </VeeField>
         </FieldGroup>

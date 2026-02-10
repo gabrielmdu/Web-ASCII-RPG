@@ -5,6 +5,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
@@ -37,8 +38,9 @@ const handleLogout = async () => {
                   {{ authStore.user?.name }}
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent class="w-32 rounded-none bg-gray-900 text-purple-400" align="end">
                 <DropdownMenuItem @click="">My profile</DropdownMenuItem>
+                <DropdownMenuSeparator />
                 <DropdownMenuItem @click="handleLogout">Logout</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

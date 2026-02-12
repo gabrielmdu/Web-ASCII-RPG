@@ -1,0 +1,175 @@
+{
+    "game": {
+        "name": "Basic Adventure",
+        "slug": "basic-adventure-demo",
+        "version": "1",
+        "description": "A basic adventure where the main WARPG's features are shown",
+        "public": false,
+        "settings": {
+            "colors": {
+                "color": "white",
+                "background": "black",
+                "title_color": "unset",
+                "title_background": "unset",
+                "image_color": "unset",
+                "image_background": "unset",
+                "text_color": "white",
+                "text_background": "unset",
+                "choice_color": "unset",
+                "choice_background": "unset",
+                "choice_hover_color": "orange",
+                "choice_hover_background": "unset"
+            },
+            "animations": {
+                "in": "fadeIn",
+                "out": "fadeOut"
+            },
+            "chars": {
+                "header": {
+                    "top_char": "-",
+                    "top_left": "**",
+                    "top_right": "**",
+                    "mid_left": "**",
+                    "mid_right": "**",
+                    "title_left": ">> ",
+                    "title_right": " <<",
+                    "bottom_char": "-",
+                    "bottom_left": "|*",
+                    "bottom_right": "*|"
+                },
+                "image": {
+                    "left": "||",
+                    "right": "||"
+                },
+                "text": {
+                    "top_char": "-",
+                    "top_left": "|*",
+                    "top_right": "*|",
+                    "left": "||",
+                    "right": "||",
+                    "bottom_char": "~",
+                    "bottom_left": "~~",
+                    "bottom_right": "~~"
+                },
+                "choice": {
+                    "left": "||",
+                    "right": "||",
+                    "bottom_char": "-",
+                    "bottom_left": "**",
+                    "bottom_right": "**"
+                }
+            }
+        }
+    },
+    "player": {
+        "default_name": "Adventurer",
+        "hp": 100,
+        "strength": 5,
+        "dexterity": 5,
+        "gold": 50,
+        "items": [
+            "hp_potion_small",
+            "hp_potion_medium"
+        ]
+    },
+    "items": [
+        {
+            "id": "house_key",
+            "name": "Key",
+            "description": "A common key.",
+            "unique": true
+        }
+    ],
+    "scenes": [
+        {
+            "title": "The Desert",
+            "slug": "desert",
+            "type": "view",
+            "media": {
+                "image": [
+                    "desert_1.txt",
+                    "desert_2.txt"
+                ],
+                "interval": 1000
+            },
+            "text": "You wake up in the middle of an unknown land. It's hot and dry, and you feel tired. Still dizzy, suddenly your eyes point to a creature. It's a snake, and it doesn't seem friendly as its tongue and tail keep moving in an hypnotic way. Your next move can seal your destiny.",
+            "settings": {
+                "colors": {
+                    "title_color": "#ffca68",
+                    "text_color": "#ffca68",
+                    "image_color": "rgb(23, 30, 100)",
+                    "image_background": "rgb(150, 220, 10)",
+                    "choice_color": "#e4ff00",
+                    "choice_hover_color": "#6eff00"
+                },
+                "animations": {
+                    "in": "backInDown"
+                }
+            },
+            "choices": [
+                {
+                    "text": "Go forward, slowly.",
+                    "target": "cemetery",
+                    "settings": {
+                        "animations": {
+                            "out": "flipOutY"
+                        }
+                    }
+                },
+                {
+                    "text": "Go to your right.",
+                    "target": "house",
+                    "settings": {
+                        "animations": {
+                            "out": "rotateOutDownLeft"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "title": "Cemetery",
+            "slug": "cemetery",
+            "type": "end",
+            "media": {
+                "image": [
+                    "cemetery.txt"
+                ]
+            },
+            "text": "You were brave to face the snake, but not smart enough to know it would attack fiercely. You are dead, resting forever in your grave.",
+            "settings": {
+                "colors": {
+                    "image_color": "#9a0000",
+                    "image_background": "#060502",
+                    "title_color": "#883f00",
+                    "text_background": "#380101"
+                },
+                "animations": {
+                    "in": "flipInY"
+                }
+            }
+        },
+        {
+            "title": "House",
+            "slug": "house",
+            "type": "end",
+            "media": {
+                "image": [
+                    "house_1.txt",
+                    "house_2.txt"
+                ],
+                "interval": 1500
+            },
+            "text": "A beautiful, eerie house stands there. There's no apparent movement inside.",
+            "settings": {
+                "colors": {
+                    "image_color": "#afafaf",
+                    "image_background": "#202229"
+                },
+                "animations": {
+                    "in": "rotateInDownLeft"
+                }
+            }
+        }
+    ]
+}

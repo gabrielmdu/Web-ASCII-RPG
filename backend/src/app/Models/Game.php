@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 
 class Game extends Model
 {
     protected $casts = [
+        'public' => 'bool',
         'settings' => 'array',
     ];
 
@@ -38,5 +40,12 @@ class Game extends Model
     public function scenes(): HasMany
     {
         return $this->hasMany(Scene::class);
+    }
+
+    public function startScene(): HasOne
+    {
+        return $this->scenes()
+            ->one()
+            ->where('type', 'start');
     }
 }

@@ -5,9 +5,6 @@ namespace Tests\Feature\Auth;
 use App\Models\User;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
@@ -72,7 +69,7 @@ class EmailVerificationTest extends TestCase
             VerifyEmail::class,
             function ($notification) use ($user) {
 
-                // This is the signed backend verification URL
+                // this is the signed backend verification URL
                 $verificationUrl = URL::temporarySignedRoute(
                     'verification.verify',
                     config('auth.verification.expire', 60),
@@ -85,7 +82,8 @@ class EmailVerificationTest extends TestCase
                 // call the verification URL
                 $this->actingAs($user)
                     ->get($verificationUrl)
-                    ->assertRedirect(); // fortify redirects after success
+                    ->assertOk()
+                    ->assertJsonStructure(['user']);
 
                 return true;
             }

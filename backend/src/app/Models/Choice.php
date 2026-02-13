@@ -17,8 +17,8 @@ class Choice extends Model
         return $this->belongsTo(Scene::class);
     }
 
-    public function target(): HasOne
+    public function target(): BelongsTo
     {
-        return $this->hasOne(Scene::class, 'target_id');
+        return $this->belongsTo(Scene::class, 'target_id');
     }
 }

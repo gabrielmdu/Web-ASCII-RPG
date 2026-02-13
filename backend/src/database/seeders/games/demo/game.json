@@ -1,9 +1,9 @@
 {
     "game": {
-        "name": "Basic Adventure",
+        "name": "Basic Adventure Demo",
         "slug": "basic-adventure-demo",
         "version": "1",
-        "description": "A basic adventure where the main WARPG's features are shown",
+        "description": "A basic adventure where the main WARPG's features are shown.",
         "public": false,
         "settings": {
             "colors": {
@@ -84,7 +84,7 @@
         {
             "title": "The Desert",
             "slug": "desert",
-            "type": "view",
+            "type": "start",
             "media": {
                 "image": [
                     "desert_1.txt",

@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\SceneType;
 use App\Models\Game;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -18,7 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(Game::class)->constrained();
             $table->string('slug');
             $table->string('title');
-            $table->string('type', 20);
+            $table->enum('type', SceneType::cases());
             $table->json('media');
             $table->text('text');
             $table->json('settings');

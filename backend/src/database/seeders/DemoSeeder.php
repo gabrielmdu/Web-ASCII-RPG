@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Enums\SceneType;
 use App\Models\Choice;
 use App\Models\Game;
+use App\Models\GameSession;
 use App\Models\Scene;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -110,5 +111,12 @@ class DemoSeeder extends Seeder
                 $this->createChoice($scene->id, $target->id, $choice);
             }
         }
+
+        GameSession::create([
+            'player_id' => 1,
+            'game_id' => 1,
+            'current_scene_id' => 1,
+            'status' => 'active',
+        ]);
     }
 }

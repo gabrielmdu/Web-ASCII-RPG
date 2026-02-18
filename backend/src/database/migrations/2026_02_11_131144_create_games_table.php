@@ -14,6 +14,7 @@ return new class extends Migration
     {
         Schema::create('games', function (Blueprint $table) {
             $table->id();
+
             $table->foreignIdFor(User::class, 'creator_id')->constrained();
             $table->string('name', 80);
             $table->string('slug')->unique();

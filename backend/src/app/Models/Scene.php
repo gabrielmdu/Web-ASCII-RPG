@@ -24,4 +24,9 @@ class Scene extends Model
     {
         return $this->hasMany(Choice::class);
     }
+
+    public function sessions(): HasMany
+    {
+        return $this->hasMany(GameSession::class, 'current_scene_id');
+    }
 }

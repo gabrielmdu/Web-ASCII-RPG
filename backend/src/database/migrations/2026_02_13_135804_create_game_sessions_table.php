@@ -28,11 +28,12 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
+            $table->unique(['player_id', 'game_id']);
             $table->index(['player_id', 'game_id', 'status']);
             $table->index(['game_id', 'status', 'updated_at']);
             $table->index(['game_id', 'current_scene_id', 'status']);
-            $table->index(['updated_at', 'game_id','player_id']);
-            $table->index(['created_at', 'game_id','player_id']);
+            $table->index(['updated_at', 'game_id', 'player_id']);
+            $table->index(['created_at', 'game_id', 'player_id']);
         });
     }
 

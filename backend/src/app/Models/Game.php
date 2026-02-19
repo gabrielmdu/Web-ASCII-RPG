@@ -48,4 +48,9 @@ class Game extends Model
             ->one()
             ->where('type', 'start');
     }
+
+    public function sessions(): HasMany
+    {
+        return $this->hasMany(GameSession::class);
+    }
 }

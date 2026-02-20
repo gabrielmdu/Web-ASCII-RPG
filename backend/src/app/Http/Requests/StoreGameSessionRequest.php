@@ -28,8 +28,8 @@ class StoreGameSessionRequest extends FormRequest
             'game_id' => [
                 'required',
                 'exists:games,id',
-                new MaxActiveSessions(),
-                new UniqueActiveGameSession(),
+                new MaxActiveSessions($this->user()),
+                new UniqueActiveGameSession($this->user()),
             ]
         ];
     }

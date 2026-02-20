@@ -5,10 +5,13 @@ namespace App\Rules;
 use App\Models\User;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Support\Facades\Auth;
 
 class UniqueActiveGameSession implements ValidationRule
 {
+    public function __construct(
+        private User $user
+    ) {}
+
     /**
      * Run the validation rule.
      *
@@ -16,9 +19,7 @@ class UniqueActiveGameSession implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        /** @var User $user */
-        $user = Auth::user();
-        $session = $user->gameSessions()
+        $session = $this->user->gameSessions()
             ->active()
             ->where('game_id', $value)
             ->exists();

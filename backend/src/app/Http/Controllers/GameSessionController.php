@@ -10,14 +10,15 @@ use App\Models\User;
 use App\Services\GameSessionService;
 use Illuminate\Http\Request;
 
-class UserGameSessionController extends Controller
+class GameSessionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(User $user)
+    public function index(Request $request)
     {
-        $sessions = $user->gameSessions()
+        $sessions = $request->user()
+            ->gameSessions()
             ->paginate();
 
         return GameSessionResource::collection($sessions);
@@ -26,8 +27,9 @@ class UserGameSessionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreGameSessionRequest $request, GameSessionService $service, User $user)
+    public function store(StoreGameSessionRequest $request, GameSessionService $service)
     {
+        $user = $request->user();
         $session = $service->createGameSession($user, $request->validated('game_id'));
 
         return new GameSessionResource($session)
@@ -38,7 +40,7 @@ class UserGameSessionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user, GameSession $session)
+    public function show(GameSession $session)
     {
         return new GameSessionResource($session);
     }
@@ -46,7 +48,7 @@ class UserGameSessionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, GameSession $session)
     {
         //
     }
@@ -54,7 +56,7 @@ class UserGameSessionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(GameSession $session)
     {
         //
     }

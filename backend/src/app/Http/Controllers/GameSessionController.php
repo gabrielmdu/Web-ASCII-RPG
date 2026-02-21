@@ -30,7 +30,7 @@ class GameSessionController extends Controller
     public function store(StoreGameSessionRequest $request, GameSessionService $service)
     {
         $user = $request->user();
-        $session = $service->createGameSession($user, $request->validated('game_id'));
+        $session = $service->createGameSession($user, $request->validated('gameId'));
 
         return new GameSessionResource($session)
             ->response()

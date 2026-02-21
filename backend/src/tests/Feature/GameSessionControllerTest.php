@@ -45,7 +45,7 @@ class GameSessionControllerTest extends TestCase
             ->create();
 
         $this->actingAs($this->user)
-            ->postJson('/api/game-sessions', ['game_id' => $scene->game->id])
+            ->postJson('/api/game-sessions', ['gameId' => $scene->game->id])
             ->assertCreated();
 
         $this->assertDatabaseHas('game_sessions', [
@@ -60,8 +60,8 @@ class GameSessionControllerTest extends TestCase
         $missingGameId = 99;
 
         $this->actingAs($this->user)
-            ->postJson('/api/game-sessions', ['game_id' => $missingGameId])
-            ->assertJsonValidationErrors('game_id')
+            ->postJson('/api/game-sessions', ['gameId' => $missingGameId])
+            ->assertJsonValidationErrors('gameId')
             ->assertUnprocessable();
 
         $this->assertDatabaseCount('game_sessions', 0);
@@ -72,11 +72,11 @@ class GameSessionControllerTest extends TestCase
         $session = GameSession::factory()->create(['player_id' => $this->user->id]);
 
         $response = $this->actingAs($this->user)
-            ->postJson('/api/game-sessions', ['game_id' => $session->game->id])
-            ->assertJsonValidationErrors('game_id')
+            ->postJson('/api/game-sessions', ['gameId' => $session->game->id])
+            ->assertJsonValidationErrors('gameId')
             ->assertUnprocessable();
 
-        $this->assertStringContainsString('active session', $response->json('errors.game_id.0'));
+        $this->assertStringContainsString('active session', $response->json('errors.gameId.0'));
 
         $this->assertDatabaseCount('game_sessions', 1);
     }
@@ -88,11 +88,11 @@ class GameSessionControllerTest extends TestCase
             ->create();
 
         $response = $this->actingAs($this->user)
-            ->postJson('/api/game-sessions', ['game_id' => $game->id])
-            ->assertJsonValidationErrors('game_id')
+            ->postJson('/api/game-sessions', ['gameId' => $game->id])
+            ->assertJsonValidationErrors('gameId')
             ->assertUnprocessable();
 
-        $this->assertStringContainsString('active adventures', $response->json('errors.game_id.0'));
+        $this->assertStringContainsString('active adventures', $response->json('errors.gameId.0'));
 
         $this->assertDatabaseCount('game_sessions', 5);
     }

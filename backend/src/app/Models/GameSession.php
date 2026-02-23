@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class GameSession extends Model
 {
@@ -38,6 +39,16 @@ class GameSession extends Model
     public function currentScene(): BelongsTo
     {
         return $this->belongsTo(Scene::class, 'current_scene_id');
+    }
+
+    public function currentChoices(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            Choice::class,
+            Scene::class,
+            firstKey: 'id',
+            localKey: 'current_scene_id'
+        )->orderBy('choices.id');
     }
 
     #[Scope]

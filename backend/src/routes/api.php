@@ -40,6 +40,7 @@ Route::name('game-session.')
         Route::get('/', [GameSessionController::class, 'index'])->name('index');
         Route::post('/', [GameSessionController::class, 'store'])->name('store');
         Route::get('/{session}', [GameSessionController::class, 'show'])->name('show');
+        Route::post('/{session}/select-target', [GameSessionController::class, 'selectTarget'])->name('select-target');
         //Route::match(['put', 'patch'], '/{post}', [PostController::class, 'update'])->name('update');
         //Route::delete('/{post}', [PostController::class, 'destroy'])->name('destroy');
     });

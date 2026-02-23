@@ -32,4 +32,9 @@ class Scene extends Model
     {
         return $this->hasMany(GameSession::class, 'current_scene_id');
     }
+
+    public function isEnd(): bool
+    {
+        return $this->type === SceneType::END;
+    }
 }

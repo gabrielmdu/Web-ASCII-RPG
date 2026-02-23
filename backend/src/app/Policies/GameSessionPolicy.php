@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\GameSessionStatus;
 use App\Models\GameSession;
 use App\Models\User;
 
@@ -32,11 +33,21 @@ class GameSessionPolicy
     }
 
     /**
+     * Determine whether the user can choose a target for the 
+     * session's current scene.
+     */
+    public function selectTarget(User $user, GameSession $gameSession): bool
+    {
+        return $gameSession->player_id === $user->id &&
+            $gameSession->status === GameSessionStatus::ACTIVE;
+    }
+
+    /**
      * Determine whether the user can update the model.
      */
     public function update(User $user, GameSession $gameSession): bool
     {
-        return $gameSession->player_id === $user->id;;
+        return $gameSession->player_id === $user->id;
     }
 
     /**

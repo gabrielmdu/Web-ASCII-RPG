@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SelectTargetGameSessionRequest;
 use App\Http\Requests\StoreGameSessionRequest;
 use App\Http\Resources\GameSessionResource;
-use App\Models\Game;
 use App\Models\GameSession;
-use App\Models\User;
 use App\Services\GameSessionService;
 use Illuminate\Http\Request;
 
@@ -43,6 +42,18 @@ class GameSessionController extends Controller
     public function show(GameSession $session)
     {
         return new GameSessionResource($session);
+    }
+
+    /**
+     * Select a choice from the current session's scene.
+     */
+    public function selectTarget(
+        SelectTargetGameSessionRequest $request,
+        GameSessionService $service,
+        GameSession $session
+    ) {
+        $service->selectTarget($session, $request->validated('choiceIndex'));
+        return response()->noContent();
     }
 
     /**

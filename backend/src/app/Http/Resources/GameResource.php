@@ -24,8 +24,8 @@ class GameResource extends JsonResource
             'version' => $this->version,
             'lastModified' => $this->last_modified,
             'settings' => $this->settings,
-            'scenes_count' => $this->whenCounted('scenes'),
-            'scenes_url' => route('game.scenes.index', $this->id),
+            'scenesCount' => $this->whenCounted('scenes'),
+            'scenesUrl' => route('game.scenes.index', $this->id),
         ];
     }
 }

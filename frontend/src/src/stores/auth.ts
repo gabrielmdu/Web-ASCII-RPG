@@ -10,7 +10,7 @@ interface State {
 interface User {
   name: string;
   email: string;
-  is_verified: boolean;
+  isVerified: boolean;
 }
 
 const authChannel = new BroadcastChannel('auth-channel');
@@ -36,7 +36,7 @@ export const useAuthStore = defineStore('auth', {
   }),
   getters: {
     isAuthenticated: (state): boolean => !!state.user,
-    isVerified: (state): boolean => (!!state.user ? state.user.is_verified : false),
+    isVerified: (state): boolean => (!!state.user ? state.user.isVerified : false),
   },
   actions: {
     async fetchUser() {

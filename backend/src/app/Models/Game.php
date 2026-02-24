@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -55,5 +57,19 @@ class Game extends Model
     public function sessions(): HasMany
     {
         return $this->hasMany(GameSession::class);
+    }
+
+    #[Scope]
+    protected function public(Builder $query): void
+    {
+        $query->where('public', true);
+    }
+
+    #[Scope]
+    protected function withUserSessions(Builder $query, int $userId): void
+    {
+        $query->with([
+            'sessions' => fn($q) => $q->where('player_id', $userId)
+        ]);
     }
 }

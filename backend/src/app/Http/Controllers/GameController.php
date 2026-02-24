@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\GameResource;
 use App\Models\Game;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GameController extends Controller
 {
@@ -13,11 +14,17 @@ class GameController extends Controller
      */
     public function index()
     {
-        $games = Game::with('creator')
-            ->withCount('scenes')
-            ->paginate();
+        $games = Game::with('creator')->withCount('scenes');
 
-        return GameResource::collection($games);
+        $user = Auth::guard('sanctum')->user();
+
+        if ($user) {
+            $games->withUserSessions($user->id);
+        } else {
+            $games->public();
+        }
+
+        return GameResource::collection($games->paginate());
     }
 
     /**

@@ -18,7 +18,9 @@ class GameSessionController extends Controller
     {
         $sessions = $request->user()
             ->gameSessions()
-            ->paginate();
+            ->orderByStatus()
+            ->latest('updated_at')
+            ->paginate(10);
 
         return GameSessionResource::collection($sessions);
     }

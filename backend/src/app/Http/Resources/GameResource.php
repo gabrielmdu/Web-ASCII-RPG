@@ -24,6 +24,7 @@ class GameResource extends JsonResource
             'version' => $this->version,
             'lastModified' => $this->last_modified,
             'settings' => $this->settings,
+            'sessions' => $this->whenLoaded('sessions'),
             'scenesCount' => $this->whenCounted('scenes'),
             'scenesUrl' => route('game.scenes.index', $this->id),
         ];

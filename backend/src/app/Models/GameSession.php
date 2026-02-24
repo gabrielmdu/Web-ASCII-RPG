@@ -56,4 +56,13 @@ class GameSession extends Model
     {
         $query->where('status', GameSessionStatus::ACTIVE);
     }
+
+    #[Scope]
+    public function orderByStatus(Builder $query): void
+    {
+        $statusNames = array_column(GameSessionStatus::cases(), 'value');
+        $statuses = "'" . implode("','", $statusNames) . "'";
+
+        $query->orderByRaw("FIELD(status, {$statuses})");
+    }
 }

@@ -14,6 +14,16 @@ class GameSessionResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'playerId' => $this->player_id,
+            'gameId' => $this->game_id,
+            'status' => $this->status,
+            'currentSceneId' => $this->current_scene_id,
+            'settings' => $this->settings,
+            'history' => $this->history,
+            'createdAt' => $this->created_at,
+            'updatedAt' => $this->updated_at,
+        ];
     }
 }

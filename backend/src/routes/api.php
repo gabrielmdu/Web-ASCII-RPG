@@ -11,11 +11,11 @@ Route::get('/user', function (Request $request) {
 })->name('user')
     ->middleware('auth:sanctum');
 
+Route::get('/games', [GameController::class, 'index'])->name('game.index');
 Route::name('game.')
     ->prefix('games')
     ->middleware('auth:sanctum')
     ->group(function () {
-        Route::get('/', [GameController::class, 'index'])->name('index');
         //Route::post('/', [PostController::class, 'store'])->name('store');
         Route::get('/{game}', [GameController::class, 'show'])->name('show');
         //Route::match(['put', 'patch'], '/{post}', [PostController::class, 'update'])->name('update');

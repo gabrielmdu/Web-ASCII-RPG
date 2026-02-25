@@ -60,9 +60,15 @@ class GameSession extends Model
     #[Scope]
     public function orderByStatus(Builder $query): void
     {
-        $statusNames = array_column(GameSessionStatus::cases(), 'value');
-        $statuses = "'" . implode("','", $statusNames) . "'";
+        $sessionOrder = GameSessionStatus::order();
 
-        $query->orderByRaw("FIELD(status, {$statuses})");
+        $whens = '';
+        for ($i = 0; $i < count($sessionOrder); $i++) {
+            $whens .= " WHEN '$sessionOrder[$i]' THEN " . ($i + 1);
+        }
+
+        $elseIndex = count($sessionOrder) + 1;
+
+        $query->orderByRaw("CASE status {$whens} ELSE {$elseIndex} END");
     }
 }

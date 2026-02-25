@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\GameSessionStatus;
 use App\Events\GameSessionCreated;
 use App\Models\Game;
 use App\Models\GameSession;
@@ -38,6 +39,25 @@ class GameSessionControllerTest extends TestCase
                     ['id' => $sessions[1]->id],
                 ],
                 'meta' => ['total' => 2],
+            ]);
+    }
+
+    public function test_sessions_are_listed_in_the_correct_order(): void
+    {
+        GameSession::factory()->abandoned()->create(['player_id' => $this->user->id]);
+        GameSession::factory()->active()->create(['player_id' => $this->user->id]);
+        GameSession::factory()->finished()->create(['player_id' => $this->user->id]);
+        $sessionOrder = GameSessionStatus::order();
+
+        $this->actingAs($this->user)
+            ->getJson('/api/game-sessions')
+            ->assertOk()
+            ->assertJson([
+                'data' => [
+                    ['status' => $sessionOrder[0]],
+                    ['status' => $sessionOrder[1]],
+                    ['status' => $sessionOrder[2]],
+                ],
             ]);
     }
 
@@ -175,8 +195,9 @@ class GameSessionControllerTest extends TestCase
     public function test_user_cannot_select_target_with_invalid_choice_index(): void
     {
         $session = GameSession::factory()->create(['player_id' => $this->user->id]);
+        $session->loadCount('currentChoices');
 
-        $invalidIndex = 10;
+        $invalidIndex = $session->current_choices_count + 1;
 
         $this->actingAs($this->user)
             ->postJson("/api/game-sessions/{$session->id}/select-target", ['choiceIndex' => $invalidIndex])

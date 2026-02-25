@@ -43,6 +43,12 @@ class GameController extends Controller
         $game = $game->loadMissing('creator')
             ->loadCount('scenes');
 
+        $user = Auth::guard('sanctum')->user();
+
+        if ($user) {
+            $game->loadUserSession($user->id);
+        }
+
         return new GameResource($game);
     }
 

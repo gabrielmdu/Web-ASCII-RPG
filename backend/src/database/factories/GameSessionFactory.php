@@ -23,7 +23,11 @@ class GameSessionFactory extends Factory
         return [
             'player_id' => User::factory(),
             'game_id' => Game::factory(),
-            'current_scene_id' => Scene::factory(),
+            'current_scene_id' => function (array $attributes): int {
+                return Scene::factory()->create([
+                    'game_id' => $attributes['game_id'],
+                ])->id;
+            },
             'status' => GameSessionStatus::ACTIVE,
             'settings' => '{}',
             'history' => '{}',

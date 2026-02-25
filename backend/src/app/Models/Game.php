@@ -59,12 +59,28 @@ class Game extends Model
         return $this->hasMany(GameSession::class);
     }
 
+    /**
+     * Eager load user sessions for the game.
+     */
+    public function loadUserSession(int $userId): Game
+    {
+        return $this->load(
+            ['sessions' => fn($q) => $q->where('player_id', $userId)]
+        );
+    }
+
+    /**
+     * Scope query to public games only.
+     */
     #[Scope]
     protected function public(Builder $query): void
     {
         $query->where('public', true);
     }
 
+    /**
+     * Scope query to eager load user sessions for the Game collection.
+     */
     #[Scope]
     protected function withUserSessions(Builder $query, int $userId): void
     {

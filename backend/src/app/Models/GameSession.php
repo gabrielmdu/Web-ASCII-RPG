@@ -52,13 +52,13 @@ class GameSession extends Model
     }
 
     #[Scope]
-    public function active(Builder $query): void
+    protected function active(Builder $query): void
     {
         $query->where('status', GameSessionStatus::ACTIVE);
     }
 
     #[Scope]
-    public function orderByStatus(Builder $query): void
+    protected function orderByStatus(Builder $query): void
     {
         $sessionOrder = GameSessionStatus::order();
 

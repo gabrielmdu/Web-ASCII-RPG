@@ -3,13 +3,15 @@
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\GameSceneController;
 use App\Http\Controllers\GameSessionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return response()->json(['user' => $request->user()->toResource()]);
-})->name('user')
-    ->middleware('auth:sanctum');
+Route::name('user.')
+    ->middleware('auth:sanctum')
+    ->group(function () {
+        Route::get('/me', [UserController::class, 'me'])->name('me');
+    });
 
 Route::name('game.')
     ->prefix('games')

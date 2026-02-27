@@ -1,14 +1,3 @@
-<script lang="ts" setup>
-import { useAuthStore } from '@/stores/auth';
-import { Button } from '@/components/ui/button';
+<script lang="ts" setup></script>
 
-const authStore = useAuthStore();
-</script>
-
-<template>
-  <div v-if="authStore.isAuthenticated">Welcome, {{ authStore.user?.name }}!</div>
-
-  <div>
-    <Button onclick="alert('hey')">Hey</Button>
-  </div>
-</template>
+<template>Home</template>

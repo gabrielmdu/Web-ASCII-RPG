@@ -7,6 +7,7 @@ import ResetPasswordView from '@/views/ResetPasswordView.vue';
 import ForgotPasswordView from '@/views/ForgotPasswordView.vue';
 import VerifyEmailPromptView from '@/views/VerifyEmailPromptView.vue';
 import VerifyEmailView from '@/views/VerifyEmailView.vue';
+import DashboardView from '@/views/DashboardView.vue';
 
 const routes = [
   // public routes
@@ -41,6 +42,14 @@ const routes = [
     component: VerifyEmailView,
     meta: { verificationEntry: true },
   },
+
+  // verified routes
+  {
+    path: '/dashboard',
+    name: 'dashboard',
+    component: DashboardView,
+    meta: { verifiedOnly: true },
+  },
 ];
 
 const router = createRouter({
@@ -68,6 +77,10 @@ router.beforeEach(async (to) => {
 
   // helper: avoids redirecting to the same route (prevents infinite loops)
   const redirectTo = (target: { name: string }) => (target.name === name ? true : target);
+
+  if (name === 'home' && verified) {
+    return redirectTo({ name: 'dashboard' });
+  }
 
   // guest-only pages - if already logged in, send to home
   if (guestOnly && loggedIn) {

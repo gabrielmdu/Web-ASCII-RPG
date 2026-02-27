@@ -1,16 +1,11 @@
 import { defineStore } from 'pinia';
 import api, { apiCall, apiCallWithCredentials, type ApiResult } from '@/lib/api';
+import type { User } from '@/common/types';
 
 interface State {
   user: User | null;
   loading: boolean;
   isInitialized: boolean;
-}
-
-interface User {
-  name: string;
-  email: string;
-  isVerified: boolean;
 }
 
 const authChannel = new BroadcastChannel('auth-channel');

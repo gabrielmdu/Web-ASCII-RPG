@@ -16,10 +16,10 @@ class GameSessionResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'playerId' => $this->player_id,
-            'gameId' => $this->game_id,
+            'player' => new UserResource($this->whenLoaded('player')),
+            'game' => new GameResource($this->whenLoaded('game')),
             'status' => $this->status,
-            'currentSceneId' => $this->current_scene_id,
+            'currentScene' => new SceneResource($this->whenLoaded('currentScene')),
             'settings' => $this->settings,
             'history' => $this->history,
             'createdAt' => $this->created_at,

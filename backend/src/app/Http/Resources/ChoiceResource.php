@@ -17,9 +17,8 @@ class ChoiceResource extends JsonResource
         return [
             'id' => $this->id,
             'text' => $this->text,
-            //'scene' => $this->scene_id,
-            'targetId' => $this->target_id,
-            //'target' => new SceneResource($this->whenLoaded('target')),
+            'scene' => new SceneResource($this->whenLoaded('scene')),
+            'target' => new SceneResource($this->whenLoaded('target')),
             'settings' => $this->settings,
         ];
     }

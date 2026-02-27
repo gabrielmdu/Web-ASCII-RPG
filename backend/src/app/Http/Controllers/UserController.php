@@ -13,7 +13,7 @@ class UserController extends Controller
     public function me(Request $request)
     {
         $user = $request->user();
-        $user->load('activeGameSessions');
+        $user->load('activeGameSessions.game');
 
         return new UserResource($user);
     }

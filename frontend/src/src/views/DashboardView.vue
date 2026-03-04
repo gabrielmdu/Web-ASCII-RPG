@@ -34,8 +34,15 @@ const searchQuery = ref('');
         </div>
 
         <div class="flex flex-col gap-4">
-          <div v-for="session in player.activeSessions" :key="session.id">
+          <div
+            v-if="player.activeSessions?.length"
+            v-for="session in player.activeSessions"
+            :key="session.id"
+          >
             <SessionCard :session="session" />
+          </div>
+          <div v-else class="px-3 py-2 border rounded-none border-sky-500">
+            You have no active game sessions.<br />Start one by playing a game!
           </div>
         </div>
       </section>

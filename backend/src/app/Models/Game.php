@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\GameSearchSort;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -87,5 +88,40 @@ class Game extends Model
         $query->with([
             'sessions' => fn($q) => $q->where('player_id', $userId)
         ]);
+    }
+
+    /**
+     * Scope query to search games.
+     */
+    #[Scope]
+    protected function searchString(Builder $query, ?string $search): void
+    {
+        $query->when($search, function ($query, $search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('games.name', 'like', "%{$search}%")
+                    ->orWhere('games.description', 'like', "%{$search}%")
+                    ->orWhereHas('creator', function ($userQuery) use ($search) {
+                        $userQuery->where('users.name', 'like', "%{$search}%");
+                    });
+            });
+        });
+    }
+
+    /**
+     * Scope query to order games by a sort string.
+     */
+    #[Scope]
+    protected function orderBySort(Builder $query, GameSearchSort $sort, bool $asc = true): void
+    {
+        $direction = $asc ? 'asc' : 'desc';
+
+        match ($sort) {
+            GameSearchSort::CREATOR_NAME => $query
+                ->leftJoin('users', 'games.creator_id', '=', 'users.id')
+                ->select('games.*')
+                ->orderBy('users.name', $direction),
+
+            default => $query->orderBy($sort->value, $direction),
+        };
     }
 }

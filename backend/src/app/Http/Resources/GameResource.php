@@ -16,7 +16,7 @@ class GameResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'creator' => new UserResource($this->whenLoaded('creator')),
+            'creator' => new CreatorResource($this->whenLoaded('creator')),
             'name' => $this->name,
             'slug' => $this->slug,
             'isPublic' => $this->public,

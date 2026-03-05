@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\GameSearchSort;
+use App\Http\Requests\GameIndexRequest;
 use App\Http\Resources\GameResource;
 use App\Models\Game;
+use App\Services\GameService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,19 +15,17 @@ class GameController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(GameIndexRequest $request, GameService $service)
     {
-        $games = Game::with('creator')->withCount('scenes');
+        $games = $service->search(
+            Auth::guard('sanctum')->user(),
+            $request->search,
+            GameSearchSort::tryFrom($request->sort),
+            $request->public,
+            $request->asc,
+        );
 
-        $user = Auth::guard('sanctum')->user();
-
-        if ($user) {
-            $games->withUserSessions($user->id);
-        } else {
-            $games->public();
-        }
-
-        return GameResource::collection($games->paginate());
+        return GameResource::collection($games->paginate(10))->response();
     }
 
     /**

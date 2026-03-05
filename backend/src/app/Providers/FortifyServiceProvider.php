@@ -6,14 +6,16 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Http\Responses\LoginResponse;
+use App\Http\Responses\RegisterResponse;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
-use Laravel\Fortify\Contracts\LoginResponse;
-use Laravel\Fortify\Contracts\RegisterResponse;
+use Laravel\Fortify\Contracts\LoginResponse as ContractsLoginResponse;
+use Laravel\Fortify\Contracts\RegisterResponse as ContractsRegisterResponse;
 use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
@@ -24,20 +26,9 @@ class FortifyServiceProvider extends ServiceProvider
     public function register(): void
     {
         // returns the user instance once the login is successful
-        $this->app->instance(LoginResponse::class, new class implements LoginResponse {
-            public function toResponse($request)
-            {
-                return response()->json(['user' => $request->user()->toResource()]);
-            }
-        });
-
-        // returns the user instance once the register is successful
-        $this->app->instance(RegisterResponse::class, new class implements RegisterResponse {
-            public function toResponse($request)
-            {
-                return response()->json(['user' => $request->user()->toResource()]);
-            }
-        });
+        $this->app->singleton(ContractsLoginResponse::class, LoginResponse::class);
+        // returns the user instance once the signup is successful
+        $this->app->singleton(ContractsRegisterResponse::class, RegisterResponse::class);
     }
 
     /**

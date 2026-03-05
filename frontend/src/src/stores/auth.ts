@@ -50,8 +50,11 @@ export const useAuthStore = defineStore('auth', {
       const result = await apiCallWithCredentials(() => api.post('/login', { email, password }));
 
       if (result.success) {
-        this.user = result.data?.user;
-        authChannel.postMessage({ type: 'login', user: { ...this.user } });
+        this.user = result.data?.data;
+        authChannel.postMessage({
+          type: 'login',
+          user: JSON.parse(JSON.stringify(this.user)),
+        });
       }
 
       this.loading = false;
@@ -75,8 +78,11 @@ export const useAuthStore = defineStore('auth', {
       );
 
       if (result.success) {
-        this.user = result.data?.user;
-        authChannel.postMessage({ type: 'signup', user: { ...this.user } });
+        this.user = result.data?.data;
+        authChannel.postMessage({
+          type: 'login',
+          user: JSON.parse(JSON.stringify(this.user)),
+        });
       }
 
       this.loading = false;

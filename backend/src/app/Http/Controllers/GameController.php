@@ -25,7 +25,10 @@ class GameController extends Controller
             $request->asc,
         );
 
-        return GameResource::collection($games->paginate(10))->response();
+        return GameResource::collection(
+            $games->paginate(10)
+                ->withQueryString()
+        )->response();
     }
 
     /**

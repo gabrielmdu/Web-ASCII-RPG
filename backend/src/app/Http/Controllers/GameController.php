@@ -20,9 +20,9 @@ class GameController extends Controller
         $games = $service->search(
             Auth::guard('sanctum')->user(),
             $request->search,
-            GameSearchSort::tryFrom($request->sort),
-            $request->public,
-            $request->asc,
+            $request->enum('sort', GameSearchSort::class),
+            $request->boolean('public'),
+            $request->boolean('asc', true),
         );
 
         return GameResource::collection(

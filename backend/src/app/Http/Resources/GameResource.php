@@ -22,6 +22,7 @@ class GameResource extends JsonResource
             'isPublic' => $this->public,
             'description' => $this->description,
             'version' => $this->version,
+            'createdAt' => $this->created_at,
             'lastModified' => $this->last_modified,
             'settings' => $this->settings,
             'sessions' => GameSessionResource::collection($this->whenLoaded('sessions')),

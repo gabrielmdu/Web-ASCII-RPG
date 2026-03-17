@@ -5,14 +5,20 @@ export interface User {
   activeSessions?: GameSession[];
 }
 
+export interface Creator {
+  id: number;
+  name: string;
+}
+
 export interface Game {
   id: number;
-  creator?: User;
+  creator?: Creator;
   name: string;
   slug: string;
   isPublic: boolean;
   description: string;
   version: string;
+  createdAt: string;
   lastModified: string;
   settings: Record<string, unknown> | null;
   sessions?: GameSession[];

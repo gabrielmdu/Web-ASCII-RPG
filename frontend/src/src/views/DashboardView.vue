@@ -1,18 +1,82 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-//import GameCard from '@/components/GameCard.vue';
-//import SessionCard from '@/components/SessionCard.vue';
-import { Pagination } from '@/components/ui/pagination';
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
 import SessionCard from '@/components/dashboard/SessionCard.vue';
+import { useGameFilters, type GameFilter } from '@/composables/gameFields';
+import api, { apiCall } from '@/lib/api';
+import GameCard from '@/components/dashboard/GameCard.vue';
+import type { Game } from '@/common/types';
+
+interface GameSearchResult {
+  data: Game[];
+  page: number;
+  perPage: number;
+  total: number;
+}
 
 const authStore = useAuthStore();
 const player = authStore.user!;
 
-const searchQuery = ref('');
+const loading = ref<boolean>(false);
+
+const gameSearchResult = ref<GameSearchResult>({
+  data: [],
+  page: 0,
+  perPage: 0,
+  total: 0,
+});
+
+async function wait() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, 2000);
+  });
+}
+
+const fetchGamesCallback = async (filters: GameFilter) => {
+  loading.value = true;
+
+  const result = await apiCall(() => api.get('/api/games', { params: filters }));
+
+  //await wait();
+
+  loading.value = false;
+
+  if (!result.success) {
+    // deal with error here
+    return;
+  }
+
+  const { data, meta } = result.data;
+
+  gameSearchResult.value = {
+    ...gameSearchResult.value,
+    data: data,
+    page: meta.current_page,
+    perPage: meta.per_page,
+    total: meta.total,
+  };
+
+  console.log(result, filters);
+};
+
+const { filters } = useGameFilters(fetchGamesCallback);
+
+onMounted(() => {
+  fetchGamesCallback(filters.value);
+});
 </script>
 
 <template>
@@ -47,54 +111,58 @@ const searchQuery = ref('');
         </div>
       </section>
 
-      <section class="md:col-span-8 flex flex-col gap-6">
+      <section class="md:col-span-8 flex flex-col gap-6 mb-4">
         <div class="flex items-center justify-between gap-x-2 border-b-2 border-lime-900 pb-2">
           <h2 class="text-2xl font-bold uppercase">Games</h2>
-          <span class="bg-lime-900 text-lime-400 px-2 py-0.5 text-xs">27</span>
+          <span class="bg-lime-900 text-lime-400 px-2 py-0.5 text-xs">{{
+            gameSearchResult.total
+          }}</span>
         </div>
 
         <div class="flex flex-col sm:flex-row gap-4 p-4 border-2 border-lime-900 bg-black/50">
           <div class="relative flex-1">
             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-lime-800">></span>
             <Input
-              v-model="searchQuery"
+              v-model="filters.search"
               placeholder="SEARCH_DATABASE..."
               class="pl-8 bg-transparent border-lime-800 rounded-none focus-visible:ring-lime-500"
             />
           </div>
-          <select
-            class="bg-black border-2 border-lime-800 text-lime-500 px-4 py-2 rounded-none focus:outline-lime-500"
-          >
-            <option>ALL_GENRES</option>
-            <option>FANTASY</option>
-            <option>SCI-FI</option>
-          </select>
+          <div class="flex items-center gap-2">
+            <Checkbox id="terms" v-model="filters.public" />
+            <Label for="terms">Public only</Label>
+          </div>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-1 gap-4">
-          <div v-for="i in 10" :key="i">Game {{ i }}</div>
+          <GameCard v-for="game in gameSearchResult.data" :key="game.id" :game="game" />
         </div>
 
         <footer class="flex justify-center border-t-2 border-lime-900 pt-6">
           <div class="flex gap-2">
-            <Button
-              variant="outline"
-              class="border-lime-800 rounded-none text-lime-600 hover:text-lime-400"
+            <Pagination
+              v-slot="{ page }"
+              :items-per-page="gameSearchResult.perPage"
+              :total="gameSearchResult.total"
+              v-model:page="filters.page"
+              show-edges
+              :sibling-count="1"
             >
-              [ PREV ]
-            </Button>
-            <Button variant="outline" class="border-lime-500 rounded-none bg-lime-500/10">
-              01
-            </Button>
-            <Button variant="outline" class="border-lime-800 rounded-none text-lime-600">
-              02
-            </Button>
-            <Button
-              variant="outline"
-              class="border-lime-800 rounded-none text-lime-600 hover:text-lime-400"
-            >
-              [ NEXT ]
-            </Button>
+              <PaginationContent v-slot="{ items }">
+                <PaginationPrevious> <- </PaginationPrevious>
+                <template v-for="(item, index) in items" :key="index">
+                  <PaginationItem
+                    v-if="item.type === 'page'"
+                    :value="item.value"
+                    :is-active="item.value === page"
+                  >
+                    {{ item.value }}
+                  </PaginationItem>
+                  <PaginationEllipsis v-else :index="index" :key="item.type" />
+                </template>
+                <PaginationNext> -> </PaginationNext>
+              </PaginationContent>
+            </Pagination>
           </div>
         </footer>
       </section>

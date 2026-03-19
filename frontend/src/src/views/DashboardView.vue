@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -12,11 +12,21 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import SessionCard from '@/components/dashboard/SessionCard.vue';
 import { useGameFilters, type GameFilter } from '@/composables/gameFields';
 import api, { apiCall } from '@/lib/api';
 import GameCard from '@/components/dashboard/GameCard.vue';
 import type { Game } from '@/common/types';
+import Button from '@/components/ui/button/Button.vue';
+import { MoveDownIcon, MoveUpIcon, SquareXIcon } from 'lucide-vue-next';
 
 interface GameSearchResult {
   data: Game[];
@@ -29,33 +39,27 @@ const authStore = useAuthStore();
 const player = authStore.user!;
 
 const loading = ref<boolean>(false);
+const error = ref<string>('');
 
-const gameSearchResult = ref<GameSearchResult>({
-  data: [],
-  page: 0,
-  perPage: 0,
-  total: 0,
-});
+const getDefaultGameResult = (): GameSearchResult => {
+  return {
+    data: [],
+    page: 0,
+    perPage: 0,
+    total: 0,
+  };
+};
 
-async function wait() {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, 2000);
-  });
-}
+const gameSearchResult = ref<GameSearchResult>(getDefaultGameResult());
 
 const fetchGamesCallback = async (filters: GameFilter) => {
-  loading.value = true;
-
   const result = await apiCall(() => api.get('/api/games', { params: filters }));
-
-  //await wait();
 
   loading.value = false;
 
   if (!result.success) {
-    // deal with error here
+    error.value = result.error!;
+    gameSearchResult.value = getDefaultGameResult();
     return;
   }
 
@@ -72,9 +76,21 @@ const fetchGamesCallback = async (filters: GameFilter) => {
   console.log(result, filters);
 };
 
-const { filters } = useGameFilters(fetchGamesCallback);
+const { filters, resetFilters } = useGameFilters(fetchGamesCallback);
 
+// sets loading when the filters change to avoind delay with debounce
+watch(
+  () => filters.value,
+  () => {
+    error.value = '';
+    loading.value = true;
+  },
+  { deep: true },
+);
+
+// fetches the games as soon as the page loads
 onMounted(() => {
+  loading.value = true;
   fetchGamesCallback(filters.value);
 });
 </script>
@@ -89,6 +105,7 @@ onMounted(() => {
     </header>
 
     <main class="grid grid-cols-1 md:grid-cols-12 gap-8">
+      <!-- Sessions section -->
       <section class="md:col-span-4 space-y-4">
         <div class="flex items-center justify-between gap-x-2 border-b-2 border-sky-900 pb-2">
           <h2 class="text-2xl font-bold uppercase">Active_Sessions</h2>
@@ -111,6 +128,7 @@ onMounted(() => {
         </div>
       </section>
 
+      <!-- Games section -->
       <section class="md:col-span-8 flex flex-col gap-6 mb-4">
         <div class="flex items-center justify-between gap-x-2 border-b-2 border-lime-900 pb-2">
           <h2 class="text-2xl font-bold uppercase">Games</h2>
@@ -119,25 +137,79 @@ onMounted(() => {
           }}</span>
         </div>
 
-        <div class="flex flex-col sm:flex-row gap-4 p-4 border-2 border-lime-900 bg-black/50">
-          <div class="relative flex-1">
-            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-lime-800">></span>
-            <Input
-              v-model="filters.search"
-              placeholder="SEARCH_DATABASE..."
-              class="pl-8 bg-transparent border-lime-800 rounded-none focus-visible:ring-lime-500"
-            />
+        <!-- Filters -->
+        <div class="flex flex-col gap-1 p-4 pt-2 border-2 border-lime-900 bg-black/50">
+          <div class="flex justify-end items-center gap-1 text-red-400">
+            <SquareXIcon :size="14" />
+            <span class="text-red-400 hover:underline cursor-pointer" @click="resetFilters">
+              Reset filters
+            </span>
           </div>
-          <div class="flex items-center gap-2">
-            <Checkbox id="terms" v-model="filters.public" />
-            <Label for="terms">Public only</Label>
+
+          <div class="@container">
+            <div class="flex flex-col @md:flex-row gap-4">
+              <div class="relative flex-1 min-w-32">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-lime-800">></span>
+                <Input
+                  v-model="filters.search"
+                  placeholder="SEARCH_DATABASE..."
+                  class="pl-8 bg-transparent border-lime-800 rounded-none focus-visible:ring-lime-500"
+                />
+              </div>
+
+              <div class="flex gap-1">
+                <Select v-model="filters.sort" class="">
+                  <SelectTrigger class="flex-1 @md:max-w-28 @md:w-28">
+                    <SelectValue placeholder="Sort by" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectLabel>Sort by</SelectLabel>
+                    <SelectItem value="created_at"> Creation </SelectItem>
+                    <SelectItem value="name"> Name </SelectItem>
+                    <SelectItem value="last_modified"> Updated </SelectItem>
+                    <SelectItem value="creator_name"> Creator </SelectItem>
+                  </SelectContent>
+                </Select>
+                <Button
+                  @click="filters.asc = !filters.asc"
+                  variant="outline"
+                  class="flex gap-0 px-5 hover:bg-gray-700"
+                  size="icon"
+                >
+                  <MoveUpIcon :stroke-width="3" :color="!filters.asc ? 'gray' : 'white'" />
+                  <MoveDownIcon :stroke-width="3" :color="filters.asc ? 'gray' : 'white'" />
+                </Button>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <Checkbox id="public-only" v-model="filters.public" />
+                <Label for="public-only">Public only</Label>
+              </div>
+            </div>
           </div>
         </div>
 
+        <!-- Search results -->
         <div class="grid grid-cols-1 sm:grid-cols-1 gap-4">
-          <GameCard v-for="game in gameSearchResult.data" :key="game.id" :game="game" />
+          <GameCard
+            v-if="!!gameSearchResult.total && !error"
+            v-for="game in gameSearchResult.data"
+            :key="game.id"
+            :game="game"
+            :is-active="!loading"
+          />
+          <div v-else-if="!loading && !error" class="border border-lime-800 p-4 text-center">
+            No results. Try changing or
+            <span class="underline cursor-pointer hover:text-red-500" @click="resetFilters">
+              resetting the filters </span
+            >.
+          </div>
+          <div v-else-if="!!error" class="border border-red-400 text-red-400 p-4">
+            Error: {{ error }}
+          </div>
         </div>
 
+        <!-- Pagination -->
         <footer class="flex justify-center border-t-2 border-lime-900 pt-6">
           <div class="flex gap-2">
             <Pagination
@@ -147,6 +219,7 @@ onMounted(() => {
               v-model:page="filters.page"
               show-edges
               :sibling-count="1"
+              :disabled="!gameSearchResult.total"
             >
               <PaginationContent v-slot="{ items }">
                 <PaginationPrevious> <- </PaginationPrevious>

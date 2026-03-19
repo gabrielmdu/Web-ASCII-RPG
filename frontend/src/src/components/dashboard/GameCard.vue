@@ -2,13 +2,21 @@
 import type { Game } from '@/common/types';
 import { formatDistanceToNow } from 'date-fns';
 
-const { game } = defineProps<{
+const { game, isActive = true } = defineProps<{
   game: Game;
+  isActive?: boolean;
 }>();
 </script>
 
 <template>
-  <div class="grid grid-cols-5 gap-3 items-center border border-lime-400 p-2 text-sm cursor-pointer">
+  <div
+    class="grid grid-cols-5 gap-3 items-center border border-lime-400 p-2 text-sm"
+    :class="{
+      'cursor-pointer': isActive,
+      //'text-stone-200': !isActive,
+      'animate-pulse': !isActive,
+    }"
+  >
     <div class="">
       {{ game.name }}
     </div>

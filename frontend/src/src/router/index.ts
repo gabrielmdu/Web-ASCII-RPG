@@ -8,6 +8,7 @@ import ForgotPasswordView from '@/views/ForgotPasswordView.vue';
 import VerifyEmailPromptView from '@/views/VerifyEmailPromptView.vue';
 import VerifyEmailView from '@/views/VerifyEmailView.vue';
 import DashboardView from '@/views/DashboardView.vue';
+import GameSearchView from '@/views/GameSearchView.vue';
 
 const routes = [
   // public routes
@@ -26,6 +27,7 @@ const routes = [
     component: ResetPasswordView,
     meta: { guest: true },
   },
+  { path: '/game-search', name: 'game-search', component: GameSearchView },
 
   // unverified access
   {

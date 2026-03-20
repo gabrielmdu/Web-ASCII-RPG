@@ -30,6 +30,10 @@ const handleLogout = async () => {
 
         <!-- Right: Navigation -->
         <div class="flex items-center gap-3">
+          <RouterLink to="/game-search">
+            <Button class="text-xl text-lime-400 hover:bg-lime-400" variant="ghost">Games</Button>
+          </RouterLink>
+
           <template v-if="authStore.isAuthenticated">
             <!-- User dropdown -->
             <DropdownMenu>
@@ -38,7 +42,10 @@ const handleLogout = async () => {
                   {{ authStore.user?.name }}
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent class="w-32 rounded-none bg-gray-900 text-purple-400" align="end">
+              <DropdownMenuContent
+                class="w-32 rounded-none bg-gray-900 text-purple-400"
+                align="end"
+              >
                 <DropdownMenuItem @click="">My profile</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem @click="handleLogout">Logout</DropdownMenuItem>

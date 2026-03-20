@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
-import { useAuthStore } from '@/stores/auth';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -20,12 +19,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useGameFilters, type GameFilter } from '@/composables/gameFilters';
+import { GameSearchSort, useGameFilters, type GameFilter } from '@/composables/gameFilters';
 import api, { apiCall } from '@/lib/api';
 import GameCard from '@/components/dashboard/GameCard.vue';
 import type { Game } from '@/common/types';
 import Button from '@/components/ui/button/Button.vue';
 import { MoveDownIcon, MoveUpIcon, SquareXIcon } from 'lucide-vue-next';
+import { useRoute, useRouter } from 'vue-router';
 
 interface GameSearchResult {
   data: Game[];
@@ -34,9 +34,10 @@ interface GameSearchResult {
   total: number;
 }
 
-const authStore = useAuthStore();
+const router = useRouter();
+const route = useRoute();
 
-const loading = ref<boolean>(false);
+const loading = ref<boolean>(true);
 const error = ref<string>('');
 
 const getDefaultGameResult = (): GameSearchResult => {
@@ -51,6 +52,8 @@ const getDefaultGameResult = (): GameSearchResult => {
 const gameSearchResult = ref<GameSearchResult>(getDefaultGameResult());
 
 const fetchGamesCallback = async (filters: GameFilter) => {
+  syncUrlParams();
+
   const result = await apiCall(() => api.get('/api/games', { params: filters }));
 
   loading.value = false;
@@ -74,9 +77,24 @@ const fetchGamesCallback = async (filters: GameFilter) => {
   console.log(result, filters);
 };
 
+/** Syncs filters with URL query params */
+const syncUrlParams = () => {
+  router.replace({
+    query: {
+      search: filters.value.search || undefined,
+      sort: Object.values(GameSearchSort).includes(filters.value.sort as GameSearchSort)
+        ? filters.value.sort
+        : GameSearchSort.CREATED_AT,
+      public: filters.value.public ? 'true' : undefined,
+      asc: filters.value.asc ? 'true' : 'false',
+      page: filters.value.page !== 1 ? String(filters.value.page) : undefined,
+    },
+  });
+};
+
 const { filters, resetFilters } = useGameFilters(fetchGamesCallback);
 
-// sets loading when the filters change to avoind delay with debounce
+// sets loading when the filters change to avoid delay with debounce
 watch(
   () => filters.value,
   () => {
@@ -86,10 +104,15 @@ watch(
   { deep: true },
 );
 
-// fetches the games as soon as the page loads
+// fetches the games as soon as the page loads by setting the filters according to the URL params
 onMounted(() => {
-  loading.value = true;
-  fetchGamesCallback(filters.value);
+  filters.value = {
+    search: (route.query.search as string) || filters.value.search,
+    sort: (route.query.sort as GameSearchSort) || filters.value.sort,
+    public: route.query.public === 'true',
+    asc: route.query.asc === 'true',
+    page: route.query.page ? parseInt(route.query.page as string) : filters.value.page,
+  };
 });
 </script>
 

@@ -1,25 +1,32 @@
 import { ref, watch } from 'vue';
 import { debounce } from 'lodash-es';
 
+export enum GameSearchSort {
+  NAME = 'name',
+  CREATED_AT = 'created_at',
+  LAST_MODIFIED = 'last_modified',
+  CREATOR_NAME = 'creator_name',
+}
+
 export interface GameFilter {
   search: string;
-  sort: string;
+  sort: GameSearchSort;
   public: boolean;
   asc: boolean;
   page: number;
 }
 
+type FetchCallback = (filters: GameFilter) => void;
+
 const getDefaultFilters = (): GameFilter => {
   return {
     search: '',
-    sort: 'created_at',
+    sort: GameSearchSort.CREATED_AT,
     public: false,
     asc: true,
     page: 1,
   };
 };
-
-type FetchCallback = (filters: GameFilter) => void;
 
 export const useGameFilters = (fetchCallback: FetchCallback) => {
   const filters = ref<GameFilter>(getDefaultFilters());

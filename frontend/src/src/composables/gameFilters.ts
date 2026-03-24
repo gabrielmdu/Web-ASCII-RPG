@@ -39,6 +39,12 @@ export const useGameFilters = (fetchCallback: FetchCallback) => {
     fetchCallback(filters.value);
   }, 300);
 
+  /* For when the page is changed manually so it triggers the fetch instantly */
+  const setPage = (page: number) => {
+    filters.value.page = page;
+    fetchCallback(filters.value);
+  };
+
   // if these filters change, go back to page 1
   watch(
     () => [filters.value.search, filters.value.public],
@@ -47,7 +53,17 @@ export const useGameFilters = (fetchCallback: FetchCallback) => {
     },
   );
 
-  watch(filters, () => debouncedFetch(), { deep: true });
+  // calls the debounced callback for every filter except page, which is called manually for instant call
+  watch(
+    () => [
+      filters.value.search,
+      filters.value.asc,
+      filters.value.public,
+      filters.value.public,
+      filters.value.sort,
+    ],
+    () => debouncedFetch(),
+  );
 
-  return { filters, resetFilters };
+  return { filters, resetFilters, setPage };
 };

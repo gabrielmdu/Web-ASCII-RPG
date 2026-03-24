@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -92,7 +92,7 @@ const syncUrlParams = () => {
   });
 };
 
-const { filters, resetFilters } = useGameFilters(fetchGamesCallback);
+const { filters, resetFilters, setPage } = useGameFilters(fetchGamesCallback);
 
 // sets loading when the filters change to avoid delay with debounce
 watch(
@@ -103,6 +103,14 @@ watch(
   },
   { deep: true },
 );
+
+/** Page model for manual pagination. The set is called only when manually changed */
+const pageModel = computed({
+  get: () => filters.value.page,
+  set: (value) => {
+    setPage(value);
+  },
+});
 
 // fetches the games as soon as the page loads by setting the filters according to the URL params
 onMounted(() => {
@@ -204,7 +212,7 @@ onMounted(() => {
             v-slot="{ page }"
             :items-per-page="gameSearchResult.perPage"
             :total="gameSearchResult.total"
-            v-model:page="filters.page"
+            v-model:page="pageModel"
             show-edges
             :sibling-count="1"
             :disabled="!gameSearchResult.total"

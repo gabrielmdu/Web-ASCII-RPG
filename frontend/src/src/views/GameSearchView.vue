@@ -26,6 +26,7 @@ import type { Game } from '@/common/types';
 import Button from '@/components/ui/button/Button.vue';
 import { MoveDownIcon, MoveUpIcon, SquareXIcon } from 'lucide-vue-next';
 import { useRoute, useRouter } from 'vue-router';
+import { useMediaQuery } from '@vueuse/core';
 
 interface GameSearchResult {
   data: Game[];
@@ -36,6 +37,7 @@ interface GameSearchResult {
 
 const router = useRouter();
 const route = useRoute();
+const isSmall = useMediaQuery('(max-width: 600px)');
 
 const loading = ref<boolean>(true);
 const error = ref<string>('');
@@ -187,6 +189,17 @@ onMounted(() => {
 
       <!-- Search results -->
       <div class="grid grid-cols-1 gap-3">
+        <!-- Game list header -->
+        <div
+          class="grid grid-cols-8 gap-3 items-center border border-lime-700 px-2 py-3 sm:text-sm/3.5 text-xs/3.5 uppercase text-slate-200"
+        >
+          <div class="col-span-2">Game</div>
+          <div class="col-span-2">Creator</div>
+          <div class="">Version</div>
+          <div class="col-span-2 text-center md:text-left">Last update</div>
+          <div class="text-center">Access</div>
+        </div>
+
         <GameCard
           v-if="!!gameSearchResult.total && !error"
           v-for="game in gameSearchResult.data"
@@ -214,7 +227,7 @@ onMounted(() => {
             :total="gameSearchResult.total"
             v-model:page="pageModel"
             show-edges
-            :sibling-count="1"
+            :sibling-count="isSmall ? 0 : 1"
             :disabled="!gameSearchResult.total"
           >
             <PaginationContent v-slot="{ items }">

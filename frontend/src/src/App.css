@@ -15,6 +15,7 @@
 
 @theme {
   --warpg-font: 'VT323', monospace;
+  --breakpoint-xs: 30rem;
 }
 
 @theme inline {

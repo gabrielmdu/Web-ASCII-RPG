@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { MilestoneIcon } from 'lucide-vue-next';
+import { MilestoneIcon } from '@lucide/vue';
 import SignupForm from './SignupForm.vue';
 import WrHeader from './WrForm/WrHeader.vue';
 import WrFooter from './WrForm/WrFooter.vue';

@@ -15,7 +15,7 @@ import {
   LayoutDashboardIcon,
   LogOutIcon,
   UserRoundPlusIcon,
-} from 'lucide-vue-next';
+} from '@lucide/vue';
 
 const authStore = useAuthStore();
 const router = useRouter();

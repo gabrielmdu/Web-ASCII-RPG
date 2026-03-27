@@ -8,7 +8,7 @@ import {
   LockKeyholeIcon,
   LockKeyholeOpenIcon,
   UserRoundIcon,
-} from 'lucide-vue-next';
+} from '@lucide/vue';
 
 const { game, isActive = true } = defineProps<{
   game: Game;

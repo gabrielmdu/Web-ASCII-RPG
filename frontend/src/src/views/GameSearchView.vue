@@ -24,7 +24,7 @@ import api, { apiCall } from '@/lib/api';
 import GameCard from '@/components/dashboard/GameCard.vue';
 import type { Game } from '@/common/types';
 import Button from '@/components/ui/button/Button.vue';
-import { MoveDownIcon, MoveUpIcon, SquareXIcon } from 'lucide-vue-next';
+import { MoveDownIcon, MoveUpIcon, SquareXIcon } from '@lucide/vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useMediaQuery } from '@vueuse/core';
 

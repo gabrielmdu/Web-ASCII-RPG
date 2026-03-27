@@ -84,11 +84,14 @@ const syncUrlParams = () => {
   router.replace({
     query: {
       search: filters.value.search || undefined,
-      sort: Object.values(GameSearchSort).includes(filters.value.sort as GameSearchSort)
-        ? filters.value.sort
-        : GameSearchSort.CREATED_AT,
+      sort:
+        filters.value.sort === GameSearchSort.CREATED_AT
+          ? undefined
+          : Object.values(GameSearchSort).includes(filters.value.sort as GameSearchSort)
+            ? filters.value.sort
+            : GameSearchSort.CREATED_AT,
       public: filters.value.public ? 'true' : undefined,
-      asc: filters.value.asc ? 'true' : 'false',
+      asc: !filters.value.asc ? 'false' : undefined,
       page: filters.value.page !== 1 ? String(filters.value.page) : undefined,
     },
   });
@@ -109,7 +112,7 @@ watch(
 /** Page model for manual pagination. The set is called only when manually changed */
 const pageModel = computed({
   get: () => filters.value.page,
-  set: (value) => {
+  set: (value: number) => {
     setPage(value);
   },
 });
@@ -118,9 +121,11 @@ const pageModel = computed({
 onMounted(() => {
   filters.value = {
     search: (route.query.search as string) || filters.value.search,
-    sort: (route.query.sort as GameSearchSort) || filters.value.sort,
+    sort: Object.values(GameSearchSort).includes(route.query.sort as GameSearchSort)
+      ? (route.query.sort as GameSearchSort)
+      : GameSearchSort.CREATED_AT,
     public: route.query.public === 'true',
-    asc: route.query.asc === 'true',
+    asc: route.query.asc === 'false' ? false : true,
     page: route.query.page ? parseInt(route.query.page as string) : filters.value.page,
   };
 });

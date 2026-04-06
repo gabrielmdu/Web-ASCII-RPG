@@ -38,7 +38,7 @@ export interface GameSession {
   updatedAt: string;
 }
 
-enum GameSessionStatus {
+export enum GameSessionStatus {
   ACTIVE = 'active',
   FINISHED = 'finished',
   ABANDONED = 'abandoned',

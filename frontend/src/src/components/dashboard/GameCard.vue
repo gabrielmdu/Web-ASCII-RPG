@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { Game } from '@/common/types';
+import { computed } from 'vue';
+import { GameSessionStatus, type Game } from '@/common/types';
 import { formatDistanceToNow } from 'date-fns';
 import {
   CloudBackupIcon,
@@ -14,6 +15,10 @@ const { game, isActive = true } = defineProps<{
   game: Game;
   isActive?: boolean;
 }>();
+
+const activeSession = computed(
+  () => game.sessions?.find((s) => s.status === GameSessionStatus.ACTIVE) ?? null,
+);
 </script>
 
 <template>
@@ -23,6 +28,7 @@ const { game, isActive = true } = defineProps<{
       'cursor-pointer': isActive,
       //'text-stone-200': !isActive,
       'animate-pulse': !isActive,
+      'border-sky-500': activeSession,
     }"
   >
     <div class="flex items-center gap-1 col-span-2 text-purple-400">
@@ -30,7 +36,8 @@ const { game, isActive = true } = defineProps<{
     </div>
 
     <div class="flex items-center gap-1 col-span-2 text-amber-400">
-      <UserRoundIcon class="shrink-0 hidden xs:block" color="#fcdb03" :size="14" /> {{ game.creator?.name }}
+      <UserRoundIcon class="shrink-0 hidden xs:block" color="#fcdb03" :size="14" />
+      {{ game.creator?.name }}
     </div>
 
     <div class="flex items-center gap-1 text-slate-400">

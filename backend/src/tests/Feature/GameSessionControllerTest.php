@@ -214,4 +214,48 @@ class GameSessionControllerTest extends TestCase
             ->postJson("/api/game-sessions/{$session->id}/select-target", ['choiceIndex' => 1])
             ->assertForbidden();
     }
+
+    public function test_user_can_delete_own_active_session(): void
+    {
+        $session = GameSession::factory()->active()
+            ->create(['player_id' => $this->user->id]);
+
+        $this->actingAs($this->user)
+            ->deleteJson("/api/game-sessions/{$session->id}")
+            ->assertNoContent();
+
+        $this->assertDatabaseMissing('game_sessions', ['id' => $session->id]);
+    }
+
+    public function test_user_cannot_delete_own_inactive_session(): void
+    {
+        // non-active session
+        $session = GameSession::factory()->finished()
+            ->create(['player_id' => $this->user->id]);
+
+        $this->actingAs($this->user)
+            ->deleteJson("/api/game-sessions/{$session->id}")
+            ->assertForbidden();
+
+        $this->assertDatabaseHas('game_sessions', [
+            'id' => $session->id,
+            'player_id' => $this->user->id,
+        ]);
+    }
+
+    public function test_user_cannot_delete_not_owned_session(): void
+    {
+        $otherUser = User::factory()->create();
+        $session = GameSession::factory()->active()
+            ->create(['player_id' => $otherUser->id]);
+
+        $this->actingAs($this->user)
+            ->deleteJson("/api/game-sessions/{$session->id}")
+            ->assertForbidden();
+
+        $this->assertDatabaseHas('game_sessions', [
+            'id' => $session->id,
+            'player_id' => $otherUser->id,
+        ]);
+    }
 }

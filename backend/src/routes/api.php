@@ -44,5 +44,5 @@ Route::name('game-session.')
         Route::get('/{session}', [GameSessionController::class, 'show'])->name('show');
         Route::post('/{session}/select-target', [GameSessionController::class, 'selectTarget'])->name('select-target');
         //Route::match(['put', 'patch'], '/{post}', [PostController::class, 'update'])->name('update');
-        //Route::delete('/{post}', [PostController::class, 'destroy'])->name('destroy');
+        Route::delete('/{session}', [GameSessionController::class, 'destroy'])->name('destroy');
     });

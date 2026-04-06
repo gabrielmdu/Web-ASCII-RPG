@@ -8,6 +8,7 @@ use App\Http\Resources\GameSessionResource;
 use App\Models\GameSession;
 use App\Services\GameSessionService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class GameSessionController extends Controller
 {
@@ -71,6 +72,10 @@ class GameSessionController extends Controller
      */
     public function destroy(GameSession $session)
     {
-        //
+        Gate::authorize('delete', $session);
+
+        $session->delete();
+
+        return response()->noContent();
     }
 }

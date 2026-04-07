@@ -1,12 +1,63 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
+import api from '@/lib/api';
+import { useUiApiCall } from '@/composables/uiApiCall';
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import SessionCard from '@/components/dashboard/SessionCard.vue';
+import type { GameSession } from '@/common/types';
+import { Button } from '@/components/ui/button';
 
 const authStore = useAuthStore();
 const player = authStore.user!;
+
+const isDeleteDialogOpen = ref<boolean>(false);
+const sessionDelete = ref<GameSession | null>(null);
+
+const { uiApiCall, isLoading, error } = useUiApiCall();
+
+const handleDeleteDialog = (session: GameSession) => {
+  error.value = null;
+  sessionDelete.value = session;
+  isDeleteDialogOpen.value = true;
+};
+
+const deleteSession = async () => {
+  const result = await uiApiCall(() => api.delete(`/api/game-sessions/${sessionDelete.value?.id}`));
+
+  if (result.success) {
+    player.activeSessions = player.activeSessions!.filter((s) => s.id !== sessionDelete.value!.id);
+    isDeleteDialogOpen.value = false;
+  }
+};
 </script>
 
 <template>
+  <!-- Alert dialog - delete session -->
+  <AlertDialog v-model:open="isDeleteDialogOpen">
+    <AlertDialogContent>
+      <AlertDialogHeader>
+        <AlertDialogTitle>Confirm deletion</AlertDialogTitle>
+        <AlertDialogDescription>
+          Delete session for {{ sessionDelete?.game?.name }}?
+        </AlertDialogDescription>
+      </AlertDialogHeader>
+      <AlertDialogFooter>
+        <AlertDialogCancel :disabled="isLoading">Cancel</AlertDialogCancel>
+        <Button @click="deleteSession" :disabled="isLoading">Delete</Button>
+      </AlertDialogFooter>
+      <div class="text-red-500" v-if="error">Error: {{ error }}</div>
+    </AlertDialogContent>
+  </AlertDialog>
+
   <div class="w-full mx-auto max-w-5xl px-2 sm:px-10 space-y-8">
     <header
       class="border-2 border-lime-500 p-6 bg-lime-950/20 shadow-[0_0_15px_rgba(132,204,22,0.2)]"
@@ -31,7 +82,7 @@ const player = authStore.user!;
             v-for="session in player.activeSessions"
             :key="session.id"
           >
-            <SessionCard :session="session" />
+            <SessionCard :session="session" @delete="handleDeleteDialog" />
           </div>
           <div v-else class="px-3 py-2 border rounded-none border-sky-500">
             You have no active game sessions.<br />Start one by playing a game!

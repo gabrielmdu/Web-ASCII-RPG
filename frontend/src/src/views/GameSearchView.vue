@@ -1,4 +1,9 @@
 <script lang="ts" setup>
+import { GameSearchSort, useGameFilters, type GameFilter } from '@/composables/gameFilters';
+import api from '@/lib/api';
+import { useRoute, useRouter } from 'vue-router';
+import { useMediaQuery } from '@vueuse/core';
+import { useUiApiCall } from '@/composables/uiApiCall';
 import { computed, onMounted, ref, watch } from 'vue';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -19,14 +24,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { GameSearchSort, useGameFilters, type GameFilter } from '@/composables/gameFilters';
-import api, { apiCall } from '@/lib/api';
 import GameCard from '@/components/dashboard/GameCard.vue';
 import type { Game } from '@/common/types';
 import Button from '@/components/ui/button/Button.vue';
 import { MoveDownIcon, MoveUpIcon, SquareXIcon } from '@lucide/vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useMediaQuery } from '@vueuse/core';
 
 interface GameSearchResult {
   data: Game[];
@@ -39,8 +40,7 @@ const router = useRouter();
 const route = useRoute();
 const isSmall = useMediaQuery('(max-width: 600px)');
 
-const loading = ref<boolean>(true);
-const error = ref<string>('');
+const { uiApiCall, isLoading, error } = useUiApiCall();
 
 const getDefaultGameResult = (): GameSearchResult => {
   return {
@@ -56,12 +56,9 @@ const gameSearchResult = ref<GameSearchResult>(getDefaultGameResult());
 const fetchGamesCallback = async (filters: GameFilter) => {
   syncUrlParams();
 
-  const result = await apiCall(() => api.get('/api/games', { params: filters }));
-
-  loading.value = false;
+  const result = await uiApiCall(() => api.get('/api/games', { params: filters }));
 
   if (!result.success) {
-    error.value = result.error!;
     gameSearchResult.value = getDefaultGameResult();
     return;
   }
@@ -104,7 +101,7 @@ watch(
   () => filters.value,
   () => {
     error.value = '';
-    loading.value = true;
+    isLoading.value = true;
   },
   { deep: true },
 );
@@ -210,9 +207,9 @@ onMounted(() => {
           v-for="game in gameSearchResult.data"
           :key="game.id"
           :game="game"
-          :is-active="!loading"
+          :is-active="!isLoading"
         />
-        <div v-else-if="!loading && !error" class="border border-lime-800 p-4 text-center">
+        <div v-else-if="!isLoading && !error" class="border border-lime-800 p-4 text-center">
           No results. Try changing or
           <span class="underline cursor-pointer hover:text-red-500" @click="resetFilters">
             resetting the filters </span

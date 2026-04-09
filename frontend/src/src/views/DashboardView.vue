@@ -43,16 +43,18 @@ const deleteSession = async () => {
 <template>
   <!-- Alert dialog - delete session -->
   <AlertDialog v-model:open="isDeleteDialogOpen">
-    <AlertDialogContent>
+    <AlertDialogContent
+      class="bg-violet-950 rounded-none border-4 border-violet-500 shadow-[7px_9px] shadow-slate-300"
+    >
       <AlertDialogHeader>
-        <AlertDialogTitle>Confirm deletion</AlertDialogTitle>
-        <AlertDialogDescription>
+        <AlertDialogTitle class="text-lime-300 underline">Confirm deletion</AlertDialogTitle>
+        <AlertDialogDescription class="text-white text-md">
           Delete session for {{ sessionDelete?.game?.name }}?
         </AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter>
-        <AlertDialogCancel :disabled="isLoading">Cancel</AlertDialogCancel>
-        <Button @click="deleteSession" :disabled="isLoading">Delete</Button>
+        <AlertDialogCancel :disabled="isLoading" class="bg-transparent">Cancel</AlertDialogCancel>
+        <Button @click="deleteSession" :disabled="isLoading" variant="destructive">Delete</Button>
       </AlertDialogFooter>
       <div class="text-red-500" v-if="error">Error: {{ error }}</div>
     </AlertDialogContent>

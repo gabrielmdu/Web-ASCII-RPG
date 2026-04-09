@@ -224,7 +224,7 @@ class GameSessionControllerTest extends TestCase
             ->deleteJson("/api/game-sessions/{$session->id}")
             ->assertNoContent();
 
-        $this->assertDatabaseMissing('game_sessions', ['id' => $session->id]);
+        $this->assertSoftDeleted('game_sessions', ['id' => $session->id]);
     }
 
     public function test_user_cannot_delete_own_inactive_session(): void

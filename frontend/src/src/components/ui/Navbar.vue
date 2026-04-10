@@ -8,17 +8,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useMediaQuery } from '@vueuse/core';
 import { Button } from '@/components/ui/button';
 import {
   DoorOpenIcon,
   GamepadIcon,
   LayoutDashboardIcon,
   LogOutIcon,
+  UserRoundIcon,
   UserRoundPlusIcon,
 } from '@lucide/vue';
 
 const authStore = useAuthStore();
 const router = useRouter();
+const isSmall = useMediaQuery('(max-width: 639px)');
 
 const handleLogout = async () => {
   await authStore.logout();
@@ -50,8 +53,9 @@ const handleLogout = async () => {
             <!-- User dropdown -->
             <DropdownMenu>
               <DropdownMenuTrigger as-child>
-                <Button class="underline text-lg" variant="link">
-                  {{ authStore.user?.name }}
+                <Button class="underline text-lg" :variant="isSmall ? 'outline' : 'link'">
+                  <UserRoundIcon :stroke-width="3" />
+                  <span class="hidden sm:block">{{ authStore.user?.name }}</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent class="w-32 rounded-none bg-slate-900 text-cyan-300" align="end">

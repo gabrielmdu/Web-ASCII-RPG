@@ -25,9 +25,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import GameCard from '@/components/dashboard/GameCard.vue';
-import type { Game } from '@/common/types';
+import type { Game, GameSession } from '@/common/types';
 import Button from '@/components/ui/button/Button.vue';
 import { MoveDownIcon, MoveUpIcon, SquareXIcon } from '@lucide/vue';
+import WrAlertDialog from '@/components/ui/WrDialog/WrAlertDialog.vue';
 
 interface GameSearchResult {
   data: Game[];
@@ -96,6 +97,32 @@ const syncUrlParams = () => {
 
 const { filters, resetFilters, setPage } = useGameFilters(fetchGamesCallback);
 
+const isDeleteDialogOpen = ref<boolean>(false);
+const sessionDelete = ref<GameSession | null>(null);
+
+const { uiApiCall: alertUiApiCall, isLoading: alertIsLoading, error: alertError } = useUiApiCall();
+
+// session deletion alert dialog logic
+
+const handleDeleteDialog = (game: Game, session: GameSession) => {
+  alertError.value = null;
+  sessionDelete.value = session;
+  sessionDelete.value.game = game;
+  isDeleteDialogOpen.value = true;
+};
+
+const deleteSession = async () => {
+  const result = await alertUiApiCall(() =>
+    api.delete(`/api/game-sessions/${sessionDelete.value?.id}`),
+  );
+
+  if (result.success) {
+    const game = gameSearchResult.value.data.find((g) => g.id === sessionDelete.value?.game?.id);
+    game!.sessions = game?.sessions?.filter((s) => s.id !== sessionDelete.value!.id);
+    isDeleteDialogOpen.value = false;
+  }
+};
+
 // sets loading when the filters change to avoid delay with debounce
 watch(
   () => filters.value,
@@ -129,6 +156,17 @@ onMounted(() => {
 </script>
 
 <template>
+  <!-- Session delete dialog -->
+  <WrAlertDialog
+    v-model:open="isDeleteDialogOpen"
+    title="Confirm deletion"
+    :text="`Delete session for ${sessionDelete?.game?.name}?`"
+    confirm-btn-text="Delete"
+    :error="alertError"
+    :is-loading="alertIsLoading"
+    @confirm="deleteSession"
+  />
+
   <div class="w-full mx-auto max-w-5xl px-2 sm:px-10 space-y-8">
     <!-- Games section -->
     <section class="flex flex-col gap-6 mb-4">
@@ -208,6 +246,7 @@ onMounted(() => {
           :key="game.id"
           :game="game"
           :is-active="!isLoading"
+          @delete-session="handleDeleteDialog"
         />
         <div v-else-if="!isLoading && !error" class="border border-lime-800 p-4 text-center">
           No results. Try changing or

@@ -3,18 +3,9 @@ import { ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import api from '@/lib/api';
 import { useUiApiCall } from '@/composables/uiApiCall';
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
 import SessionCard from '@/components/dashboard/SessionCard.vue';
 import type { GameSession } from '@/common/types';
-import { Button } from '@/components/ui/button';
+import WrAlertDialog from '@/components/ui/WrDialog/WrAlertDialog.vue';
 
 const authStore = useAuthStore();
 const player = authStore.user!;
@@ -41,24 +32,16 @@ const deleteSession = async () => {
 </script>
 
 <template>
-  <!-- Alert dialog - delete session -->
-  <AlertDialog v-model:open="isDeleteDialogOpen">
-    <AlertDialogContent
-      class="bg-violet-950 rounded-none border-4 border-violet-500 shadow-[7px_9px] shadow-slate-300"
-    >
-      <AlertDialogHeader>
-        <AlertDialogTitle class="text-lime-300 underline">Confirm deletion</AlertDialogTitle>
-        <AlertDialogDescription class="text-white text-md">
-          Delete session for {{ sessionDelete?.game?.name }}?
-        </AlertDialogDescription>
-      </AlertDialogHeader>
-      <AlertDialogFooter>
-        <AlertDialogCancel :disabled="isLoading" class="bg-transparent">Cancel</AlertDialogCancel>
-        <Button @click="deleteSession" :disabled="isLoading" variant="destructive">Delete</Button>
-      </AlertDialogFooter>
-      <div class="text-red-500" v-if="error">Error: {{ error }}</div>
-    </AlertDialogContent>
-  </AlertDialog>
+  <!-- Session delete dialog -->
+  <WrAlertDialog
+    v-model:open="isDeleteDialogOpen"
+    title="Confirm deletion"
+    :text="`Delete session for ${sessionDelete?.game?.name}?`"
+    confirm-btn-text="Delete"
+    :error="error"
+    :is-loading="isLoading"
+    @confirm="deleteSession"
+  />
 
   <div class="w-full mx-auto max-w-5xl px-2 sm:px-10 space-y-8">
     <header

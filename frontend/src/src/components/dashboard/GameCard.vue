@@ -27,7 +27,7 @@ const activeSession = computed(
 
 const emit = defineEmits<{
   play: [game: Game];
-  delete: [session: GameSession];
+  deleteSession: [game: Game, session: GameSession];
 }>();
 </script>
 
@@ -82,7 +82,7 @@ const emit = defineEmits<{
       <div class="flex flex-col-reverse lg:flex-row gap-2 col-span-2">
         <Button
           class="bg-red-600 hover:bg-red-700 text-white"
-          @click="emit('delete', activeSession!)"
+          @click="emit('deleteSession', game, activeSession!)"
           v-if="activeSession"
         >
           <Trash2Icon />

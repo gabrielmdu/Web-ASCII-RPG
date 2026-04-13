@@ -1,10 +1,11 @@
 <script lang="ts" setup>
+import { computed, onMounted, ref, watch } from 'vue';
+import { useAuthStore } from '@/stores/auth';
 import { GameSearchSort, useGameFilters, type GameFilter } from '@/composables/gameFilters';
 import api from '@/lib/api';
 import { useRoute, useRouter } from 'vue-router';
 import { useMediaQuery } from '@vueuse/core';
 import { useUiApiCall } from '@/composables/uiApiCall';
-import { computed, onMounted, ref, watch } from 'vue';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -36,6 +37,9 @@ interface GameSearchResult {
   perPage: number;
   total: number;
 }
+
+const authStore = useAuthStore();
+const player = authStore.user;
 
 const router = useRouter();
 const route = useRoute();
@@ -117,8 +121,17 @@ const deleteSession = async () => {
   );
 
   if (result.success) {
-    const game = gameSearchResult.value.data.find((g) => g.slug === sessionDelete.value?.game?.slug);
+    const game = gameSearchResult.value.data.find(
+      (g) => g.slug === sessionDelete.value?.game?.slug,
+    );
     game!.sessions = game?.sessions?.filter((s) => s.id !== sessionDelete.value!.id);
+
+    if (player) {
+      player.activeSessions = player.activeSessions!.filter(
+        (s) => s.id !== sessionDelete.value!.id,
+      );
+    }
+
     isDeleteDialogOpen.value = false;
   }
 };

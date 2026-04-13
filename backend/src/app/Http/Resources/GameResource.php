@@ -15,7 +15,6 @@ class GameResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
             'creator' => new CreatorResource($this->whenLoaded('creator')),
             'name' => $this->name,
             'slug' => $this->slug,
@@ -27,7 +26,7 @@ class GameResource extends JsonResource
             'settings' => $this->settings,
             'sessions' => GameSessionResource::collection($this->whenLoaded('sessions')),
             'scenesCount' => $this->whenCounted('scenes'),
-            'scenesUrl' => route('game.scenes.index', $this->id),
+            'scenesUrl' => route('game.scenes.index', $this->slug),
         ];
     }
 }

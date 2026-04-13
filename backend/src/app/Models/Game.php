@@ -35,8 +35,16 @@ class Game extends Model
     protected static function booted(): void
     {
         static::creating(function (Game $game) {
-            $game->slug = Str::slug($game->name);
+            $game->slug = static::generateUniqueSlug($game->name);
         });
+    }
+
+    /**
+     * Uses the slug field instead of id for the routes.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
     }
 
     public function creator(): BelongsTo
@@ -124,5 +132,16 @@ class Game extends Model
 
             default => $query->orderBy($sort->value, $direction),
         };
+    }
+
+    private static function generateUniqueSlug(string $name): string
+    {
+        $slug = Str::slug($name) . '-' . uniqid();
+
+        while (static::where('slug', $slug)->exists()) {
+            $slug = Str::slug($name) . '-' . uniqid();
+        }
+
+        return $slug;
     }
 }

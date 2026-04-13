@@ -22,6 +22,19 @@ class GameControllerTest extends TestCase
         $this->user = User::factory()->create();
     }
 
+    public function test_game_creation_generates_unique_slug(): void
+    {
+        // two games with the same name
+        $game1 = Game::factory()->create(['name' => 'My Own Adventure 2']);
+        $game2 = Game::factory()->create(['name' => 'My Own Adventure 2']);
+
+        // slugs should have the game name in the full string
+        $this->assertStringStartsWith('my-own-adventure-2-', $game1->slug);
+        $this->assertStringStartsWith('my-own-adventure-2-', $game2->slug);
+        // slugs should be different
+        $this->assertNotEquals($game1->slug, $game2->slug);
+    }
+
     public function test_guest_can_list_only_public_games(): void
     {
         Game::factory(3)->private()
@@ -32,9 +45,9 @@ class GameControllerTest extends TestCase
             ->assertOk()
             ->assertJson([
                 'data' => [
-                    ['id' => $publicGames[0]->id],
-                    ['id' => $publicGames[1]->id],
-                    ['id' => $publicGames[2]->id],
+                    ['slug' => $publicGames[0]->slug],
+                    ['slug' => $publicGames[1]->slug],
+                    ['slug' => $publicGames[2]->slug],
                 ],
                 'meta' => ['total' => 3],
             ]);
@@ -51,10 +64,10 @@ class GameControllerTest extends TestCase
             ->assertOk()
             ->assertJson([
                 'data' => [
-                    ['id' => $privateGames[0]->id],
-                    ['id' => $privateGames[1]->id],
-                    ['id' => $publicGames[0]->id],
-                    ['id' => $publicGames[1]->id],
+                    ['slug' => $privateGames[0]->slug],
+                    ['slug' => $privateGames[1]->slug],
+                    ['slug' => $publicGames[0]->slug],
+                    ['slug' => $publicGames[1]->slug],
                 ],
                 'meta' => ['total' => 4],
             ]);
@@ -79,18 +92,18 @@ class GameControllerTest extends TestCase
             ->assertOk()
             ->assertJson([
                 'data' => [
-                    ['id' => $noSessionGames[0]->id],
-                    ['id' => $noSessionGames[1]->id],
-                    ['id' => $sessions[0]->game_id, 'sessions' => [
+                    ['slug' => $noSessionGames[0]->slug],
+                    ['slug' => $noSessionGames[1]->slug],
+                    ['slug' => $sessions[0]->game->slug, 'sessions' => [
                         ['id' => $sessions[0]->id, 'status' => GameSessionStatus::ACTIVE->value]
                     ]],
-                    ['id' => $sessions[1]->game_id, 'sessions' => [
+                    ['slug' => $sessions[1]->game->slug, 'sessions' => [
                         ['id' => $sessions[1]->id, 'status' => GameSessionStatus::ACTIVE->value]
                     ]],
-                    ['id' => $sessions[2]->game_id, 'sessions' => [
+                    ['slug' => $sessions[2]->game->slug, 'sessions' => [
                         ['id' => $sessions[2]->id, 'status' => GameSessionStatus::FINISHED->value]
                     ]],
-                    ['id' => $sessions[3]->game_id, 'sessions' => [
+                    ['slug' => $sessions[3]->game->slug, 'sessions' => [
                         ['id' => $sessions[3]->id, 'status' => GameSessionStatus::ABANDONED->value]
                     ]],
                 ],
@@ -102,7 +115,7 @@ class GameControllerTest extends TestCase
     {
         $session = GameSession::factory()->create();
 
-        $this->getJson("/api/games/{$session->game_id}")
+        $this->getJson("/api/games/{$session->game->slug}")
             ->assertOk()
             ->assertJsonMissing(['sessions' => []]);
     }
@@ -112,7 +125,7 @@ class GameControllerTest extends TestCase
         $session = GameSession::factory()->create(['player_id' => $this->user->id]);
 
         $this->actingAs($this->user)
-            ->getJson("/api/games/{$session->game_id}")
+            ->getJson("/api/games/{$session->game->slug}")
             ->assertOk()
             ->assertJson(['data' => ['sessions' => [['id' => $session->id]]]]);
     }

@@ -97,14 +97,14 @@ class GameSearchDataProvider
                 GameSearchSort::CREATED_AT->value,
                 true,
                 [
-                    ['created_at' => now()],
-                    ['created_at' => now()->subDay()],
-                    ['created_at' => now()->subMonth()],
+                    ['created_at' => now(), 'name' => 'Game 1'],
+                    ['created_at' => now()->subDay(), 'name' => 'Game 2'],
+                    ['created_at' => now()->subMonth(), 'name' => 'Game 3'],
                 ],
                 [],
                 [
-                    ['data.0.id' => 3],
-                    ['data.2.id' => 1],
+                    ['data.0.name' => 'Game 3'],
+                    ['data.2.name' => 'Game 1'],
                 ]
             ],
             // 4th set
@@ -112,14 +112,14 @@ class GameSearchDataProvider
                 GameSearchSort::CREATED_AT->value,
                 false,
                 [
-                    ['created_at' => now()->subWeek()],
-                    ['created_at' => now()->addMonth()],
-                    ['created_at' => now()->now()],
+                    ['created_at' => now()->subWeek(), 'name' => 'Game 1'],
+                    ['created_at' => now()->addMonth(), 'name' => 'Game 2'],
+                    ['created_at' => now()->now(), 'name' => 'Game 3'],
                 ],
                 [],
                 [
-                    ['data.0.id' => 2],
-                    ['data.2.id' => 1],
+                    ['data.0.name' => 'Game 2'],
+                    ['data.2.name' => 'Game 1'],
                 ]
             ],
             // 5th set
@@ -127,14 +127,14 @@ class GameSearchDataProvider
                 GameSearchSort::LAST_MODIFIED->value,
                 true,
                 [
-                    ['last_modified' => now()->addMinute()],
-                    ['last_modified' => now()->subMinutes(10)],
-                    ['last_modified' => now()->addMinutes(10)],
+                    ['last_modified' => now()->addMinute(), 'name' => 'Game 1'],
+                    ['last_modified' => now()->subMinutes(10), 'name' => 'Game 2'],
+                    ['last_modified' => now()->addMinutes(10), 'name' => 'Game 3'],
                 ],
                 [],
                 [
-                    ['data.0.id' => 2],
-                    ['data.2.id' => 3],
+                    ['data.0.name' => 'Game 2'],
+                    ['data.2.name' => 'Game 3'],
                 ]
             ],
             // 6th set
@@ -142,14 +142,14 @@ class GameSearchDataProvider
                 GameSearchSort::LAST_MODIFIED->value,
                 false,
                 [
-                    ['last_modified' => now()->addWeeks(2)],
-                    ['last_modified' => now()->addWeeks(12)],
-                    ['last_modified' => now()->addWeeks(20)],
+                    ['last_modified' => now()->addWeeks(2), 'name' => 'Game 1'],
+                    ['last_modified' => now()->addWeeks(12), 'name' => 'Game 2'],
+                    ['last_modified' => now()->addWeeks(20), 'name' => 'Game 3'],
                 ],
                 [],
                 [
-                    ['data.0.id' => 3],
-                    ['data.2.id' => 1],
+                    ['data.0.name' => 'Game 3'],
+                    ['data.2.name' => 'Game 1'],
                 ]
             ],
             // 7th set

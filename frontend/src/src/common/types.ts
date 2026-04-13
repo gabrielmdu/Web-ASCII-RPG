@@ -11,7 +11,6 @@ export interface Creator {
 }
 
 export interface Game {
-  id: number;
   creator?: Creator;
   name: string;
   slug: string;

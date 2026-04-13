@@ -117,7 +117,7 @@ const deleteSession = async () => {
   );
 
   if (result.success) {
-    const game = gameSearchResult.value.data.find((g) => g.id === sessionDelete.value?.game?.id);
+    const game = gameSearchResult.value.data.find((g) => g.slug === sessionDelete.value?.game?.slug);
     game!.sessions = game?.sessions?.filter((s) => s.id !== sessionDelete.value!.id);
     isDeleteDialogOpen.value = false;
   }
@@ -243,7 +243,7 @@ onMounted(() => {
         <GameCard
           v-if="!!gameSearchResult.total && !error"
           v-for="game in gameSearchResult.data"
-          :key="game.id"
+          :key="game.slug"
           :game="game"
           :is-active="!isLoading"
           @delete-session="handleDeleteDialog"

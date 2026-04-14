@@ -24,7 +24,7 @@ class GameFactory extends Factory
         return [
             'creator_id' => User::factory(),
             'name' => ucwords($name),
-            'slug' => Str::slug($name),
+            'slug' => Str::slug($name) . '-' . uniqid(),
             'description' => fake()->sentence(10),
             'version' => '1',
             'public' => true,

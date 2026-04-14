@@ -19,9 +19,10 @@ class UniqueActiveGameSession implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $session = $this->user->gameSessions()
+        $session = $this->user
+            ->gameSessions()
             ->active()
-            ->where('game_id', $value)
+            ->whereRelation('game', 'slug', $value)
             ->exists();
 
         if ($session) {

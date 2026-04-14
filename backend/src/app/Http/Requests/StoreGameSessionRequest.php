@@ -25,9 +25,9 @@ class StoreGameSessionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'gameId' => [
+            'gameSlug' => [
                 'required',
-                'exists:games,id',
+                'exists:games,slug',
                 new MaxActiveSessions($this->user()),
                 new UniqueActiveGameSession($this->user()),
             ]

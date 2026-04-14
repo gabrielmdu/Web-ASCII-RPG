@@ -10,9 +10,11 @@ use App\Models\User;
 
 class GameSessionService
 {
-    public function createGameSession(User $user, int $gameId): GameSession
+    public function createGameSession(User $user, string $gameSlug): GameSession
     {
-        $game = Game::with('startScene')->findOrFail($gameId);
+        $game = Game::with('startScene')
+            ->where(['slug' => $gameSlug])
+            ->firstOrFail();
 
         $session = $user->gameSessions()
             ->create([

@@ -50,7 +50,7 @@ class GameController extends Controller
         $user = Auth::guard('sanctum')->user();
 
         if ($user) {
-            $game->loadUserSession($user->id);
+            $game->loadUserSessions($user->id);
         }
 
         return new GameResource($game);

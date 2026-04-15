@@ -21,7 +21,8 @@ class GameSessionService
                 'player_id' => $user->id,
                 'game_id' => $game->id,
                 'current_scene_id' => $game->startScene->id,
-            ]);
+                'status' => GameSessionStatus::ACTIVE,
+            ])->refresh();
 
         event(new GameSessionCreated($session));
 

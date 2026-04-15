@@ -2,7 +2,7 @@ export interface User {
   name: string;
   email: string;
   isVerified: boolean;
-  activeSessions?: GameSession[];
+  activeSessions: GameSession[];
 }
 
 export interface Creator {
@@ -20,9 +20,23 @@ export interface Game {
   createdAt: string;
   lastModified: string;
   settings: Record<string, unknown> | null;
-  sessions?: GameSession[];
+  sessions: GameSession[];
   scenesCount?: number;
   scenesUrl: string;
+}
+
+export interface Scene {
+  id: number;
+  choices: Choice[];
+  title: string;
+  media: string;
+  text: string;
+  type: string;
+}
+
+export interface Choice {
+  id: number;
+  text: string;
 }
 
 export interface GameSession {
@@ -30,7 +44,7 @@ export interface GameSession {
   player?: User;
   game?: Game;
   status: GameSessionStatus;
-  currentScene?: unknown;
+  currentScene?: Scene;
   settings: Record<string, unknown> | null;
   history: Record<string, unknown> | null;
   createdAt: string;

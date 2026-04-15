@@ -1,4 +1,10 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import type { Scene } from '@/common/types';
+
+defineProps<{
+  scene: Scene
+}>();
+</script>
 
 <template>
      <div class="container flex justify-center">

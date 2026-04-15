@@ -31,10 +31,9 @@ class GameSessionController extends Controller
      */
     public function store(StoreGameSessionRequest $request, GameSessionService $service)
     {
-        $user = $request->user();
-        $session = $service->createGameSession($user, $request->validated('gameSlug'));
+        $session = $service->createGameSession($request->user(), $request->validated('gameSlug'));
 
-        return new GameSessionResource($session)
+        return new GameSessionResource($session->load('currentScene.choices'))
             ->response()
             ->setStatusCode(201);
     }
@@ -44,6 +43,8 @@ class GameSessionController extends Controller
      */
     public function show(GameSession $session)
     {
+        $session->load('currentScene.choices');
+
         return new GameSessionResource($session);
     }
 

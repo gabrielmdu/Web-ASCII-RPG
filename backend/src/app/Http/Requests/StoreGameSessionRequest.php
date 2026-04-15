@@ -25,6 +25,7 @@ class StoreGameSessionRequest extends FormRequest
     public function rules(): array
     {
         return [
+            // @todo remove this rule and move the max and unique validations to the service class
             'gameSlug' => [
                 'required',
                 'exists:games,slug',

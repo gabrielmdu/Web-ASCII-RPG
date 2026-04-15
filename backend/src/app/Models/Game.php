@@ -72,10 +72,13 @@ class Game extends Model
     /**
      * Eager load user sessions for the game.
      */
-    public function loadUserSession(int $userId): Game
+    public function loadUserSessions(int $userId): Game
     {
         return $this->load(
-            ['sessions' => fn($q) => $q->where('player_id', $userId)]
+            [
+                'sessions' => fn($q) => $q->where('player_id', $userId),
+                'sessions.currentScene.choices'
+            ]
         );
     }
 

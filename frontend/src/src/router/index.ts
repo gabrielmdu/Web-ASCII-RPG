@@ -9,6 +9,7 @@ import VerifyEmailPromptView from '@/views/VerifyEmailPromptView.vue';
 import VerifyEmailView from '@/views/VerifyEmailView.vue';
 import DashboardView from '@/views/DashboardView.vue';
 import GameSearchView from '@/views/GameSearchView.vue';
+import PlayView from '@/views/PlayView.vue';
 
 const routes = [
   // public routes
@@ -52,6 +53,12 @@ const routes = [
     component: DashboardView,
     meta: { verifiedOnly: true },
   },
+  {
+    path: '/play/:gameSlug',
+    name: 'play',
+    component: PlayView,
+    meta: { verifiedOnly: true },
+  }
 ];
 
 const router = createRouter({

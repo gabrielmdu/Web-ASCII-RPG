@@ -5,9 +5,6 @@ services:
       target: base
     volumes:
       - ./backend/src:/var/www/html
-    #environment:
-      #XDG_CONFIG_HOME: /var/www/html/.config
-    restart: "unless-stopped"
     depends_on:
       - mysql
 
@@ -30,7 +27,6 @@ services:
       MYSQL_PASSWORD: pass
     ports:
       - "3306:3306"
-    restart: "on-failure"
     volumes:
       - mysql-data:/var/lib/mysql
 
@@ -39,7 +35,6 @@ services:
 
   mailpit:
     image: axllent/mailpit:v1.27
-    restart: "unless-stopped"
     ports:
       - "8025:8025" # Web UI
       - "1025:1025" # SMTP port

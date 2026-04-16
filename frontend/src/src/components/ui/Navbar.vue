@@ -32,7 +32,7 @@ const handleLogout = async () => {
 <template>
   <header class="border-gray-950 border-8 bg-gray-950">
     <div class="border-2 md:border-3 border-white">
-      <nav class="container flex md:h-14 items-center justify-between px-2 md:px-4">
+      <nav class="flex md:h-14 items-center justify-between px-2 md:px-4">
         <!-- Left: logo -->
         <RouterLink to="/" class="text-5xl text-white pr-4">
           WA<span class="text-green-500">RPG</span>

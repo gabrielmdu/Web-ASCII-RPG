@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { GameSession } from '@/common/types';
+import type { Game, GameSession } from '@/common/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { PlayIcon, Trash2Icon } from '@lucide/vue';
@@ -10,6 +10,7 @@ const { session } = defineProps<{
 }>();
 
 const emit = defineEmits<{
+  play: [game: Game];
   delete: [session: GameSession];
 }>();
 </script>
@@ -25,7 +26,10 @@ const emit = defineEmits<{
 
           <p class="text-xs text-slate-200">
             Last played
-            <span class="font-medium italic text-slate-400">
+            <span
+              class="font-medium italic text-slate-400"
+              :title="new Date(session.updatedAt).toLocaleString()"
+            >
               {{ formatDistanceToNow(new Date(session.updatedAt), { addSuffix: true }) }}
             </span>
           </p>
@@ -45,6 +49,7 @@ const emit = defineEmits<{
         </Button>
         <Button
           class="@container grow rounded-none bg-sky-600 hover:bg-sky-700 text-white font-medium"
+          @click="emit('play', session.game!)"
         >
           <PlayIcon /> <span class="hidden @[100px]:block">Continue</span>
         </Button>

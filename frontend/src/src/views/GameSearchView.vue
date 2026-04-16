@@ -106,6 +106,10 @@ const sessionDelete = ref<GameSession | null>(null);
 
 const { uiApiCall: alertUiApiCall, isLoading: alertIsLoading, error: alertError } = useUiApiCall();
 
+const handlePlayGame = (game: Game) => {
+  router.push({ name: 'play', params: { gameSlug: game.slug } });
+};
+
 // session deletion alert dialog logic
 
 const handleDeleteDialog = (game: Game, session: GameSession) => {
@@ -124,7 +128,7 @@ const deleteSession = async () => {
     const game = gameSearchResult.value.data.find(
       (g) => g.slug === sessionDelete.value?.game?.slug,
     );
-    game!.sessions = game?.sessions?.filter((s) => s.id !== sessionDelete.value!.id);
+    game!.sessions = game!.sessions?.filter((s) => s.id !== sessionDelete.value!.id);
 
     if (player) {
       player.activeSessions = player.activeSessions!.filter(
@@ -259,6 +263,7 @@ onMounted(() => {
           :key="game.slug"
           :game="game"
           :is-active="!isLoading"
+          @play="handlePlayGame"
           @delete-session="handleDeleteDialog"
         />
         <div v-else-if="!isLoading && !error" class="border border-lime-800 p-4 text-center">

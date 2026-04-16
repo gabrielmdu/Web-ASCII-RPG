@@ -13,10 +13,16 @@ import {
   UserRoundIcon,
 } from '@lucide/vue';
 import Button from '../ui/button/Button.vue';
+import { useRouter } from 'vue-router';
 
 const { game, isActive = true } = defineProps<{
   game: Game;
   isActive?: boolean;
+}>();
+
+const emit = defineEmits<{
+  play: [game: Game];
+  deleteSession: [game: Game, session: GameSession];
 }>();
 
 const isOpen = ref<boolean>(false);
@@ -24,11 +30,6 @@ const isOpen = ref<boolean>(false);
 const activeSession = computed(
   () => game.sessions?.find((s) => s.status === GameSessionStatus.ACTIVE) ?? null,
 );
-
-const emit = defineEmits<{
-  play: [game: Game];
-  deleteSession: [game: Game, session: GameSession];
-}>();
 </script>
 
 <template>
@@ -97,7 +98,9 @@ const emit = defineEmits<{
           @click="emit('play', game)"
         >
           <PlayIcon />
-          <span class="hidden md:block">{{ activeSession ? 'Continue' : 'Play' }}</span>
+          <span class="hidden md:block">
+            {{ activeSession ? 'Continue' : 'Play' }}
+          </span>
         </Button>
       </div>
     </div>

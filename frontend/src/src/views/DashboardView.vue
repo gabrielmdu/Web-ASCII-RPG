@@ -1,12 +1,14 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
+import { useRouter } from 'vue-router';
 import api from '@/lib/api';
 import { useUiApiCall } from '@/composables/uiApiCall';
 import SessionCard from '@/components/dashboard/SessionCard.vue';
-import type { GameSession } from '@/common/types';
+import type { Game, GameSession } from '@/common/types';
 import WrAlertDialog from '@/components/ui/WrDialog/WrAlertDialog.vue';
 
+const router = useRouter();
 const authStore = useAuthStore();
 const player = authStore.user!;
 
@@ -28,6 +30,10 @@ const deleteSession = async () => {
     player.activeSessions = player.activeSessions!.filter((s) => s.id !== sessionDelete.value!.id);
     isDeleteDialogOpen.value = false;
   }
+};
+
+const handleContinueSession = (game: Game) => {
+  router.push({ name: 'play', params: { gameSlug: game.slug } });
 };
 </script>
 
@@ -67,7 +73,11 @@ const deleteSession = async () => {
             v-for="session in player.activeSessions"
             :key="session.id"
           >
-            <SessionCard :session="session" @delete="handleDeleteDialog" />
+            <SessionCard
+              :session="session"
+              @play="handleContinueSession"
+              @delete="handleDeleteDialog"
+            />
           </div>
           <div v-else class="px-3 py-2 border rounded-none border-sky-500">
             You have no active game sessions.<br />Start one by playing a game!

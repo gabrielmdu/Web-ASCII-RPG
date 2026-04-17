@@ -25,13 +25,19 @@ export interface Game {
   scenesUrl: string;
 }
 
+export interface SceneMedia {
+  image: string[];
+  interval: number | null;
+}
+
 export interface Scene {
   id: number;
   choices: Choice[];
   title: string;
-  media: string;
-  text: string;
   type: string;
+  media: SceneMedia;
+  text: string;
+  settings: GameSettings;
 }
 
 export interface Choice {
@@ -45,7 +51,7 @@ export interface GameSession {
   game?: Game;
   status: GameSessionStatus;
   currentScene?: Scene;
-  settings: Record<string, unknown> | null;
+  settings: GameSettings;
   history: Record<string, unknown> | null;
   createdAt: string;
   updatedAt: string;
@@ -55,4 +61,10 @@ export enum GameSessionStatus {
   ACTIVE = 'active',
   FINISHED = 'finished',
   ABANDONED = 'abandoned',
+}
+
+export interface GameSettings {
+  chars?: Record<string, any>;
+  colors?: Record<string, any>;
+  animations?: Record<string, any>;
 }

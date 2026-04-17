@@ -1,15 +1,34 @@
 <script lang="ts" setup>
 import type { Scene } from '@/common/types';
+import { computed } from 'vue';
+import Header from './Header.vue';
 
-defineProps<{
-  scene: Scene
+const { scene, gameSettings } = defineProps<{
+  scene: Scene,
+  gameSettings: Record<string, unknown>;
 }>();
+
+/** The width of the scene - calculated from the lengthier line in the scene's image */
+const sceneWidth = computed(() => {
+  const image = scene.media.image[0];
+  const lineLengths = image!.split('\n').map(line => line.length);
+
+  return Math.max(...lineLengths);
+});
+
+const mergedSettings = computed(() => {
+  return {
+    ...gameSettings,
+    ...scene.settings
+  };
+});
+
 </script>
 
 <template>
      <div class="container flex justify-center">
         <div class="wrapper flex justify-center leading-[0.7]">
-            <pre id="ascii-art">
+            <pre id="ascii-art"><Header :scene-width="sceneWidth" :title="scene.title" :settings="mergedSettings" />
  ----------------------------------------------------------
 |                     The Pot of Gold                      |
  ----------------------------------------------------------

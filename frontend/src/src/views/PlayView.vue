@@ -19,7 +19,6 @@ const { uiApiCall, isLoading, error } = useUiApiCall();
 
 onMounted(async () => {
   const gameResult = await uiApiCall(() => api.get(`/api/games/${gameSlug}`));
-
   if (!gameResult.success) {
     return;
   }
@@ -37,7 +36,6 @@ onMounted(async () => {
     }
 
     currentSession.value = sessionResult.data.data;
-    //game.value?.sessions.push(currentSession.value!);
     player.activeSessions.push(currentSession.value!);
   }
 });
@@ -48,7 +46,7 @@ onMounted(async () => {
   <div v-else-if="error">Error: {{ error }}</div>
   <div v-else>
     <div v-if="currentSession?.currentScene">
-      <Scene :scene="currentSession!.currentScene" />
+      <Scene :scene="currentSession!.currentScene" :game-settings="game!.settings!" />
     </div>
   </div>
 </template>
